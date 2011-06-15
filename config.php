@@ -7,7 +7,7 @@
  * File:    config.php
  *
  * Created on Apr 09, 2011
- * Updated on Jun 13, 2011
+ * Updated on Jun 14, 2011
  *
  * Description: This page containts the check and configuration functions. 
  * 
