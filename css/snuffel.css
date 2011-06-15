@@ -1,0 +1,463 @@
+@CHARSET "UTF-8";
+/*
+ * Title:   Snuffel
+ * Author:  Qzofp Productions
+ * Version: 0.1
+ *
+ * File:    snuffel.css
+ *
+ * Created on Apr 16, 2011
+ * Updated on Jun 12, 2011
+ *
+ * Description: De snuffel css pagina.
+ *
+ * Credits: Spotweb team and Wierdo.
+ *
+ */
+
+/*
+ *   Common CSS
+ */
+
+/* Tip 1: top, right, bottom, left */
+/* Tip 2: 0.8em = 8px, 1em = 10px, 1.2em = 12px
+
+/* Body and main parts of the page. */
+body{
+margin:0;
+height:100%;
+font-family:Arial, Helvetica, Sans-Serif;
+font-size:62.5%; /* =10px */
+}
+
+html{
+height:100%;
+}
+
+#main{
+float:left;
+width:100%;
+min-height:100%;
+_height: 100%;
+}
+
+#panel{
+/* background-color:lightpink; /* debug */
+width:235px;
+float:left;
+}
+
+/* Panel parts */
+#panel h4{
+margin:5px;
+padding:3px;
+-moz-border-radius:4px;
+-webkit-border-radius:4px;
+border-radius:4px;
+text-align:center;
+font-size:1.1em;
+color:white;
+background:#565656;
+}
+
+#panel ul{
+list-style:none;
+margin:0;
+padding:0;
+text-align:center;
+}
+
+#panel input{
+margin:0 5px 2px 5px;
+padding:3px;
+-moz-border-radius:4px;
+-webkit-border-radius:4px;
+border-radius:4px;
+width:225px;
+text-align:left;
+font-size:1.1em;
+font-weight:bold;
+background:#ececec;
+border:none;
+}
+
+#panel input[type=button]{
+background:#c8c8c8;
+}
+
+#panel input[type=submit]:hover{
+background:white;
+cursor:pointer;
+}
+
+#panel .txt_panel{
+font-size:1.1em;
+text-align:center;
+margin-top:1px;
+margin-bottom:5px;
+}
+
+#panel .buttons2 input[type=submit]{
+height:20px;
+width:210px;
+text-align:center;
+color:white;
+background:url(sprite_button.png) no-repeat 0 0;
+}
+
+#panel .buttons2 input[type=submit]:hover{
+background-position:0 -20px;
+}
+
+#panel .buttons2 input::-moz-focus-inner{ /*Remove button padding in FF*/
+border:0;
+padding:0;
+}
+
+/* Results parts */
+#results{
+margin-left:240px;
+}
+
+#results table{
+float:right;
+margin:5px 5px 0 0;
+width:100%;
+border-collapse:collapse;
+}
+
+#results thead tr{
+font-size:1.1em;
+color:white;
+}
+
+#results thead th{
+padding:3px 0 3px 0;
+background:#565656;
+text-align:left;
+}
+
+#results thead th:first-child{
+-moz-border-radius:4px 0 0 4px;
+-webkit-border-radius:4px 0 0 4px;
+border-radius:4px 0 0 4px;
+text-align:center;
+}
+
+#results thead th:last-child{
+-moz-border-radius:0 4px 4px 0;
+-webkit-border-radius:0 4px 4px 0;
+border-radius:0 4px 4px 0;
+}
+
+#results th.cat{
+width:55px;
+}
+
+#results tbody tr{
+font-size:1.1em;
+}
+
+#results tbody td{
+padding:3px 0 3px 0;
+border-top:2px solid #fff;
+}
+
+#results tbody td:first-child{
+-moz-border-radius:4px 0 0 4px;
+-webkit-border-radius:4px 0 0 4px;
+border-radius:4px 0 0 4px;
+text-align:center;
+}
+
+#results tbody td:last-child{
+-moz-border-radius:0 4px 4px 0;
+-webkit-border-radius:0 4px 4px 0;
+border-radius:0 4px 4px 0;
+}
+
+#results tr.blue td{
+background-color:#daecff;
+}
+
+#results tr.orange td{
+background-color:#fffad3;
+}
+
+#results tr.green td{
+background-color:#cbffcb;
+}
+
+#results tr.red td{
+background-color:#fedede;
+}
+
+#results tr:hover td{
+background-color:#fff;
+}
+
+#results td.cat{  
+padding:0 4px 0 0;
+font-weight:bold;
+color:#fff;
+}
+
+#results tr.blue td.cat{
+background:url(sprite.png) no-repeat 0 0;
+}
+
+#results tr.orange td.cat{
+background:url(sprite.png) no-repeat 0 -20px;
+}
+
+#results tr.green td.cat{
+background:url(sprite.png) no-repeat 0 -40px;
+}
+
+#results tr.red td.cat{
+background:url(sprite.png) no-repeat 0 -60px;
+}
+
+#results tr:hover.blue td.cat{
+background-position:-52px 0; 
+color:#008edf;
+}
+
+#results tr:hover.orange td.cat{
+background-position:-52px -20px; 
+color:#e9a213;
+}
+
+#results tr:hover.green td.cat{
+background-position:-52px -40px; 
+color:#00de00;
+}
+
+#results tr:hover.red td.cat{
+background-position:-52px -60px; 
+color:#de2500;
+}
+
+#results td.nzb a{
+font-weight:bold;
+text-decoration:none; 
+cursor:pointer;
+}
+
+#results tr.blue td.nzb a{
+color:#008edf;
+}
+
+#results tr.orange td.nzb a{
+color:#e9a213;
+}
+
+#results tr.green td.nzb a{
+color:#00de00;
+}
+
+#results tr.red td.nzb a{
+color:#de2500;
+}
+
+/* Search Parts */
+#search{
+margin-left:240px;
+}
+
+#search table{
+float:right;
+margin:5px 5px 0 0;
+width:100%;
+border-collapse:collapse;
+}
+
+#search thead tr{
+font-size:1.1em;
+color:white;
+}
+
+#search thead th{
+padding:3px 0 3px 0;
+background:#565656;
+text-align:left;
+}
+
+#search thead th:first-child{
+-moz-border-radius:4px 0 0 4px;
+-webkit-border-radius:4px 0 0 4px;
+border-radius:4px 0 0 4px;
+text-align:center;
+}
+
+#search thead th:last-child{
+-moz-border-radius:0 4px 4px 0;
+-webkit-border-radius:0 4px 4px 0;
+border-radius:0 4px 4px 0;
+}
+
+#search th.msg{
+width:55px;
+}
+
+#search th.but{
+width:43px;
+}
+
+#search th.cat{
+width:110px;
+}
+
+#search th.gen{
+width:155px;
+}
+
+#search tbody tr{
+font-size:1.1em;
+}
+
+#search tbody td{
+/*padding:3px 0 3px 0;*/
+
+border-top:2px solid #fff;
+/* background:lightblue /* debug */
+}
+
+#search tbody td:first-child{
+-moz-border-radius:4px 0 0 4px;
+-webkit-border-radius:4px 0 0 4px;
+border-radius:4px 0 0 4px;
+text-align:center;
+}
+
+#search tbody td:last-child{
+-moz-border-radius:0 4px 4px 0;
+-webkit-border-radius:0 4px 4px 0;
+border-radius:0 4px 4px 0;
+}
+
+#search tr.add td{
+font-size:1.2em;    
+font-weight:bold;
+}
+
+#search tr.del td{
+font-size:1.2em;    
+font-weight:bold;
+color:#C11B17;
+}
+
+#search tr.blue td{
+background-color:#daecff;
+}
+
+#search tr.orange td{
+background-color:#fffad3;
+}
+
+#search tr.green td{
+background-color:#cbffcb;
+}
+
+#search tr.red td{
+background-color:#fedede;
+}
+
+#search tr.gray td{
+background-color:#ececec;
+}
+
+#search tr:hover td{
+background-color:#fff;
+}
+
+#search td.msg{  
+padding:0 5px 0 0;
+font-weight:bold;
+color:#fff;
+}
+
+#search tr.add td.msg{
+font-size:1em;    
+color:#fff;
+}
+
+#search tr.del td.msg{
+font-size:1em;
+color:#fff;
+}
+
+#search tr.blue td.msg{
+background:url(sprite2.png) no-repeat 0 0px;
+}
+
+#search tr.orange td.msg{
+background:url(sprite2.png) no-repeat 0 -22px;
+}
+
+#search tr.green td.msg{
+background:url(sprite2.png) no-repeat 0 -43px;
+}
+
+#search tr.red td.msg{
+background:url(sprite2.png) no-repeat 0 -65px;
+}
+
+#search tr.gray td.msg{
+background:url(sprite2.png) no-repeat 0 -87px;
+color:#000;
+}
+
+
+#search tr:hover.blue td.msg{
+background-position:-52px 0; 
+color:#008edf;
+}
+
+#search tr:hover.orange td.msg{
+background-position:-52px -22px; 
+color:#e9a213;
+}
+
+#search tr:hover.green td.msg{
+background-position:-52px -43px; 
+color:#00de00;
+}
+
+#search tr:hover.red td.msg{
+background-position:-52px -65px; 
+color:#de2500;
+}
+
+#search tr:hover.gray td.msg{
+background-position:-52px -87px; 
+color:#6D7B8D;
+}
+
+#search td.but{
+padding:3px 0 3px 0;
+}
+
+#search select, input[type="text"]{
+font-family:Arial, Helvetica, Sans-Serif;    
+font-size:1.2em;
+border: 1px solid #606060;
+}
+
+#search select{
+width:95px;    
+}
+
+#search td.gen select{
+width:140px;   
+}
+
+#search select{
+position:relative;
+left:-4px;
+}
+
+#search input{
+position:relative;
+left:-3px;
+}
