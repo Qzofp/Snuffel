@@ -2,35 +2,18 @@
 /*
  * Title:   Snuffel
  * Author:  Qzofp Productions
- * Version: 0.1
+ * Version: 0.2
  *
- * File:    config.php
+ * File:    tables.php
  *
- * Created on Apr 09, 2011
- * Updated on Jun 14, 2011
+ * Created on Jun 16, 2011
+ * Updated on Jun 16, 2011
  *
- * Description: This page containts the check and configuration functions. 
+ * Description: This page containts the create and update tables functions. 
  * 
  * Credits: Spotweb team.
  *
  */
-
-/////////////////////////////////////////     Config Main     ////////////////////////////////////////////
-
-// Check if spotweb with MySQL exitst.
-$aChecks = CheckForSpotweb();
-if ($aChecks[0])
-{
-    // Create the Snuffel tables (first time only).
-    CreateSnuffelTables();
-
-    // Fill the snuffel constants from the config database.
-    LoadConstants();
-}
-else {
-    // ShowMessage($aChecks)       
-    exit();
-}
 
 /////////////////////////////////////////   Process Functions    /////////////////////////////////////////
 
@@ -38,7 +21,7 @@ else {
  * Function:	CreateSnuffelTables
  *
  * Created on Jun 13, 2011
- * Updated on Jun 13, 2011
+ * Updated on Jun 17, 2011
  *
  * Description: Create or update the Snuffel tables.
  *
@@ -48,167 +31,20 @@ else {
  */
 function CreateSnuffelTables()
 {
-    // Check if the Snuffel tables exists.
-    $version = GetSnuffelVersion();
-    if ($version != 0.1) 
-    {
-        CreateSnufCnf();
-        CreateSnuffel();
-        CreateSnufTmp();
-        CreateSnufCat();
-        CreateSnufTag();
-    }
+    CreateSnufCnf();
+    CreateSnuffel();
+    CreateSnufTmp();
+    CreateSnufCat();
+    CreateSnufTag();
 }
-
-/*
- * Function:	CheckForSpotweb
- *
- * Created on Aug 14, 2010
- * Updated on Apr 16, 2011
- *
- * Description: Check if Spotweb with MySQL exists.
- *
- * In:	-
- * Out:	$check
- *
- */
-function CheckForSpotweb()
-{
-    // If Spotweb is in another location, please change the value below.
-    $spotweb = "../spotweb";
-
-    // Check for: All, Spotweb, Own Settings, MySQL, MySQL connection
-    $aChecks = array(false, false, false, false, false);
-    
-    // Check if the spotweb folder exists.
-    if (file_exists($spotweb)) 
-    {
-        $aChecks[1] = true;
-    
-        // Check if ownsettings exits.     
-        if (file_exists($spotweb."/ownsettings.php")) 
-        { 
-            include_once($spotweb."/ownsettings.php"); 
-            $aChecks[2] = true;
-        
-            // Check if MySQL is used.
-            if ($settings['db']['engine'] == "mysql")
-            {
-                // Define database constants from ownsettings.
-                define("cHOST",  $settings['db']['host']);
-                define("cDBASE", $settings['db']['dbname']);
-                define("cUSER",  $settings['db']['user']);
-                define("cPASS",  $settings['db']['pass']);   
-
-                $aChecks[3] = true;
-            
-                // Check is a MySQL connection can be made.
-                if (ConnectToSpots()) {
-                    $aChecks[0] = true;               
-                }
-            }
-        }
-    }    
-   
-    return $aChecks;
-}
-
-
-/////////////////////////////////////////   Display Functions    /////////////////////////////////////////
-
-/*
- * Function:	Header
- *
- * Created on Aug 14, 2010
- * Updated on Apr 16, 2011
- *
- * Description: Returns a page header.
- *
- * In:	$title, $css
- * Out:	header
- *
- */
-function PageHeader($title, $css)
-{
-    echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n";
-    echo "   \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"> \n";
-
-    echo "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
-
-    echo " <head> \n";
-    echo "  <title>$title</title> \n";
-    echo "  <meta http-equiv=\"content-type\" content=\"text/html;charset=ISO-8859-1\" />\n";
-    echo "  <link href=\"$css\" rel=\"stylesheet\" type=\"text/css\" />\n";
-    echo " </head>\n";
-
-    echo " <body>\n";
-    echo "  <div id=\"main\">\n";
-}
-
-/*
- * Function:	Footer
- *
- * Created on Aug 14, 2010
- * Updated on Apr 16, 2010
- *
- * Description: Returns a page footer.
- *
- * In:	-
- * Out:	footer
- *
- */
-function PageFooter()
-{
-    // HTML end
-    echo "  </div>\n"; // Close div main.
-    echo " </body>\n";
-    echo "</html>";
-}
-
 
 /////////////////////////////////////////   Query Functions   ////////////////////////////////////////////
-
-/*
- * Function:	GetSnuffelVersion
- *
- * Created on Jun 13, 2011
- * Updated on Jun 13, 2011
- *
- * Description: Return the Snuffel version or false if the Snuffel tables doesn't exist.
- *
- * In:	-
- * Out:	$version
- *
- */
-function GetSnuffelVersion()
-{
-    $db = OpenDatabase();
-    
-    $version = false;
-    $sql = "SELECT value FROM snufcnf ".
-           "WHERE name = 'Version'";
-  
-    if(mysqli_multi_query($db, $sql))
-    {
-        $result = mysqli_use_result($db);
-        if ($result) 
-        {
-            $row = mysqli_fetch_row($result); 
-            $version = $row[0];
-            mysqli_free_result($result);
-        }
-    }
- 
-    CloseDatabase($db); 
-        
-    return $version;
-}
 
 /*
  * Function:	CreateSnufCnf
  *
  * Created on Jun 13, 2011
- * Updated on Jun 13, 2011
+ * Updated on Jun 16, 2011
  *
  * Description: Create or update the Snuffel Configuration table.
  *
@@ -218,46 +54,41 @@ function GetSnuffelVersion()
  */
 function CreateSnufCnf()
 {
-    $db = OpenDatabase();
-
     // If exists drop table.
-    $sql = "DROP TABLE IF EXISTS `snufcnf2`";
+    $sql = "DROP TABLE IF EXISTS `snufcnf`";
     
-    mysqli_query($db, $sql);
+    ExecuteQuery($sql);
     
     // Create table.
-    $sql = "CREATE TABLE IF NOT EXISTS `snufcnf2` ( ".
+    $sql = "CREATE TABLE IF NOT EXISTS `snufcnf` ( ".
              "`id` int(11) NOT NULL AUTO_INCREMENT, ".
              "`name` varchar(64) COLLATE utf8_unicode_ci NOT NULL, ".
              "`value` varchar(128) COLLATE utf8_unicode_ci NOT NULL, ".
              "PRIMARY KEY (`id`) ".
            ") ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;";
     
-    mysqli_query($db, $sql);
+    ExecuteQuery($sql);
     
     // Fill table.
-    $sql = "INSERT INTO `snufcnf2` (`name`, `value`) VALUES ".
+    $sql = "INSERT INTO `snufcnf` (`name`, `value`) VALUES ".
            "('Title', 'Snuffel'), ".
            "('Header', 'Cat.|Titel|Genre|Afzender|Datum|NZB|Platform'), ".
            "('MenuText', 'Onderhoud|Laatste update:'), ".
-           "('Buttons1', 'Nieuw|Alles|Zoek'), ".
-           "('Buttons2', 'Update Snuffel|Verwijder Zoek'), ".
+           "('Buttons', 'Nieuw|Alles|Zoek|Update Snuffel|Verwijder Zoek'), ".
            "('Categories', 'Beeld|Muziek|Spellen|Applicaties'), ".
            "('Days', '14'), ".
            "('TimeValues', 'seconde|seconden|minuut|minuten|uur|uur|dag|dagen|week|weken|maand|maanden|jaar|jaar'), ".
            "('NZBlink', 'http://localhost/spotweb/?page=getnzb&messageid='), ".
-           "('Version', '0.1');";
+           "('Version', '0.2');";
     
-    mysqli_query($db, $sql);    
-    
-    CloseDatabase($db);     
+    ExecuteQuery($sql);    
 }
 
 /*
  * Function:	CreateSnuffel
  *
  * Created on Jun 13, 2011
- * Updated on Jun 13, 2011
+ * Updated on Jun 16, 2011
  *
  * Description: Create or update the Snuffel  table.
  *
@@ -267,15 +98,13 @@ function CreateSnufCnf()
  */
 function CreateSnuffel()
 {
-    $db = OpenDatabase();
-
     // If exists drop table.
     #$sql = "DROP TABLE IF EXISTS `snuffel2`";
     
     #mysqli_query($db, $sql);
     
     // Create table.
-    $sql = "CREATE TABLE IF NOT EXISTS `snuffel2` ( ".
+    $sql = "CREATE TABLE IF NOT EXISTS `snuffel` ( ".
              "`id` int(11) NOT NULL AUTO_INCREMENT, ".
              "`poster` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL, ".
              "`title` varchar(128) COLLATE utf8_unicode_ci NOT NULL, ".
@@ -285,9 +114,7 @@ function CreateSnuffel()
              "PRIMARY KEY (`id`) ".
            ") ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";
     
-    mysqli_query($db, $sql);    
-
-    CloseDatabase($db); 
+    ExecuteQuery($sql);
 }
 
 /*
@@ -304,15 +131,13 @@ function CreateSnuffel()
  */
 function CreateSnufTmp()
 {
-    $db = OpenDatabase();
-
     // If exists drop table.
-    $sql = "DROP TABLE IF EXISTS `snuftmp2`";
+    $sql = "DROP TABLE IF EXISTS `snuftmp`";
     
-    mysqli_query($db, $sql);
+    ExecuteQuery($sql);
     
     // Create table.
-    $sql = "CREATE TABLE IF NOT EXISTS `snuftmp2` ( ".
+    $sql = "CREATE TABLE IF NOT EXISTS `snuftmp` ( ".
              "`id` int(11) NOT NULL AUTO_INCREMENT, ".
              "`messageid` varchar(128) CHARACTER SET ascii NOT NULL DEFAULT '', ".
              "`poster` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL, ".
@@ -340,16 +165,14 @@ function CreateSnufTmp()
              "FULLTEXT KEY `idx_fts_spots_3` (`tag`) ".
            ") ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";
     
-    mysqli_query($db, $sql);    
-
-    CloseDatabase($db); 
+    ExecuteQuery($sql); 
 }
 
 /*
  * Function:	CreateSnufCat
  *
  * Created on Jun 13, 2011
- * Updated on Jun 13, 2011
+ * Updated on Jun 16, 2011
  *
  * Description: Create or update the Snuffel Category table.
  *
@@ -359,15 +182,13 @@ function CreateSnufTmp()
  */
 function CreateSnufCat()
 {
-    $db = OpenDatabase();
-
     // If exists drop table.
-    $sql = "DROP TABLE IF EXISTS `snufcat2`";
+    $sql = "DROP TABLE IF EXISTS `snufcat`";
     
-    mysqli_query($db, $sql);
+    ExecuteQuery($sql);
     
     // Create table.
-    $sql = "CREATE TABLE IF NOT EXISTS `snufcat2` ( ".
+    $sql = "CREATE TABLE IF NOT EXISTS `snufcat` ( ".
              "`id` int(11) NOT NULL AUTO_INCREMENT, ".
              "`cat` int(11) NOT NULL, ".
              "`name` varchar(64) COLLATE utf8_unicode_ci NOT NULL, ".
@@ -375,10 +196,10 @@ function CreateSnufCat()
              "PRIMARY KEY (`id`) ".
            ") ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";
     
-    mysqli_query($db, $sql);
+    ExecuteQuery($sql);
     
     // Fill table.
-    $sql = "INSERT INTO `snufcat2` (`cat`, `name`, `tag`) VALUES ".
+    $sql = "INSERT INTO `snufcat` (`cat`, `name`, `tag`) VALUES ".
            "(0, 'DivX', 'a0'), ".
            "(0, 'WMV', 'a1'), ".
            "(0, 'MPG', 'a2'), ".
@@ -425,16 +246,14 @@ function CreateSnufCat()
            "(3, 'iOS', 'a6'), ".
            "(3, 'Android', 'a7');";
     
-    mysqli_query($db, $sql);    
-    
-    CloseDatabase($db);     
+    ExecuteQuery($sql);    
 }
 
 /*
  * Function:	CreateSnufTag
  *
  * Created on Jun 13, 2011
- * Updated on Jun 13, 2011
+ * Updated on Jun 16, 2011
  *
  * Description: Create or update the Snuffel Tag table.
  *
@@ -444,15 +263,13 @@ function CreateSnufCat()
  */
 function CreateSnufTag()
 {
-    $db = OpenDatabase();
-
     // If exists drop table.
-    $sql = "DROP TABLE IF EXISTS `snuftag2`";
+    $sql = "DROP TABLE IF EXISTS `snuftag`";
     
-    mysqli_query($db, $sql);
+    ExecuteQuery($sql);
     
     // Create table.
-    $sql = "CREATE TABLE IF NOT EXISTS `snuftag2` ( ".
+    $sql = "CREATE TABLE IF NOT EXISTS `snuftag` ( ".
              "`id` int(11) NOT NULL AUTO_INCREMENT, ".
              "`cat` int(11) NOT NULL, ".
              "`name` varchar(64) COLLATE utf8_unicode_ci NOT NULL, ".
@@ -461,10 +278,10 @@ function CreateSnufTag()
              "PRIMARY KEY (`id`) ".
            ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";
     
-    mysqli_query($db, $sql);
+    ExecuteQuery($sql);
     
     // Fill table.
-    $sql = "INSERT INTO `snuftag2` (`cat`, `name`, `tag`, `hide`) VALUES ".
+    $sql = "INSERT INTO `snuftag` (`cat`, `name`, `tag`, `hide`) VALUES ".
            "(0, 'Actie', 'd0', 0), ".
            "(0, 'Avontuur', 'd1', 0), ". 
            "(0, 'Animatie', 'd2', 0), ".
@@ -620,131 +437,6 @@ function CreateSnufTag()
            "(3, 'iOS', 'a6', 0), ".
            "(3, 'Android', 'a7', 0);";
     
-    mysqli_query($db, $sql);    
-    
-    CloseDatabase($db);     
-}
-
-
-/*
- * Function:	ConnectToSpots
- *
- * Created on Jun 13, 2011
- * Updated on Jun 13, 2011
- *
- * Description: Check if a connection to the spotweb database can be made.
- *
- * In:	-
- * Out:	$check
- *
- */
-function ConnectToSpots()
-{
-    $check = false;
-    
-    // Check if a connection can be made.
-    $db = @mysqli_connect(cHOST, cUSER, cPASS, cDBASE);
-    if ($db) 
-    {   
-        // Check if a query can be made.   
-        $sql = "SELECT count(*) FROM spotstatelist";
-
-        if (mysqli_query($db, $sql)) {
-            $check = true;
-        }
-    
-        mysqli_close($db);
-    }
-    
-    return $check;
-}
-
-/*
- * Function:	LoadConstants
- *
- * Created on Jun 13, 2011
- * Updated on Jun 13, 2011
- *
- * Description: Load the Snuffel constants from the snufcnf table.
- *
- * In:	-
- * Out:	Snuffel constants
- *
- */
-function LoadConstants()
-{
-    $db = OpenDatabase();
-    
-    $sql = "SELECT name, value FROM snufcnf";
-
-    $stmt = $db->prepare($sql);
-    if($stmt)
-    {
-        if($stmt->execute())
-        {
-            $stmt->bind_result($name, $value);
-            while($stmt->fetch())
-            {
-                define("c$name", "$value");
-                // cVersion
-                // c......
-            }
-        }
-        else {
-            die('Ececution query failed: '.mysqli_error());
-        }
-        $stmt->close();
-    }
-    else {
-        die('Invalid query: '.mysqli_error());
-    }
-
-    CloseDatabase($db);    
-}
-
-/*
- * Function:	OpenDatabase
- *
- * Created on Aug 22, 2008
- * Updated on Nov 29, 2009
- *
- * Description: Open the database.
- *
- * In:	-
- * Out:	$db
- *
- */
-function OpenDatabase()
- {
-    // Make a connection to the database.
-    $db = mysqli_connect(cHOST, cUSER, cPASS, cDBASE);
-    if (!$db) {
-        die('Could not connect: '.mysqli_error());
-    }
-
-    // Select the database.
-    $db_selected = mysqli_select_db($db, cDBASE);
-    if (!$db_selected) {
-        die ('Can\'t use '.cDBASE.' : '.mysqli_error());
-    }
-
-    return $db;
-}
-
-/*
- * Function:	CloseDatabase
- *
- * Created on Aug 22, 2008
- * Updated on Nov 29, 2009
- *
- * Description: Close the database.
- *
- * In:	$db
- * Out:	-
- *
- */
-function CloseDatabase($db)
-{
-    mysqli_close($db);
+    ExecuteQuery($sql);   
 }
 ?>

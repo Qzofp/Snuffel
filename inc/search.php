@@ -2,18 +2,55 @@
 /*
  * Title:   Snuffel
  * Author:  Qzofp Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    search.php
  *
  * Created on May 07, 2011
- * Updated on Jun 12, 2011
+ * Updated on Jun 18, 2011
  *
- * Description: Deze pagina bevat de zoek functies.
+ * Description: This page contains the search functions.
  * 
  * Credits: Spotweb team 
  *
  */
+
+/////////////////////////////////////////     Search Main     ////////////////////////////////////////////
+
+/*
+ * Function:    CreateSearchPage
+ *
+ * Created on Jun 18, 2011
+ * Updated on Jun 18, 2011
+ *
+ * Description: Greate the search page.
+ *
+ * In:  -
+ * Out: -
+ *
+ */
+function CreateSearchPage()
+{
+    //LoadConstants();
+        
+    PageHeader(cTitle, "css/snuffel.css");
+    echo "  <form name=\"".cTitle."\" action=\"".$_SERVER['PHP_SELF']."\" method=\"post\">\n";
+    
+    ShowPanel(2);
+    
+    $aSearchInput = GetSearchInput();
+    $aSearchInput = ProcesSearchInput($aSearchInput);
+    ShowSearch($aSearchInput);
+    ShowSearchHiddenFields($aSearchInput);
+ 
+    // Hidden check and page fields.
+    echo "   <input type=\"hidden\" name=\"hidPAGE\" value=\"2\" />\n";    
+    echo "   <input type=\"hidden\" name=\"hidCHECK\" value=\"2\" />\n";
+    
+    echo "  </form>\n";
+    PageFooter();    
+}
+
 
 /////////////////////////////////////////   Get Input Functions   ////////////////////////////////////////
 
@@ -210,14 +247,7 @@ function ShowSearch($aInput)
     echo "   </tbody>\n";
     echo "  </table>\n";
     
-    
-    // debug
-    //echo TimeAgo("2011-06-11 13:26:25", true);
-    
     echo "  </div>\n";
-
-    
-
 }
 
 /*
@@ -365,7 +395,7 @@ function ShowSearchEditRow($aInput, $inCategory, $inTitle, $inGenre, $inPoster)
  * Function:	ShowSearchHiddenFields
  *
  * Created on May 16, 2011
- * Updated on May 23, 2011
+ * Updated on Jun 18, 2011
  *
  * Description: Laat de hidden fields titel en poster zien.
  *
@@ -386,7 +416,7 @@ function ShowSearchHiddenFields($aInput)
         $aInput[5] .= '_';
     }
     
-    echo "   <input type=\"hidden\" name=\"hidMODE\" value=\"$aInput[5]$aInput[6]\" />\n";      
+    echo "   <input type=\"hidden\" name=\"hidMODE\" value=\"$aInput[5]$aInput[6]\" />\n";
 }
 
 /*
@@ -691,27 +721,6 @@ function DelSearch($aInput)
     }
     
     return $aInput;    
-}
-
-/*
- * Function:	DelSearchAll
- *
- * Created on Jun 06, 2011
- * Updated on Jun 06, 2011
- *
- * Description: Verwijder alle zoekwaardes en verwijder de tijdelijke tabel.
- *
- * In:  
- * Out:	
- *
- */
-function DelSearchAll()
-{
-    $sql = "TRUNCATE snuftmp";
-    ExecuteQuery($sql);   
-    
-    $sql = "TRUNCATE snuffel";
-    ExecuteQuery($sql);
 }
 
 /*

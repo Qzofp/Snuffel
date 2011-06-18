@@ -2,18 +2,58 @@
 /*
  * Title:   Snuffel
  * Author:  Qzofp Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    results.php
  *
  * Created on Apr 10, 2011
- * Updated on Jun 11, 2011
+ * Updated on Jun 17, 2011
  *
- * Description: Deze pagina bevat de resultaten functies.
+ * Description: This page contains the results functions.
  * 
  * Credits: Spotweb team 
  *
  */
+
+
+/////////////////////////////////////////     Results Main     ////////////////////////////////////////////
+
+/*
+ * Function:    CreateResultsPage
+ *
+ * Created on Jun 18, 2011
+ * Updated on Jun 18, 2011
+ *
+ * Description: Create the results page.
+ *
+ * In:  $new
+ * Out: -
+ *
+ */
+function CreateResultsPage($new)
+{
+    PageHeader(cTitle, "css/snuffel.css");
+    echo "  <form name=\"".cTitle."\" action=\"".$_SERVER['PHP_SELF']."\" method=\"post\">\n";
+    
+    if ($new) {
+        $button = 0;
+    }
+    else {
+        $button = 1;
+    }
+    
+    ShowPanel($button);
+    
+    ShowResults($new);
+ 
+    // Hidden check and page fields.
+    echo "   <input type=\"hidden\" name=\"hidPAGE\" value=\"$button\" />\n";    
+    echo "   <input type=\"hidden\" name=\"hidCHECK\" value=\"2\" />\n";
+    
+    echo "  </form>\n";
+    PageFooter(); 
+}
+
 
 /////////////////////////////////////////   Get Input Functions   ////////////////////////////////////////
 
@@ -205,33 +245,4 @@ function ShowResultsRows($new)
 
     CloseDatabase($sfdb);    
 }
-
-/*
- * Function:	UpdateResults
- *
- * Created on Aug 23, 2011
- * Updated on Jun 10, 2011
- *
- * Description: Werk de resultaten bij. Let op, dit is geen spotweb update! 
- *
- * In:	-
- * Out:	Updated snuftemp tabel
- *
- */
-function UpdateResults()
-{
-    // Leeg snuftemp tabel.
-    $sql = "TRUNCATE snuftmp";
-
-    ExecuteQuery($sql);
-
-    // Voeg spots id's toe aan tabel snuftemp waar gezochte titel uit snuffel tabel in tabel spots bestaat.   
-    $sql = "INSERT INTO snuftmp(messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, reversestamp, filesize, moderated, commentcount, spotrating) ".
-           "SELECT messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, reversestamp, filesize, moderated, commentcount, spotrating FROM spots ".
-           "WHERE MATCH(title) ".
-           "AGAINST((SELECT GROUP_CONCAT(title) FROM snuffel) IN BOOLEAN MODE)";
-
-    ExecuteQuery($sql);
-}
-
 ?>
