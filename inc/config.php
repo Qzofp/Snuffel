@@ -166,6 +166,7 @@ function InstallSnuffel()
 function CreateConfigPage($aChecks)
 {
     PageHeader("Config", "inc/config.css");
+    echo "  <form name=\"Config\" action=\"".$_SERVER['PHP_SELF']."\" method=\"post\">\n";   
     
     echo "   <h1>Snuffel Config Pagina</h1>\n";
     
@@ -194,7 +195,8 @@ function CreateConfigPage($aChecks)
     }
     
     echo "$msg\n";
-    
+ 
+    echo "  </form>\n";    
     PageFooter();
 }
 
