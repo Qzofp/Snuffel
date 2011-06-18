@@ -199,7 +199,7 @@ function CreateConfigPage($aChecks)
         case (!$aChecks["SNUFFEL"])     : $msg = "   De Snuffel tabellen zijn niet ge&iuml;nstalleerd.<br/>\n   $install";
                                           break;
                                       
-        case ($aChecks["UPGRADE"])     : $msg = "   Er is een nieuwere versie van Snuffel ge&iuml;nstalleerd.<br/>\n   $upgrade";
+        case ($aChecks["UPGRADE"])      : $msg = "   Er is een nieuwere versie van Snuffel ge&iuml;nstalleerd.<br/>\n   $upgrade";
                                           break;
     }
     
