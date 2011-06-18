@@ -21,12 +21,12 @@
  * Function:	ConfigureSnuffel
  *
  * Created on Jun 16, 2011
- * Updated on Jun 17, 2011
+ * Updated on Jun 18, 2011
  *
  * Description: Install, Update or Configure Snuffel.
  *
  * In:	$check
- * Out:	$aChecks;
+ * Out:	$page, $aChecks;
  *
  */
 function ConfigureSnuffel($check)
@@ -34,13 +34,18 @@ function ConfigureSnuffel($check)
     $aChecks = null;
     
     if (!$check) {
-        $aChecks = CheckSnuffel();
+        list($page, $aChecks) = CheckSnuffel();
     }
-    else {
+    else 
+    {
         InstallSnuffel();
+        sleep(2);
+        
+        LoadConstants();
+        $page = 2;
     }
     
-    return $aChecks;
+    return array($page, $aChecks);
 }
 
 
@@ -61,7 +66,10 @@ function ConfigureSnuffel($check)
 function CheckSnuffel()
 {
     $page = -1;
-    $aChecks = array("SPOTWEB"=>false, "OWNSETTINGS"=>false, "MYSQL"=>false, "CONNECT"=>false, "SNUFFEL"=>false, "UPGRADE"=>false);
+    
+    $aChecks = array("SPOTWEB"=>false, "OWNSETTINGS"=>false, 
+                     "MYSQL"=>false, "CONNECT"=>false, 
+                     "SNUFFEL"=>false, "UPGRADE"=>false);
     
     // Check if the Spotweb folder exists.
     if (file_exists(cSPOTWEB)) {
@@ -105,19 +113,17 @@ function CheckSnuffel()
     if ($aChecks["CONNECT"])
     {
         $version = GetSnuffelVersion();
-        if ($version) {
+        if ($version) 
+        {
             $aChecks["SNUFFEL"] = true;
             
-            if ($version != 0.2) 
-            {
+            if ($version != 0.2) {
                 $aChecks["UPGRADE"] = true;
-                $page = 1; // ???
             }
-            else 
-            {
+            else {
                 LoadConstants();
-                $page = 2;
             }
+            $page = 2;
         }
     }
     
@@ -187,10 +193,10 @@ function CreateConfigPage($aChecks)
         case (!$aChecks["CONNECT"])     : $msg = "   Er kan geen verbinding worden gemaakt met de Spotweb database.<br/>";
                                           break;
                                       
-        case (!$aChecks["SNUFFEL"])     : $msg = "   De Snuffel tabellen zijn niet ge&iuml;nstalleerd.<br/>\n$install";
+        case (!$aChecks["SNUFFEL"])     : $msg = "   De Snuffel tabellen zijn niet ge&iuml;nstalleerd.<br/>\n   $install";
                                           break;
                                       
-        case (!$aChecks["UPGRADE"])     : $msg = "   Er is een nieuwere versie van Snuffel ge&iuml;nstalleerd.<br/>\n$upgrade";
+        case (!$aChecks["UPGRADE"])     : $msg = "   Er is een nieuwere versie van Snuffel ge&iuml;nstalleerd.<br/>\n   $upgrade";
                                           break;
     }
     
