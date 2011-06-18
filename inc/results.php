@@ -7,7 +7,7 @@
  * File:    results.php
  *
  * Created on Apr 10, 2011
- * Updated on Jun 17, 2011
+ * Updated on Jun 18, 2011
  *
  * Description: This page contains the results functions.
  * 
@@ -178,7 +178,7 @@ function CreateNZBLink($nzb)
  * Function:	ShowResultsRows
  *
  * Created on Jun 11, 2011
- * Updated on Jun 11, 2011
+ * Updated on Jun 18, 2011
  *
  * Description: Laat de resultaatrijen zien.
  *
@@ -206,7 +206,7 @@ function ShowResultsRows($new)
            "AND (t.category = c.cat) ".
            "AND (t.subcata = CONCAT(c.tag, '|')) ".
            "AND (t.category = g.cat) ".
-           "AND (t.subcata = CONCAT(g.tag, '|') OR t.subcatd LIKE CONCAT('%', g.tag, '|%')) ".
+           "AND (f.subcata = g.tag OR f.subcatd = g.tag) ".
            "$new_spots".
            "GROUP BY t.title ".
            "ORDER BY t.stamp DESC";
