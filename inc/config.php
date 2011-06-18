@@ -117,13 +117,16 @@ function CheckSnuffel()
         {
             $aChecks["SNUFFEL"] = true;
             
-            if ($version != 0.2) {
+            if ($version != cCurrentVersion) {
                 $aChecks["UPGRADE"] = true;
+                
+                //debug
+                echo $version." ".cCurrentVersion;
             }
             else {
                 LoadConstants();
+                $page = 2;                
             }
-            $page = 2;
         }
     }
     
@@ -196,7 +199,7 @@ function CreateConfigPage($aChecks)
         case (!$aChecks["SNUFFEL"])     : $msg = "   De Snuffel tabellen zijn niet ge&iuml;nstalleerd.<br/>\n   $install";
                                           break;
                                       
-        case (!$aChecks["UPGRADE"])     : $msg = "   Er is een nieuwere versie van Snuffel ge&iuml;nstalleerd.<br/>\n   $upgrade";
+        case ($aChecks["UPGRADE"])     : $msg = "   Er is een nieuwere versie van Snuffel ge&iuml;nstalleerd.<br/>\n   $upgrade";
                                           break;
     }
     
