@@ -36,7 +36,10 @@ function GetInput()
     $page    = -1;
     
     // Get the hidden check spotweb or upgrade snuffel value.
-    $check = GetInputValue("hidCHECK");
+    $check = GetInputValue("btnCHECK");
+    if (!$check) {
+        $check = GetInputValue("hidCHECK");
+    }
     
     if ($check == 2)
     {
