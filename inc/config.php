@@ -155,7 +155,7 @@ function InstallSnuffel()
  * Function:	CreateConfigPage
  *
  * Created on Jun 17, 2011
- * Updated on Jun 17, 2011
+ * Updated on Jun 18, 2011
  *
  * Description: .
  *
@@ -169,6 +169,9 @@ function CreateConfigPage($aChecks)
     
     echo "   <h1>Snuffel Config Pagina</h1>\n";
     
+    $install = "<input type=\"submit\" name=\"btnCHECK\" value=\"Install\"/>";
+    $upgrade = "<input type=\"submit\" name=\"btnCHECK\" value=\"Upgrade\"/>";
+    
     switch (true)
     {
         case (!$aChecks["SPOTWEB"])     : $msg = "De Spotweb folder kan niet gevonden worden.<br/>";
@@ -177,16 +180,16 @@ function CreateConfigPage($aChecks)
         case (!$aChecks["OWNSETTINGS"]) : $msg = "De Spotweb ownsettings.php file kan niet gevonden worden.<br/>";
                                           break;
                                       
-        case (!$aChecks["MYSQL"])       : 
+        case (!$aChecks["MYSQL"])       : $msg = "Spotweb maakt geen gebruik van MySQL.<br/>";
                                           break;
                                       
-        case (!$aChecks["CONNECT"])     :
+        case (!$aChecks["CONNECT"])     : $msg = "Er kan geen verbinding worden gemaakt met de Soptweb database.<br/>";
                                           break;
                                       
-        case (!$aChecks["SNUFFEL"])     : 
+        case (!$aChecks["SNUFFEL"])     : $msg = "De Snuffel tabellen zijn niet geïnstalleerd.<br/>$install";
                                           break;
                                       
-        case (!$aChecks["UPGRADE"])     : 
+        case (!$aChecks["UPGRADE"])     : $msg = "Er is een nieuwere versie van Snuffel geïnstalleerd.<br/>$upgrade";
                                           break;
     }
     
