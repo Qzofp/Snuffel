@@ -612,7 +612,7 @@ function GetGenre($cat, $a, $b)
  * Function:	AddSearch
  *
  * Created on May 21, 2011
- * Updated on May 29, 2011
+ * Updated on Jun 18, 2011
  *
  * Description: Voeg zoekwaarde toe.
  *
@@ -626,20 +626,22 @@ function AddSearch($aInput)
 
     if ($ok == 1)
     {        
+        $key = null;
         list($check, $category, $title, $poster, $subcata, $subcatd) = CheckAndFixInput($aInput);
 
         // Add search values to the database.
         $sql = "INSERT INTO snuffel (cat, title, poster, subcata, subcatd) ".
                "VALUES ($category, $title, $poster, $subcata, $subcatd)";
     
-        if ($check) {
+        if ($check) 
+        {
             ExecuteQuery($sql);
+        
+            $sql    = "SELECT MAX(id) FROM snuffel";
+            $aItems = GetItemsFromDatabase($sql);
+            $key = $aItems[0];
         }
         
-        $sql    = "SELECT MAX(id) FROM snuffel";
-        $aItems = GetItemsFromDatabase($sql);
-        $key = $aItems[0];
-               
         $aInput = array(null, null, null, null, null, "ADD", $key, null);     
     }
     
