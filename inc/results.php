@@ -32,7 +32,7 @@
  */
 function CreateResultsPage($new)
 {
-    PageHeader(cTitle, "css/snuffel.css");
+    PageHeader(cTitle, "css/results.css");
     echo "  <form name=\"".cTitle."\" action=\"".$_SERVER['PHP_SELF']."\" method=\"post\">\n";
     
     if ($new) {

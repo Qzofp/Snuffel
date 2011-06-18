@@ -7,9 +7,9 @@
  * File:    snuffel.css
  *
  * Created on Apr 16, 2011
- * Updated on Jun 12, 2011
+ * Updated on Jun 17, 2011
  *
- * Description: The snuffel css pagw.
+ * Description: The search css page.
  *
  * Credits: Spotweb team and Wierdo.
  *
@@ -112,152 +112,6 @@ background-position:0 -20px;
 #panel .buttons2 input::-moz-focus-inner{ /*Remove button padding in FF*/
 border:0;
 padding:0;
-}
-
-/* Results parts */
-#results{
-margin-left:240px;
-}
-
-#results table{
-float:right;
-margin:5px 5px 0 0;
-width:100%;
-border-collapse:collapse;
-}
-
-#results thead tr{
-font-size:1.1em;
-color:white;
-}
-
-#results thead th{
-padding:3px 0 3px 0;
-background:#565656;
-text-align:left;
-}
-
-#results thead th:first-child{
--moz-border-radius:4px 0 0 4px;
--webkit-border-radius:4px 0 0 4px;
-border-radius:4px 0 0 4px;
-text-align:center;
-}
-
-#results thead th:last-child{
--moz-border-radius:0 4px 4px 0;
--webkit-border-radius:0 4px 4px 0;
-border-radius:0 4px 4px 0;
-}
-
-#results th.cat{
-width:55px;
-}
-
-#results tbody tr{
-font-size:1.1em;
-}
-
-#results tbody td{
-padding:3px 0 3px 0;
-border-top:2px solid #fff;
-}
-
-#results tbody td:first-child{
--moz-border-radius:4px 0 0 4px;
--webkit-border-radius:4px 0 0 4px;
-border-radius:4px 0 0 4px;
-text-align:center;
-}
-
-#results tbody td:last-child{
--moz-border-radius:0 4px 4px 0;
--webkit-border-radius:0 4px 4px 0;
-border-radius:0 4px 4px 0;
-}
-
-#results tr.blue td{
-background-color:#daecff;
-}
-
-#results tr.orange td{
-background-color:#fffad3;
-}
-
-#results tr.green td{
-background-color:#cbffcb;
-}
-
-#results tr.red td{
-background-color:#fedede;
-}
-
-#results tr:hover td{
-background-color:#fff;
-}
-
-#results td.cat{  
-padding:0 4px 0 0;
-font-weight:bold;
-color:#fff;
-}
-
-#results tr.blue td.cat{
-background:url(sprite.png) no-repeat 0 0;
-}
-
-#results tr.orange td.cat{
-background:url(sprite.png) no-repeat 0 -20px;
-}
-
-#results tr.green td.cat{
-background:url(sprite.png) no-repeat 0 -40px;
-}
-
-#results tr.red td.cat{
-background:url(sprite.png) no-repeat 0 -60px;
-}
-
-#results tr:hover.blue td.cat{
-background-position:-52px 0; 
-color:#008edf;
-}
-
-#results tr:hover.orange td.cat{
-background-position:-52px -20px; 
-color:#e9a213;
-}
-
-#results tr:hover.green td.cat{
-background-position:-52px -40px; 
-color:#00de00;
-}
-
-#results tr:hover.red td.cat{
-background-position:-52px -60px; 
-color:#de2500;
-}
-
-#results td.nzb a{
-font-weight:bold;
-text-decoration:none; 
-cursor:pointer;
-}
-
-#results tr.blue td.nzb a{
-color:#008edf;
-}
-
-#results tr.orange td.nzb a{
-color:#e9a213;
-}
-
-#results tr.green td.nzb a{
-color:#00de00;
-}
-
-#results tr.red td.nzb a{
-color:#de2500;
 }
 
 /* Search Parts */

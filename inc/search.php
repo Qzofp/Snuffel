@@ -33,7 +33,7 @@ function CreateSearchPage()
 {
     //LoadConstants();
         
-    PageHeader(cTitle, "css/snuffel.css");
+    PageHeader(cTitle, "css/search.css");
     echo "  <form name=\"".cTitle."\" action=\"".$_SERVER['PHP_SELF']."\" method=\"post\">\n";
     
     ShowPanel(2);
