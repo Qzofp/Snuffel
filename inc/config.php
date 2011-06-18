@@ -174,22 +174,22 @@ function CreateConfigPage($aChecks)
     
     switch (true)
     {
-        case (!$aChecks["SPOTWEB"])     : $msg = "De Spotweb folder kan niet gevonden worden.<br/>";
+        case (!$aChecks["SPOTWEB"])     : $msg = "   De Spotweb folder kan niet gevonden worden.<br/>";
                                           break;
             
-        case (!$aChecks["OWNSETTINGS"]) : $msg = "De Spotweb ownsettings.php file kan niet gevonden worden.<br/>";
+        case (!$aChecks["OWNSETTINGS"]) : $msg = "   De Spotweb ownsettings.php file kan niet gevonden worden.<br/>";
                                           break;
                                       
-        case (!$aChecks["MYSQL"])       : $msg = "Spotweb maakt geen gebruik van MySQL.<br/>";
+        case (!$aChecks["MYSQL"])       : $msg = "   Spotweb maakt geen gebruik van MySQL.<br/>";
                                           break;
                                       
-        case (!$aChecks["CONNECT"])     : $msg = "Er kan geen verbinding worden gemaakt met de Soptweb database.<br/>";
+        case (!$aChecks["CONNECT"])     : $msg = "   Er kan geen verbinding worden gemaakt met de Spotweb database.<br/>";
                                           break;
                                       
-        case (!$aChecks["SNUFFEL"])     : $msg = "De Snuffel tabellen zijn niet geïnstalleerd.<br/>$install";
+        case (!$aChecks["SNUFFEL"])     : $msg = "   De Snuffel tabellen zijn niet ge&iuml;nstalleerd.<br/>\n$install";
                                           break;
                                       
-        case (!$aChecks["UPGRADE"])     : $msg = "Er is een nieuwere versie van Snuffel geïnstalleerd.<br/>$upgrade";
+        case (!$aChecks["UPGRADE"])     : $msg = "   Er is een nieuwere versie van Snuffel ge&iuml;nstalleerd.<br/>\n$upgrade";
                                           break;
     }
     
