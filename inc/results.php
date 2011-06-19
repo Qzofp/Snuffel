@@ -7,7 +7,7 @@
  * File:    results.php
  *
  * Created on Apr 10, 2011
- * Updated on Jun 18, 2011
+ * Updated on Jun 19, 2011
  *
  * Description: This page contains the results functions.
  * 
@@ -111,34 +111,38 @@ function ShowResults($new)
  * Function:	ShowResultsRow
  *
  * Created on Jun 11, 2011
- * Updated on Jun 12, 2011
+ * Updated on Jun 19, 2011
  *
  * Description: Laat een resultaat rij van de tabel zien.
  *
- * In:  $catkey, $category, $title, $genre, $poster, $date, $nzb
+ * In:  $action, $catkey, $category, $title, $genre, $poster, $date, $nzb
  * Out:	rij
  *
  */
-function ShowResultsRow($catkey, $category, $title, $genre, $poster, $date, $nzb)
+function ShowResultsRow($action, $catkey, $category, $title, $genre, $poster, $date, $nzb)
 {
-      
+    $class = null;    
+    if ($action) {
+        $action   = " $action";
+    }
+    
     switch ($catkey)
     {
         case 0: if ($catkey !== null) {
-                    $class =  " class=\"blue\"";
+                    $class =  " class=\"blue$action\"";
                 }
                 else {
-                    $class =  " class=\"gray\"";
+                    $class =  " class=\"gray$action\"";
                 }
                 break;
             
-        case 1: $class =  " class=\"orange\"";
+        case 1: $class =  " class=\"orange$action\"";
                 break;
             
-        case 2: $class =  " class=\"green\"";
+        case 2: $class =  " class=\"green$action\"";
                 break;
             
-        case 3: $class =  " class=\"red\"";
+        case 3: $class =  " class=\"red$action\"";
                 break;
     }
        
@@ -223,10 +227,18 @@ function ShowResultsRows($new)
 
             if ($rows != 0)
             {
+                $delta = time() - strtotime(UpdateTime());
+                $last  = cLastUpdate + $delta;
+                
                 $stmt->bind_result($catkey, $category, $title, $genre, $poster, $date, $nzb);
                 while($stmt->fetch())
                 {
-                    ShowResultsRow($catkey, $category, $title, $genre, $poster, $date, $nzb);
+                    $newrow = null;
+                    if ($date > $last) {
+                        $newrow = "new";
+                    }
+                    
+                    ShowResultsRow($newrow, $catkey, $category, $title, $genre, $poster, $date, $nzb);
                 }
             }
         }

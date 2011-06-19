@@ -7,7 +7,7 @@
  * File:    panel.php
  *
  * Created on Apr 16, 2011
- * Updated on Jun 18, 2011
+ * Updated on Jun 19, 2011
  *
  * Description: This page contains the panel functions.
  *
@@ -189,7 +189,7 @@ function UpdateTime()
  * Function:	UpdateSnuffel
  *
  * Created on Aug 23, 2011
- * Updated on Jun 10, 2011
+ * Updated on Jun 19, 2011
  *
  * Description: Update Snuffel. Note: This is not a Spotweb update! 
  *
@@ -199,12 +199,18 @@ function UpdateTime()
  */
 function UpdateSnuffel()
 {
-    // Leeg snuftemp tabel.
-    $sql = "TRUNCATE snuftmp";
-
+    // Add last update time to snufcnf table.
+    $last =  strtotime(UpdateTime());
+    $sql = "UPDATE snufcnf SET value = '$last' ".
+           "WHERE name = 'LastUpdate'";
+        
     ExecuteQuery($sql);
 
-    // Voeg spots id's toe aan tabel snuftemp waar gezochte titel uit snuffel tabel in tabel spots bestaat.   
+    // Empty snuftemp table.
+    $sql = "TRUNCATE snuftmp";
+    ExecuteQuery($sql);
+    
+    // Copy spots that matches the search criteria to the snuftemp table. 
     $sql = "INSERT INTO snuftmp(messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, reversestamp, filesize, moderated, commentcount, spotrating) ".
            "SELECT messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, reversestamp, filesize, moderated, commentcount, spotrating FROM spots ".
            "WHERE MATCH(title) ".

@@ -789,5 +789,4 @@ function CheckAndFixInput($aInput)
     
     return array($check, $cat, $title, $poster, $subcata, $subcatd);
 }
-
 ?>

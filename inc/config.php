@@ -7,7 +7,7 @@
  * File:    config.php
  *
  * Created on Apr 09, 2011
- * Updated on Jun 18, 2011
+ * Updated on Jun 19, 2011
  *
  * Description: This page containts the check and configuration functions. 
  * 
@@ -21,7 +21,7 @@
  * Function:	ConfigureSnuffel
  *
  * Created on Jun 16, 2011
- * Updated on Jun 18, 2011
+ * Updated on Jun 19, 2011
  *
  * Description: Install, Update or Configure Snuffel.
  *
@@ -39,7 +39,7 @@ function ConfigureSnuffel($check)
     else 
     {
         InstallSnuffel();
-        sleep(2);
+        sleep(1);
         
         LoadConstants();
         $page = 2;
@@ -55,7 +55,7 @@ function ConfigureSnuffel($check)
  * Function:	CheckSnuffel
  *
  * Created on Jun 13, 2011
- * Updated on Jun 18, 2011
+ * Updated on Jun 19, 2011
  *
  * Description: Perform a couple of checks and record what is needed to succesfully run Snuffel.
  *
@@ -119,9 +119,6 @@ function CheckSnuffel()
             
             if ($version != cCurrentVersion) {
                 $aChecks["UPGRADE"] = true;
-                
-                //debug
-                echo $version." ".cCurrentVersion;
             }
             else {
                 LoadConstants();

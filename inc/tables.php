@@ -7,7 +7,7 @@
  * File:    tables.php
  *
  * Created on Jun 16, 2011
- * Updated on Jun 16, 2011
+ * Updated on Jun 19, 2011
  *
  * Description: This page containts the create and update tables functions. 
  * 
@@ -44,7 +44,7 @@ function CreateSnuffelTables()
  * Function:	CreateSnufCnf
  *
  * Created on Jun 13, 2011
- * Updated on Jun 16, 2011
+ * Updated on Jun 19, 2011
  *
  * Description: Create or update the Snuffel Configuration table.
  *
@@ -79,7 +79,8 @@ function CreateSnufCnf()
            "('Days', '14'), ".
            "('TimeValues', 'seconde|seconden|minuut|minuten|uur|uur|dag|dagen|week|weken|maand|maanden|jaar|jaar'), ".
            "('NZBlink', 'http://localhost/spotweb/?page=getnzb&messageid='), ".
-           "('Version', '0.2');";
+           "('LastUpdate', '0'), ".
+           "('Version', '0.21');";
     
     ExecuteQuery($sql);    
 }
@@ -132,9 +133,9 @@ function CreateSnuffel()
 function CreateSnufTmp()
 {
     // If exists drop table.
-    $sql = "DROP TABLE IF EXISTS `snuftmp`";
+    #$sql = "DROP TABLE IF EXISTS `snuftmp`";
     
-    ExecuteQuery($sql);
+    #ExecuteQuery($sql);
     
     // Create table.
     $sql = "CREATE TABLE IF NOT EXISTS `snuftmp` ( ".
