@@ -7,7 +7,7 @@
  * File:    search.php
  *
  * Created on May 07, 2011
- * Updated on Jun 18, 2011
+ * Updated on Jun 20, 2011
  *
  * Description: This page contains the search functions.
  * 
@@ -254,7 +254,7 @@ function ShowSearch($aInput)
  * Function:	ShowSearchAddRow
  *
  * Created on May 07, 2011
- * Updated on Jun 10, 2011
+ * Updated on Jun 20, 2011
  *
  * Description: Laat de invoerrij zien.
  *
@@ -280,6 +280,7 @@ function ShowSearchAddRow($aInput)
         $aItems   = explode("|", cCategories);     
         $active   = false;  
         $message = "Add";
+        $action  = null;
     }
     else 
     {
@@ -290,6 +291,7 @@ function ShowSearchAddRow($aInput)
         $inTitle  = null;
         $inPoster = null;
         $message = null;
+        $action = "hov";
     }
     
     // Categorie dropbox
@@ -321,14 +323,14 @@ function ShowSearchAddRow($aInput)
     // Poster veld
     $poster = "<input type=\"text\" size=\"40\" maxlength=\"100\" name=\"txtPOSTER\" value=\"$inPoster\" $disabled/>";
 
-    ShowSearchRow(null, $message, $ok, $key, $category, $title, $genre, $poster);
+    ShowSearchRow($action, $message, $ok, $key, $category, $title, $genre, $poster);
 }
 
 /*
  * Function:	ShowSearchEditRow
  *
  * Created on May 28, 2011
- * Updated on Jun 12, 2011
+ * Updated on Jun 20, 2011
  *
  * Description: Laat de wijzigrij zien.
  *
@@ -423,7 +425,7 @@ function ShowSearchHiddenFields($aInput)
  * Function:	ShowSearchRow
  *
  * Created on May 23, 2011
- * Updated on Jun 12, 2011
+ * Updated on Jun 20, 2011
  *
  * Description: Laat een rij van de zoekwaardes tabel zien.
  *
@@ -433,31 +435,32 @@ function ShowSearchHiddenFields($aInput)
  */
 function ShowSearchRow($action, $message, $buttons, $catkey, $category, $title, $genre, $poster)
 {
-    $class = null;    
+    $class = null; 
+    
     if ($action) {
-        $action   = " $action";
+        $action .= " ";
     }
-       
+    
     switch ($catkey)
     {
         case 0: if ($catkey !== null) {
-                    $class =  " class=\"blue$action\"";
+                    $class =  " class=\"".$action."blue\"";
                 }
                 else {
-                    $class =  " class=\"gray$action\"";
+                    $class =  " class=\"".$action."gray\"";
                 }
                 break;
             
-        case 1: $class =  " class=\"orange$action\"";
+        case 1: $class =  " class=\"".$action."orange\"";
                 break;
             
-        case 2: $class =  " class=\"green$action\"";
+        case 2: $class =  " class=\"".$action."green\"";
                 break;
             
-        case 3: $class =  " class=\"red$action\"";
+        case 3: $class =  " class=\"".$action."red\"";
                 break;
             
-        default: $class =  " class=\"gray$action\"";
+        default: $class =  " class=\"".$action."gray\"";
     }
        
     echo "    <tr$class>\n";
@@ -545,7 +548,7 @@ function ShowSearchRows($aInput)
                         switch ($mode)
                         {
                             case "ADD"  : $buttons = "<input type=\"image\" src=\"img/edit.png\" name=\"EDIT_$id\"/><input type=\"image\" src=\"img/del.png\" name=\"DEL_$id\"/>";
-                                          ShowSearchRow("add", null, $buttons, $catkey, $category, $title, $genre, $poster);
+                                          ShowSearchRow("hov add", null, $buttons, $catkey, $category, $title, $genre, $poster);
                                           break;
                                 
                             case "EDIT" : ShowSearchEditRow($aInput, $catkey, $title, $genre, $poster);
@@ -558,7 +561,7 @@ function ShowSearchRows($aInput)
                     else 
                     {
                         $buttons = "<input type=\"image\" src=\"img/edit.png\" name=\"EDIT_$id\"/><input type=\"image\" src=\"img/del.png\" name=\"DEL_$id\"/>";   
-                        ShowSearchRow(null, null, $buttons, $catkey, $category, $title, $genre, $poster);
+                        ShowSearchRow("hov", null, $buttons, $catkey, $category, $title, $genre, $poster);
                     }
                 }
             }
