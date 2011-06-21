@@ -7,7 +7,7 @@
  * File:    config.php
  *
  * Created on Apr 09, 2011
- * Updated on Jun 19, 2011
+ * Updated on Jun 21, 2011
  *
  * Description: This page containts the check and configuration functions. 
  * 
@@ -161,9 +161,9 @@ function InstallSnuffel()
  * Function:	CreateConfigPage
  *
  * Created on Jun 17, 2011
- * Updated on Jun 18, 2011
+ * Updated on Jun 21, 2011
  *
- * Description: .
+ * Description: Create the config page which shows the results of the Snuffel checks.
  *
  * In:	$aChecks
  * Out: -
@@ -171,39 +171,287 @@ function InstallSnuffel()
  */
 function CreateConfigPage($aChecks)
 {
-    PageHeader("Config", "inc/config.css");
+    PageHeader("Config", "css/config.css");
     echo "  <form name=\"Config\" action=\"".$_SERVER['PHP_SELF']."\" method=\"post\">\n";   
-    
-    echo "   <h1>Snuffel Config Pagina</h1>\n";
-    
-    $install = "<input type=\"submit\" name=\"btnCHECK\" value=\"Install\"/>";
-    $upgrade = "<input type=\"submit\" name=\"btnCHECK\" value=\"Upgrade\"/>";
+    echo "   <div id=\"gabbo\">\n";
     
     switch (true)
     {
-        case (!$aChecks["SPOTWEB"])     : $msg = "   De Spotweb folder kan niet gevonden worden.<br/>";
+        case (!$aChecks["SPOTWEB"])     : $msg = ShowCheckSpotweb();
+                                          $check = false;
                                           break;
             
-        case (!$aChecks["OWNSETTINGS"]) : $msg = "   De Spotweb ownsettings.php file kan niet gevonden worden.<br/>";
+        case (!$aChecks["OWNSETTINGS"]) : $msg = ShowCheckSettings();
+                                          $check = false;            
                                           break;
                                       
-        case (!$aChecks["MYSQL"])       : $msg = "   Spotweb maakt geen gebruik van MySQL.<br/>";
+        case (!$aChecks["MYSQL"])       : $msg = ShowCheckMySQL();
+                                          $check = false;  
                                           break;
                                       
-        case (!$aChecks["CONNECT"])     : $msg = "   Er kan geen verbinding worden gemaakt met de Spotweb database.<br/>";
+        case (!$aChecks["CONNECT"])     : $msg = ShowCheckConnect();
+                                          $check = false; 
                                           break;
                                       
-        case (!$aChecks["SNUFFEL"])     : $msg = "   De Snuffel tabellen zijn niet ge&iuml;nstalleerd.<br/>\n   $install";
+        case (!$aChecks["SNUFFEL"])     : $msg = ShowCheckSnuffel();
+                                          $check = true;
                                           break;
                                       
-        case ($aChecks["UPGRADE"])      : $msg = "   Er is een nieuwere versie van Snuffel ge&iuml;nstalleerd.<br/>\n   $upgrade";
+        case ($aChecks["UPGRADE"])      : $msg = ShowCheckUpgrade();
+                                          $check = true;
                                           break;
     }
     
-    echo "$msg\n";
- 
+    echo "$msg"; 
+    
+    echo "   </div>\n";
+    echo "   <input type=\"hidden\" name=\"hidCHECK\" value=\"$check\" />\n";
     echo "  </form>\n";    
     PageFooter();
+}
+
+/*
+ * Function:	ShowCheckSpotweb
+ *
+ * Created on Jun 21, 2011
+ * Updated on Jun 21, 2011
+ *
+ * Description: Show the check spotweb folder message.
+ *
+ * In:	-
+ * Out: $msg
+ *
+ */
+function ShowCheckSpotweb()
+{   
+    $msg  = "    <div id=\"check\">\n";          
+    $msg .= "     <img src=\"img/fail.png\"/>\n";
+    $msg .= "     Spotweb niet gevonden!<br/>\n";  
+    $msg .= "    </div>\n";           
+
+    $msg .= "    <div id=\"button\">\n";      
+    $msg .= "     <input type=\"submit\" name=\"btnDUMMY\" value=\"Opnieuw\"/>\n";
+    $msg .= "    </div>\n";    
+    
+    $msg .= "    <div id=\"help\">\n";      
+    $msg .= "     Installeer Spotweb: <a href=\"https://github.com/spotweb/spotweb/wiki\" ".
+                 "target=\"_new\">https://github.com/spotweb/spotweb/wiki</a>\n";
+    $msg .= "    </div>\n"; 
+    
+    $msg .= "    <div id=\"tip\">\n";
+    $msg .= "     Snuffel gaat ervan uit dat Spotweb naast Snuffel is ge&iuml;nstalleerd, bijvoorbeeld:\n";
+    $msg .= "     <ul>\n";
+    $msg .= "      <li>http://localhost/Snuffel</li>\n";
+    $msg .= "      <li>http://localhost/spotweb</li>\n";  
+    $msg .= "     </ul>\n";    
+    $msg .= "    </div>\n";      
+    
+    return $msg;
+}
+
+/*
+ * Function:	ShowCheckSettings
+ *
+ * Created on Jun 21, 2011
+ * Updated on Jun 21, 2011
+ *
+ * Description: Show the check ownsetting message.
+ *
+ * In:	-
+ * Out: $msg
+ *
+ */
+function ShowCheckSettings()
+{   
+    $msg  = "    <div id=\"check\">\n";          
+    $msg .= "     <img src=\"img/fine.png\"/>\n";
+    $msg .= "     Spotweb gevonden.<br/>\n";     
+    $msg .= "     <img src=\"img/fail.png\"/>\n";
+    $msg .= "     Ownsettings niet gevonden!<br/>\n";  
+    $msg .= "    </div>\n";           
+
+    $msg .= "    <div id=\"button\">\n";      
+    $msg .= "     <input type=\"submit\" name=\"btnDUMMY\" value=\"Opnieuw\"/>\n";
+    $msg .= "    </div>\n";    
+    
+    $msg .= "    <div id=\"help\">\n";      
+    $msg .= "     Gebruik Spotweb's ownsettings.php: <a href=\"https://github.com/spotweb/spotweb/wiki\" ".
+                 "target=\"_new\">https://github.com/spotweb/spotweb/wiki</a>\n";
+    $msg .= "    </div>\n"; 
+    
+    $msg .= "    <div id=\"tip\">\n";
+    $msg .= "     Snuffel haalt de Spotweb database gegevens uit de ownsettings.php file. ".
+                 "Plaats deze in de Spotweb folder (bv. http://localhost/spotweb).\n";
+    $msg .= "    </div>\n";
+    
+    return $msg;
+}
+
+/*
+ * Function:	ShowCheckMySQL
+ *
+ * Created on Jun 21, 2011
+ * Updated on Jun 21, 2011
+ *
+ * Description: Show the check MySQL message.
+ *
+ * In:	-
+ * Out: $msg
+ *
+ */
+function ShowCheckMySQL()
+{   
+    $msg  = "    <div id=\"check\">\n";          
+    $msg .= "     <img src=\"img/fine.png\"/>\n";
+    $msg .= "     Spotweb gevonden.<br/>\n";     
+    $msg .= "     <img src=\"img/fine.png\"/>\n";
+    $msg .= "     Ownsettings gevonden.<br/>\n";  
+    $msg .= "     <img src=\"img/fail.png\"/>\n";
+    $msg .= "     Spotweb zonder MySQL!<br/>\n";     
+    $msg .= "    </div>\n";           
+
+    $msg .= "    <div id=\"button\">\n";      
+    $msg .= "     <input type=\"submit\" name=\"btnDUMMY\" value=\"Opnieuw\"/>\n";
+    $msg .= "    </div>\n";    
+    
+    $msg .= "    <div id=\"help\">\n";      
+    $msg .= "     Gebruik Spotweb met MySQL: <a href=\"http://gathering.tweakers.net/forum/list_messages/1448575\" ".
+                 "target=\"_new\">http://gathering.tweakers.net/forum/list_messages/1448575</a>\n";
+    $msg .= "    </div>\n"; 
+    
+    $msg .= "    <div id=\"tip\">\n";
+    $msg .= "     Snuffel gebruikt de MySQL database van Spotweb. Helaas geen ondersteuning of ".
+                 "toekomstige ondersteuning voor de andere databases.\n";
+    $msg .= "    </div>\n";
+    
+    return $msg;
+}
+
+/*
+ * Function:	ShowCheckConnect
+ *
+ * Created on Jun 21, 2011
+ * Updated on Jun 21, 2011
+ *
+ * Description: Show the check connection message.
+ *
+ * In:	-
+ * Out: $msg
+ *
+ */
+function ShowCheckConnect()
+{   
+    $msg  = "    <div id=\"check\">\n";          
+    $msg .= "     <img src=\"img/fine.png\"/>\n";
+    $msg .= "     Spotweb gevonden.<br/>\n";     
+    $msg .= "     <img src=\"img/fine.png\"/>\n";
+    $msg .= "     Ownsettings gevonden.<br/>\n";  
+    $msg .= "     <img src=\"img/fine.png\"/>\n";
+    $msg .= "     Spotweb met MySQL.<br/>\n";
+    $msg .= "     <img src=\"img/fail.png\"/>\n";
+    $msg .= "     Verbindingsprobleem!<br/>\n";     
+    $msg .= "    </div>\n";           
+
+    $msg .= "    <div id=\"button\">\n";      
+    $msg .= "     <input type=\"submit\" name=\"btnDUMMY\" value=\"Opnieuw\"/>\n";
+    $msg .= "    </div>\n";    
+    
+    $msg .= "    <div id=\"help\">\n";      
+    $msg .= "     Controleer de MySQL database instellingen.";
+    $msg .= "    </div>\n"; 
+    
+    $msg .= "    <div id=\"tip\">\n";
+    $msg .= "     De database instellingen staan in de ownsettings.php file van Spotweb ".
+                 "(bv. in http://localhost/spotweb). Controleer ook of Spotweb goed werkt.\n";
+    $msg .= "    </div>\n";
+    
+    return $msg;
+}
+
+/*
+ * Function:	ShowCheckSnuffel
+ *
+ * Created on Jun 21, 2011
+ * Updated on Jun 21, 2011
+ *
+ * Description: Show the check snuffel message.
+ *
+ * In:	-
+ * Out: $msg
+ *
+ */
+function ShowCheckSnuffel()
+{   
+    $msg  = "    <div id=\"check\">\n";          
+    $msg .= "     <img src=\"img/fine.png\"/>\n";
+    $msg .= "     Spotweb gevonden.<br/>\n";     
+    $msg .= "     <img src=\"img/fine.png\"/>\n";
+    $msg .= "     Ownsettings gevonden.<br/>\n";  
+    $msg .= "     <img src=\"img/fine.png\"/>\n";
+    $msg .= "     Spotweb met MySQL.<br/>\n";
+    $msg .= "     <img src=\"img/fine.png\"/>\n";
+    $msg .= "     Verbinding in orde.<br/>\n";
+    $msg .= "     <img src=\"img/fail.png\"/>\n";
+    $msg .= "     Geen Snuffel tabellen!<br/>\n";
+    $msg .= "    </div>\n";           
+
+    $msg .= "    <div id=\"button\">\n";      
+    $msg .= "     <input type=\"submit\" name=\"btnDUMMY\" value=\"Installeer\"/>\n";
+    $msg .= "    </div>\n";    
+    
+    $msg .= "    <div id=\"help\">\n";      
+    $msg .= "     Installeer de Snuffel tabellen.";
+    $msg .= "    </div>\n"; 
+    
+    $msg .= "    <div id=\"tip\">\n";
+    $msg .= "     Snuffel gebruikt een aantal MySQL tabellen. Deze komen in de Spotweb ".
+                 "database en zijn te herkennen aan de naam beginnend met snuf.\n";
+    $msg .= "    </div>\n";
+    
+    return $msg;
+}
+
+/*
+ * Function:	ShowCheckUpgrade
+ *
+ * Created on Jun 21, 2011
+ * Updated on Jun 21, 2011
+ *
+ * Description: Show the check upgrade message.
+ *
+ * In:	-
+ * Out: $msg
+ *
+ */
+function ShowCheckUpgrade()
+{   
+    $msg  = "    <div id=\"check\">\n";          
+    $msg .= "     <img src=\"img/fine.png\"/>\n";
+    $msg .= "     Spotweb gevonden.<br/>\n";     
+    $msg .= "     <img src=\"img/fine.png\"/>\n";
+    $msg .= "     Ownsettings gevonden.<br/>\n";  
+    $msg .= "     <img src=\"img/fine.png\"/>\n";
+    $msg .= "     Spotweb met MySQL.<br/>\n";
+    $msg .= "     <img src=\"img/fine.png\"/>\n";
+    $msg .= "     Verbinding in orde.<br/>\n";
+    $msg .= "     <img src=\"img/fail.png\"/>\n";
+    $msg .= "     Oude Snuffel tabellen!<br/>\n";
+    $msg .= "    </div>\n";           
+
+    $msg .= "    <div id=\"button\">\n";      
+    $msg .= "     <input type=\"submit\" name=\"btnDUMMY\" value=\"Upgrade\"/>\n";
+    $msg .= "    </div>\n";    
+    
+    $msg .= "    <div id=\"help\">\n";      
+    $msg .= "     Upgrade de Snuffel tabellen.";
+    $msg .= "    </div>\n"; 
+    
+    $msg .= "    <div id=\"tip\">\n";
+    $msg .= "     Er is een nieuwe versie van Snuffel ge&iuml;nstalleerd. De ".
+                 "Snuffel tabellen moeten nu worden bijgewerkt.\n";
+    $msg .= "    </div>\n";
+    
+    return $msg;
 }
 
 
