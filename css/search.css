@@ -7,7 +7,7 @@
  * File:    search.css
  *
  * Created on Apr 16, 2011
- * Updated on Jun 20, 2011
+ * Updated on Jun 21, 2011
  *
  * Description: The search css page.
  *
@@ -41,13 +41,12 @@ min-height:100%;
 _height: 100%;
 }
 
+/* Panel parts */
 #panel{
-/* background-color:lightpink; /* debug */
 width:235px;
 float:left;
 }
 
-/* Panel parts */
 #panel h4{
 margin:5px;
 padding:3px;
@@ -248,23 +247,23 @@ color:#fff;
 }
 
 #search tr.blue td.msg{
-background:url(sprite2.png) no-repeat 0 0px;
+background:url(sprite_search.png) no-repeat 0 0px;
 }
 
 #search tr.orange td.msg{
-background:url(sprite2.png) no-repeat 0 -22px;
+background:url(sprite_search.png) no-repeat 0 -22px;
 }
 
 #search tr.green td.msg{
-background:url(sprite2.png) no-repeat 0 -43px;
+background:url(sprite_search.png) no-repeat 0 -43px;
 }
 
 #search tr.red td.msg{
-background:url(sprite2.png) no-repeat 0 -65px;
+background:url(sprite_search.png) no-repeat 0 -65px;
 }
 
 #search tr.gray td.msg{
-background:url(sprite2.png) no-repeat 0 -87px;
+background:url(sprite_search.png) no-repeat 0 -87px;
 color:#000;
 }
 
