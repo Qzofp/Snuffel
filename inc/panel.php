@@ -7,7 +7,7 @@
  * File:    panel.php
  *
  * Created on Apr 16, 2011
- * Updated on Jun 19, 2011
+ * Updated on Jun 21, 2011
  *
  * Description: This page contains the panel functions.
  *
@@ -177,7 +177,7 @@ function UpdateTime()
 {
     $sql = "SELECT UPDATE_TIME ".
            "FROM information_schema.tables ".
-           "WHERE TABLE_SCHEMA = 'spotweb' AND TABLE_NAME = 'snuftmp'";
+           "WHERE TABLE_SCHEMA = 'spotweb' AND TABLE_NAME = 'snuftmp2'";
 
     $aItems = GetItemsFromDatabase($sql);
     $time   = $aItems[0];
@@ -189,7 +189,7 @@ function UpdateTime()
  * Function:	UpdateSnuffel
  *
  * Created on Aug 23, 2011
- * Updated on Jun 19, 2011
+ * Updated on Jun 21, 2011
  *
  * Description: Update Snuffel. Note: This is not a Spotweb update! 
  *
@@ -199,31 +199,48 @@ function UpdateTime()
  */
 function UpdateSnuffel()
 {
+    $db = OpenDatabase();
     // Add last update time to snufcnf table.
     $last =  strtotime(UpdateTime());
     $sql = "UPDATE snufcnf SET value = '$last' ".
-           "WHERE name = 'LastUpdate'";
-        
-    ExecuteQuery($sql);
+           "WHERE name = 'LastUpdate'";        
+    mysqli_query($db, $sql);
 
-    // Empty snuftemp table.
-    $sql = "TRUNCATE snuftmp";
-    ExecuteQuery($sql);
+    // Empty snuftmp1 table.
+    $sql = "TRUNCATE snuftmp1";
+    mysqli_query($db, $sql);
     
-    // Copy spots that matches the search criteria to the snuftemp table. 
-    $sql = "INSERT INTO snuftmp(messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, reversestamp, filesize, moderated, commentcount, spotrating) ".
+    // First stage: Copy spots that matches the search criteria from the spots table to the snuftmp1 table.
+    $sql = "INSERT INTO snuftmp1(messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, reversestamp, filesize, moderated, commentcount, spotrating) ".
            "SELECT messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, reversestamp, filesize, moderated, commentcount, spotrating FROM spots ".
            "WHERE MATCH(title) ".
            "AGAINST((SELECT GROUP_CONCAT(title) FROM snuffel) IN BOOLEAN MODE)";
+    mysqli_query($db, $sql);
 
-    ExecuteQuery($sql);
-}  
+    // Empty snuftmp2 table.
+    $sql = "TRUNCATE snuftmp2";
+    mysqli_query($db, $sql);
+    
+    //Second stage: Copy spots that matches the search criteria from snuftmp1 to the snuftmp2 table. 
+    $sql = "INSERT INTO snuftmp2(messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, reversestamp, filesize, moderated, commentcount, spotrating) ".
+           "SELECT t.messageid, t.poster, t.title, t.tag, t.category, t.subcata, t.subcatb, t.subcatc, t.subcatd, t.subcatz, t.stamp, t.reversestamp, t.filesize, t.moderated, t.commentcount, t.spotrating ".
+           "FROM snuftmp1 t, snuffel f ".
+           "WHERE t.title LIKE CONCAT('%', f.title, '%') ".
+           "AND (t.poster = f.poster OR f.poster IS NULL) ".
+           "AND (t.category = f.cat OR f.cat IS NULL) ".
+           "AND (t.subcata LIKE CONCAT('%', f.subcata, '|%') OR f.subcata IS NULL) ".
+           "AND (t.subcatd LIKE CONCAT('%', f.subcatd, '|%') OR f.subcatd IS NULL) ".
+           "GROUP BY t.title";
+    mysqli_query($db, $sql);
+    
+    CloseDatabase($db);
+}
 
 /*
  * Function:	DeleteSearchAll
  *
  * Created on Jun 06, 2011
- * Updated on Jun 06, 2011
+ * Updated on Jun 21, 2011
  *
  * Description: Deletes all the search records from the snuftemp and snuffel table.
  *
@@ -233,8 +250,11 @@ function UpdateSnuffel()
  */
 function DeleteSearchAll()
 {
-    $sql = "TRUNCATE snuftmp";
-    ExecuteQuery($sql);   
+    $sql = "TRUNCATE snuftmp1";
+    ExecuteQuery($sql);  
+    
+    $sql = "TRUNCATE snuftmp2";
+    ExecuteQuery($sql);  
     
     $sql = "TRUNCATE snuffel";
     ExecuteQuery($sql);

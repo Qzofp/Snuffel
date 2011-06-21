@@ -182,7 +182,7 @@ function CreateNZBLink($nzb)
  * Function:	ShowResultsRows
  *
  * Created on Jun 11, 2011
- * Updated on Jun 18, 2011
+ * Updated on Jun 21, 2011
  *
  * Description: Laat de resultaatrijen zien.
  *
@@ -201,20 +201,14 @@ function ShowResultsRows($new)
     }
     
     //Geef snuffel resultaten weer  
-    $sql = "SELECT t.category, c.name, t.title, g.name, t.poster, t.stamp, t.messageid FROM snuftmp t, snuffel f, snufcat c, snuftag g ".
-           "WHERE t.title LIKE CONCAT('%', f.title, '%') ".
-           "AND (t.poster = f.poster OR f.poster IS NULL) ".
-           "AND (t.category = f.cat OR f.cat IS NULL) ".
-           "AND (t.subcata LIKE CONCAT('%', f.subcata, '|%') OR f.subcata IS NULL) ".
-           "AND (t.subcatd LIKE CONCAT('%', f.subcatd, '|%') OR f.subcatd IS NULL) ".
-           "AND (t.category = c.cat) ".
-           "AND (t.subcata = CONCAT(c.tag, '|')) ".
-           "AND (t.category = g.cat) ".
-           "AND (f.subcata = g.tag OR f.subcatd = g.tag) ".
+    $sql = "SELECT t.category, (SELECT name FROM snufcat WHERE CONCAT(tag,'|') = t.subcata AND cat = t.category) AS name, ".
+                  "t.title, g.name, t.poster, t.stamp, t.messageid ".
+           "FROM snuftmp2 t, snuftag g ".
+           "WHERE t.category = g.cat AND (t.subcata = CONCAT(g.tag,'|') OR t.subcatd LIKE CONCAT('%',g.tag,'|')) ".
            "$new_spots".
-           "GROUP BY t.title ".
-           "ORDER BY t.stamp DESC";
-
+           "ORDER BY t.stamp DESC ";
+           //"LIMIT 0, 100";
+    
     $sfdb = OpenDatabase();
     $stmt = $sfdb->prepare($sql);
     if($stmt)
