@@ -21,7 +21,7 @@
  * Function:	CreateSnuffelTables
  *
  * Created on Jun 13, 2011
- * Updated on Jun 17, 2011
+ * Updated on Jun 21, 2011
  *
  * Description: Create or update the Snuffel tables.
  *
@@ -33,7 +33,8 @@ function CreateSnuffelTables()
 {
     CreateSnufCnf();
     CreateSnuffel();
-    CreateSnufTmp();
+    CreateSnufTmp("snuftmp1");
+    CreateSnufTmp("snuftmp2");    
     CreateSnufCat();
     CreateSnufTag();
 }
@@ -44,7 +45,7 @@ function CreateSnuffelTables()
  * Function:	CreateSnufCnf
  *
  * Created on Jun 13, 2011
- * Updated on Jun 19, 2011
+ * Updated on Jun 21, 2011
  *
  * Description: Create or update the Snuffel Configuration table.
  *
@@ -55,8 +56,7 @@ function CreateSnuffelTables()
 function CreateSnufCnf()
 {
     // If exists drop table.
-    $sql = "DROP TABLE IF EXISTS `snufcnf`";
-    
+    $sql = "DROP TABLE IF EXISTS `snufcnf`";   
     ExecuteQuery($sql);
     
     // Create table.
@@ -65,8 +65,7 @@ function CreateSnufCnf()
              "`name` varchar(64) COLLATE utf8_unicode_ci NOT NULL, ".
              "`value` varchar(128) COLLATE utf8_unicode_ci NOT NULL, ".
              "PRIMARY KEY (`id`) ".
-           ") ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;";
-    
+           ") ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;";    
     ExecuteQuery($sql);
     
     // Fill table.
@@ -80,7 +79,7 @@ function CreateSnufCnf()
            "('TimeValues', 'seconde|seconden|minuut|minuten|uur|uur|dag|dagen|week|weken|maand|maanden|jaar|jaar'), ".
            "('NZBlink', 'http://localhost/spotweb/?page=getnzb&messageid='), ".
            "('LastUpdate', '0'), ".
-           "('Version', '0.21');";
+           "('Version', '0.22');";
     
     ExecuteQuery($sql);    
 }
@@ -89,7 +88,7 @@ function CreateSnufCnf()
  * Function:	CreateSnuffel
  *
  * Created on Jun 13, 2011
- * Updated on Jun 16, 2011
+ * Updated on Jun 21, 2011
  *
  * Description: Create or update the Snuffel  table.
  *
@@ -100,9 +99,8 @@ function CreateSnufCnf()
 function CreateSnuffel()
 {
     // If exists drop table.
-    #$sql = "DROP TABLE IF EXISTS `snuffel2`";
-    
-    #mysqli_query($db, $sql);
+    #$sql = "DROP TABLE IF EXISTS `snuffel`";
+    #ExecuteQuery($sql);    
     
     // Create table.
     $sql = "CREATE TABLE IF NOT EXISTS `snuffel` ( ".
@@ -113,8 +111,7 @@ function CreateSnuffel()
              "`subcata` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL, ".
              "`subcatd` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL, ".
              "PRIMARY KEY (`id`) ".
-           ") ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";
-    
+           ") ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";    
     ExecuteQuery($sql);
 }
 
@@ -122,23 +119,26 @@ function CreateSnuffel()
  * Function:	CreateSnufTmp
  *
  * Created on Jun 13, 2011
- * Updated on Jun 13, 2011
+ * Updated on Jun 21, 2011
  *
  * Description: Create or update the Snuffel temporary (cache) table.
  *
- * In:	-
+ * In:	$table
  * Out:	snuftmp table
  *
  */
-function CreateSnufTmp()
+function CreateSnufTmp($table)
 {
-    // If exists drop table.
-    #$sql = "DROP TABLE IF EXISTS `snuftmp`";
+    // If exists drop table. This is the old snuftmp table.
+    $sql = "DROP TABLE IF EXISTS `snuftmp`";    
+    ExecuteQuery($sql);
     
-    #ExecuteQuery($sql);
+    // If exists drop table.
+    #$sql = "DROP TABLE IF EXISTS `$table`";    
+    #ExecuteQuery($sql);    
     
     // Create table.
-    $sql = "CREATE TABLE IF NOT EXISTS `snuftmp` ( ".
+    $sql = "CREATE TABLE IF NOT EXISTS `$table` ( ".
              "`id` int(11) NOT NULL AUTO_INCREMENT, ".
              "`messageid` varchar(128) CHARACTER SET ascii NOT NULL DEFAULT '', ".
              "`poster` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL, ".
@@ -164,8 +164,7 @@ function CreateSnufTmp()
              "FULLTEXT KEY `idx_fts_spots_1` (`poster`), ".
              "FULLTEXT KEY `idx_fts_spots_2` (`title`), ".
              "FULLTEXT KEY `idx_fts_spots_3` (`tag`) ".
-           ") ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";
-    
+           ") ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";    
     ExecuteQuery($sql); 
 }
 
@@ -173,7 +172,7 @@ function CreateSnufTmp()
  * Function:	CreateSnufCat
  *
  * Created on Jun 13, 2011
- * Updated on Jun 16, 2011
+ * Updated on Jun 21, 2011
  *
  * Description: Create or update the Snuffel Category table.
  *
@@ -184,8 +183,7 @@ function CreateSnufTmp()
 function CreateSnufCat()
 {
     // If exists drop table.
-    $sql = "DROP TABLE IF EXISTS `snufcat`";
-    
+    $sql = "DROP TABLE IF EXISTS `snufcat`";    
     ExecuteQuery($sql);
     
     // Create table.
@@ -195,8 +193,7 @@ function CreateSnufCat()
              "`name` varchar(64) COLLATE utf8_unicode_ci NOT NULL, ".
              "`tag` varchar(64) COLLATE utf8_unicode_ci NOT NULL, ".
              "PRIMARY KEY (`id`) ".
-           ") ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";
-    
+           ") ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";    
     ExecuteQuery($sql);
     
     // Fill table.
@@ -245,8 +242,7 @@ function CreateSnufCat()
            "(3, 'WinPh', 'a4'), ".
            "(3, 'NAV', 'a5'), ".
            "(3, 'iOS', 'a6'), ".
-           "(3, 'Android', 'a7');";
-    
+           "(3, 'Android', 'a7');";  
     ExecuteQuery($sql);    
 }
 
@@ -265,8 +261,7 @@ function CreateSnufCat()
 function CreateSnufTag()
 {
     // If exists drop table.
-    $sql = "DROP TABLE IF EXISTS `snuftag`";
-    
+    $sql = "DROP TABLE IF EXISTS `snuftag`";    
     ExecuteQuery($sql);
     
     // Create table.
@@ -277,8 +272,7 @@ function CreateSnufTag()
              "`tag` varchar(64) COLLATE utf8_unicode_ci NOT NULL, ".
              "`hide` tinyint(1) DEFAULT '0', ".
              "PRIMARY KEY (`id`) ".
-           ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";
-    
+           ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";    
     ExecuteQuery($sql);
     
     // Fill table.
@@ -436,8 +430,7 @@ function CreateSnufTag()
            "(3, 'Windows Phone', 'a4', 0), ".
            "(3, 'Navigatiesystemen', 'a5', 0), ".
            "(3, 'iOS', 'a6', 0), ".
-           "(3, 'Android', 'a7', 0);";
-    
+           "(3, 'Android', 'a7', 0);";  
     ExecuteQuery($sql);   
 }
 ?>
