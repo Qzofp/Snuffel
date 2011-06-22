@@ -74,12 +74,13 @@ function CreateResultsPage($new)
  */
 function GetResultsInput()
 {
-    $aInput = array("PREV"=>null, "NEXT"=>null, "PAGENR"=>0, "PAGE"=>null);
+    $aInput = array("PREV"=>null, "HOME"=>null, "NEXT"=>null, "PAGENR"=>0, "PAGE"=>null);
     
     $aInput["PREV"]   = GetInputValue("btnPREV");
+    $aInput["HOME"]   = GetInputValue("btnHOME");    
     $aInput["NEXT"]   = GetInputValue("btnNEXT");
     $aInput["PAGENR"] = GetInputValue("hidPAGENR");
-    $aInput["PAGE"]   = GetInputValue("hidPAGE");    
+    $aInput["PAGE"]   = GetInputValue("hidPAGE");  
     
     return $aInput;
 }
@@ -108,7 +109,7 @@ function ProcessResultsInput($aInput, $page)
         $aInput["PAGENR"] += 1;
     } 
     
-    if ($aInput["PAGE"] != $page) {
+    if ($aInput["PAGE"] != $page || $aInput["HOME"]) {
         $aInput["PAGENR"] = 0;        
     }
 
@@ -191,36 +192,42 @@ function ShowResultsFooter($new_spots, $aInput)
     $rows = CountRows($sql);
     $max  = ceil($rows/cItems);
 
-    // The previous and next buttons. The page number is put in the hidden field: "hidPAGENR".
+    // The previous and next buttons. The page number is put in the hidden field: "hidPAGENR". 
     if ($max > 1) 
     {
        $n = $aInput["PAGENR"];
         switch($n)
         {
-            case 0:       $prev = "";
-                          $next = "     <td class=\"nxt\"><input type=\"submit\" name=\"btnNEXT\" value=\"&gt;&gt;\"/></td>\n"; 
-                          $col = 5;
+            case 0:       $prev = "     <td class=\"btn\"></td>\n";
+                          $next = "     <td class=\"btn\"><input type=\"submit\" name=\"btnNEXT\" value=\"&gt;&gt;\"/></td>\n"; 
                           break;
         
-            case $max-1:  $prev = "     <td class=\"nxt\"><input type=\"submit\" name=\"btnPREV\" value=\"&lt;&lt;\"/></td>\n";                     
-                          $next = "";
-                          $col = 5;
+            case $max-1:  $prev = "     <td class=\"btn\"><input type=\"submit\" name=\"btnPREV\" value=\"&lt;&lt;\"/></td>\n";                     
+                          $next = "     <td class=\"btn\"></td>\n";
                           break;
                                             
-            default:      $prev = "     <td class=\"nxt\"><input type=\"submit\" name=\"btnPREV\" value=\"&lt;&lt;\"/></td>\n";
-                          $next = "     <td class=\"nxt\"><input type=\"submit\" name=\"btnNEXT\" value=\"&gt;&gt;\"/></td>\n"; 
-                          $col = 4;
+            default:      $prev = "     <td class=\"btn\"><input type=\"submit\" name=\"btnPREV\" value=\"&lt;&lt;\"/></td>\n";
+                          $next = "     <td class=\"btn\"><input type=\"submit\" name=\"btnNEXT\" value=\"&gt;&gt;\"/></td>\n"; 
         }
-    
+
+        $home = "<input type=\"submit\" name=\"btnHOME\" value=\"_\"/>";
+        
+        $n += 1;
+        if ($n < 10) {
+            $n = "00$n";
+        }
+        else if ($n < 100) {
+            $n = "0$n";
+        }
+        
         // Show the footer.
-        $n +=1;
         echo "   <tfoot>\n";
         echo "    <tr>\n";
         echo "     <td colspan=\"6\"></td>\n";
         echo "    </tr>\n";    
         echo "    <tr>\n";
         echo       $prev;
-        echo "     <td colspan=\"$col\" class=\"btn\">$n</td>\n";
+        echo "     <td colspan=\"4\" class=\"bar\">$home<span>$n</span></td>\n";
         echo       $next;
         echo "    </tr>\n";    
         echo "   </tfoot>\n";

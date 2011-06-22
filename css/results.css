@@ -159,18 +159,16 @@ width:55px;
 height:5px;
 }
 
-#results tfoot td.btn{
+#results tfoot td.bar{
 background:url(sprite_x.png) repeat-x 0 -60px;
 padding:0;
 height:20px;
-color:#908F91;
 text-align:center;
 font-size:1.1em;
 font-weight:bold;
 }
 
-#results tfoot td.nxt, 
-#results tfoot td.prv{
+#results tfoot td.btn{
 background-color:#ececec;
 text-align:center;
 padding:0;
@@ -195,13 +193,27 @@ border-radius:0 4px 4px 0;
 {padding:0 0 2px 0;}}
 
 #results tfoot input[type=submit]{
-background-color:#ececec; 
+color:#908F91;    
+background-color:#ececec;
 font-size:1.1em;
 font-weight:bold;
 border:0;
 height:20px;
 width:52px;
 cursor:pointer;
+}
+
+#results tfoot td.bar input[type=submit]{
+background: url(home.png) no-repeat center 2px;
+background-color:#ececec;
+width:40px;
+}
+
+#results tfoot td.bar span{
+float:right;
+margin:3px 5px 0 0;
+font-size:1em;
+color:#908F91;
 }
 
 #results tbody tr{
