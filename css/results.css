@@ -159,12 +159,6 @@ width:55px;
 height:5px;
 }
 
-#results tfoot td:first-child{
--moz-border-radius:4px 0 0 4px;
--webkit-border-radius:4px 0 0 4px;
-border-radius:4px 0 0 4px;
-}
-
 #results tfoot td.btn{
 background:url(sprite_x.png) repeat-x 0 -60px;
 padding:0;
@@ -181,15 +175,18 @@ background-color:#ececec;
 text-align:center;
 padding:0;
 width:55px;
--moz-border-radius:0 4px 4px 0; 
--webkit-border-radius:0 4px 4px 0; 
-border-radius:0 4px 4px 0;    
 }
 
 #results tfoot td:first-child{
 -moz-border-radius:4px 0 0 4px; 
 -webkit-border-radius:4px 0 0 4px; 
 border-radius:4px 0 0 4px;
+}
+
+#results tfoot td:last-child{
+-moz-border-radius:0 4px 4px 0;
+-webkit-border-radius:0 4px 4px 0;
+border-radius:0 4px 4px 0;
 }
 
 /* FF Hack */
