@@ -381,4 +381,62 @@ function LoadConstants()
 
     CloseDatabase($db);    
 }
+
+/*
+ * Function:	AddLimit
+ *
+ * Created on Okt 03, 2008
+ * Updated on Jun 23, 2010
+ *
+ * Description: Determine limit and add it to the SQL query.
+ *
+ * In:	$sql, $n
+ * Out:	$sql
+ *
+ */
+function AddLimit($sql, $n)
+{
+    $limit = " LIMIT ";
+    $limit.= $n * cItems;
+    $limit.= ", ";
+    $limit.= cItems;
+
+    $sql.= $limit;
+
+    return $sql;
+}
+
+/*
+ * Function:	CountRows
+ *
+ * Created on Dec 20, 2009
+ * Updated on Jun 22, 2011
+ *
+ * Description: Count the number of rows from a sql query.
+ *
+ * In:	$sql
+ * Out:	$rows
+ *
+ */
+function CountRows($sql)
+{
+    $db = OpenDatabase();
+
+    $result = $db->query($sql);
+    if ($result)
+    {
+        // Determine number of rows result set.
+    	$rows = $result->num_rows;
+
+    	// Close result set.
+    	$result->close();
+    }
+    else {
+        die('Ececution query failed: '.$db->error);
+    }
+    
+    CloseDatabase($db);
+    
+    return $rows;
+}
 ?>

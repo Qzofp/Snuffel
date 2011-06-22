@@ -45,7 +45,7 @@ function CreateSnuffelTables()
  * Function:	CreateSnufCnf
  *
  * Created on Jun 13, 2011
- * Updated on Jun 21, 2011
+ * Updated on Jun 22, 2011
  *
  * Description: Create or update the Snuffel Configuration table.
  *
@@ -70,16 +70,17 @@ function CreateSnufCnf()
     
     // Fill table.
     $sql = "INSERT INTO `snufcnf` (`name`, `value`) VALUES ".
-           "('Title', 'Snuffel'), ".
-           "('Header', 'Cat.|Titel|Genre|Afzender|Datum|NZB|Platform'), ".
-           "('MenuText', 'Onderhoud|Laatste update:'), ".
            "('Buttons', 'Nieuw|Alles|Zoek|Update Snuffel|Verwijder Zoek'), ".
            "('Categories', 'Beeld|Muziek|Spellen|Applicaties'), ".
            "('Days', '14'), ".
-           "('TimeValues', 'seconde|seconden|minuut|minuten|uur|uur|dag|dagen|week|weken|maand|maanden|jaar|jaar'), ".
-           "('NZBlink', 'http://localhost/spotweb/?page=getnzb&messageid='), ".
+           "('Header', 'Cat.|Titel|Genre|Afzender|Datum|NZB|Platform'), ".  
+           "('Items', '30'), ".
            "('LastUpdate', '0'), ".
-           "('Version', '0.22');";
+           "('MenuText', 'Onderhoud|Laatste update:'), ".   
+           "('NZBlink', 'http://localhost/spotweb/?page=getnzb&messageid='), ".    
+           "('TimeValues', 'seconde|seconden|minuut|minuten|uur|uur|dag|dagen|week|weken|maand|maanden|jaar|jaar'), ".
+           "('Title', 'Snuffel'), ".    
+           "('Version', '0.23');";
     
     ExecuteQuery($sql);    
 }

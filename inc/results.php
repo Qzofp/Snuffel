@@ -7,7 +7,7 @@
  * File:    results.php
  *
  * Created on Apr 10, 2011
- * Updated on Jun 19, 2011
+ * Updated on Jun 22, 2011
  *
  * Description: This page contains the results functions.
  * 
@@ -22,7 +22,7 @@
  * Function:    CreateResultsPage
  *
  * Created on Jun 18, 2011
- * Updated on Jun 18, 2011
+ * Updated on Jun 22, 2011
  *
  * Description: Create the results page.
  *
@@ -36,18 +36,21 @@ function CreateResultsPage($new)
     echo "  <form name=\"".cTitle."\" action=\"".$_SERVER['PHP_SELF']."\" method=\"post\">\n";
     
     if ($new) {
-        $button = 0;
+        $page = 0;
     }
     else {
-        $button = 1;
+        $page = 1;
     }
     
-    ShowPanel($button);
+    ShowPanel($page);  
     
-    ShowResults($new);
+    $aInput = GetResultsInput();
+    $aInput = ProcessResultsInput($aInput, $page);
+    ShowResults($new, $aInput);
  
     // Hidden check and page fields.
-    echo "   <input type=\"hidden\" name=\"hidPAGE\" value=\"$button\" />\n";    
+    echo "   <input type=\"hidden\" name=\"hidPAGE\" value=\"$page\" />\n"; 
+    echo "   <input type=\"hidden\" name=\"hidPAGENR\" value=\"".$aInput["PAGENR"]."\" />\n";
     echo "   <input type=\"hidden\" name=\"hidCHECK\" value=\"2\" />\n";
     
     echo "  </form>\n";
@@ -57,7 +60,60 @@ function CreateResultsPage($new)
 
 /////////////////////////////////////////   Get Input Functions   ////////////////////////////////////////
 
+/*
+ * Function:    GetResultsInput
+ *
+ * Created on Jun 22, 2011
+ * Updated on Jun 22, 2011
+ *
+ * Description: Get user results input.
+ *
+ * In:  -
+ * Out: $aInput
+ *
+ */
+function GetResultsInput()
+{
+    $aInput = array("PREV"=>null, "NEXT"=>null, "PAGENR"=>0, "PAGE"=>null);
+    
+    $aInput["PREV"]   = GetInputValue("btnPREV");
+    $aInput["NEXT"]   = GetInputValue("btnNEXT");
+    $aInput["PAGENR"] = GetInputValue("hidPAGENR");
+    $aInput["PAGE"]   = GetInputValue("hidPAGE");    
+    
+    return $aInput;
+}
 
+
+/////////////////////////////////////////   Process Functions    /////////////////////////////////////////
+
+/*
+ * Function:	ProcesResultsInput
+ *
+ * Created on Jun 22, 2011
+ * Updated on Jun 22, 2011
+ *
+ * Description: Process the results input.
+ *
+ * In:  $aInput, $page
+ * Out:	$aInput
+ *
+ */
+function ProcessResultsInput($aInput, $page)
+{
+    if ($aInput["PREV"]) {
+        $aInput["PAGENR"] -= 1;
+    }
+    else if ($aInput["NEXT"]) {
+        $aInput["PAGENR"] += 1;
+    } 
+    
+    if ($aInput["PAGE"] != $page) {
+        $aInput["PAGENR"] = 0;        
+    }
+
+    return $aInput;
+}
 
 /////////////////////////////////////////   Display Functions    /////////////////////////////////////////
 
@@ -65,21 +121,29 @@ function CreateResultsPage($new)
  * Function:	ShowResults
  *
  * Created on Apr 10, 2011
- * Updated on Jun 11, 2011
+ * Updated on Jun 22, 2011
  *
  * Description: Laat de zoekresultaten zien.
  *
- * In:	$new
+ * In:	$new, $aInput
  * Out:	Tabel met zoekresultaten
  *
  */
-function ShowResults($new)
+function ShowResults($new, $aInput)
 {
+    // Show newest or all spots.
+    $new_spots = "";
+    if ($new) 
+    {
+        $days = time() - cDays * 86400;
+        $new_spots = "AND t.stamp > $days";
+    }    
+
     // Tabel header
     $aHeaders = explode("|", cHeader);
     
     echo "  <div id=\"results\">\n";
-    echo "  <table>\n"; //debug border
+    echo "  <table>\n";
 
     // Table header.
     echo "   <thead>\n";
@@ -94,18 +158,75 @@ function ShowResults($new)
     echo "   </thead>\n";
 
     // Table footer.
-    // Gereserveerd.
-
+    ShowResultsFooter($new_spots, $aInput);
+    
     // Table body.
     echo "   <tbody>\n";
     
-    // Laat resultaat rijen zien.
-    ShowResultsRows($new);
+    // Show the database results in table rows.
+    ShowResultsRows($new_spots, $aInput["PAGENR"]);
 
     echo "   </tbody>\n";    
     echo "  </table>\n";
     echo "  </div>\n";
 }
+
+/*
+ * Function:	ShowResultsFooter
+ *
+ * Created on Jun 22, 2011
+ * Updated on Jun 22, 2011
+ *
+ * Description: Shows the results table footer.
+ *
+ * In:  $aInput
+ * Out:	Table footer
+ *
+ */
+function ShowResultsFooter($new_spots, $aInput)
+{
+    // Count the number of rows from thhe results query.
+    $new_spots = str_replace("AND", "WHERE", $new_spots);
+    $sql  = "SELECT * FROM snuftmp2 t $new_spots";
+    $rows = CountRows($sql);
+    $max  = ceil($rows/cItems);
+
+    // The previous and next buttons. The page number is put in the hidden field: "hidPAGENR".
+    if ($max > 1) 
+    {
+       $n = $aInput["PAGENR"];
+        switch($n)
+        {
+            case 0:       $prev = "";
+                          $next = "     <td class=\"nxt\"><input type=\"submit\" name=\"btnNEXT\" value=\"&gt;&gt;\"/></td>\n"; 
+                          $col = 5;
+                          break;
+        
+            case $max-1:  $prev = "     <td class=\"nxt\"><input type=\"submit\" name=\"btnPREV\" value=\"&lt;&lt;\"/></td>\n";                     
+                          $next = "";
+                          $col = 5;
+                          break;
+                                            
+            default:      $prev = "     <td class=\"nxt\"><input type=\"submit\" name=\"btnPREV\" value=\"&lt;&lt;\"/></td>\n";
+                          $next = "     <td class=\"nxt\"><input type=\"submit\" name=\"btnNEXT\" value=\"&gt;&gt;\"/></td>\n"; 
+                          $col = 4;
+        }
+    
+        // Show the footer.
+        $n +=1;
+        echo "   <tfoot>\n";
+        echo "    <tr>\n";
+        echo "     <td colspan=\"6\"></td>\n";
+        echo "    </tr>\n";    
+        echo "    <tr>\n";
+        echo       $prev;
+        echo "     <td colspan=\"$col\" class=\"btn\">$n</td>\n";
+        echo       $next;
+        echo "    </tr>\n";    
+        echo "   </tfoot>\n";
+    }    
+}
+
 
 /*
  * Function:	ShowResultsRow
@@ -182,32 +303,24 @@ function CreateNZBLink($nzb)
  * Function:	ShowResultsRows
  *
  * Created on Jun 11, 2011
- * Updated on Jun 21, 2011
+ * Updated on Jun 22, 2011
  *
- * Description: Laat de resultaatrijen zien.
+ * Description: Show the results table rows.
  *
- * In:  $new
- * Out:	Resultaatrijen
+ * In:  $new_spots, $pagenr
+ * Out:	Results rows
  *
  */
-function ShowResultsRows($new)
-{
-    // Bepaal de nieuwste spots.
-    $new_spots = "";
-    if ($new) 
-    {
-        $days = time() - cDays * 86400;
-        $new_spots = "AND t.stamp > $days ";
-    }
-    
-    //Geef snuffel resultaten weer  
+function ShowResultsRows($new_spots, $pagenr)
+{        
+    //The results query.
     $sql = "SELECT t.category, (SELECT name FROM snufcat WHERE CONCAT(tag,'|') = t.subcata AND cat = t.category) AS name, ".
                   "t.title, g.name, t.poster, t.stamp, t.messageid ".
            "FROM snuftmp2 t, snuftag g ".
            "WHERE t.category = g.cat AND (t.subcata = CONCAT(g.tag,'|') OR t.subcatd LIKE CONCAT('%',g.tag,'|')) ".
-           "$new_spots".
+           "$new_spots ".
            "ORDER BY t.stamp DESC ";
-           //"LIMIT 0, 100";
+    $sql = AddLimit($sql, $pagenr);
     
     $sfdb = OpenDatabase();
     $stmt = $sfdb->prepare($sql);

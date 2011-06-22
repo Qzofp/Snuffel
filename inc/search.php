@@ -39,7 +39,7 @@ function CreateSearchPage()
     ShowPanel(2);
     
     $aSearchInput = GetSearchInput();
-    $aSearchInput = ProcesSearchInput($aSearchInput);
+    $aSearchInput = ProcessSearchInput($aSearchInput);
     ShowSearch($aSearchInput);
     ShowSearchHiddenFields($aSearchInput);
  
@@ -173,13 +173,13 @@ function GetSearchMode()
  * Created on May 16, 2011
  * Updated on May 28, 2011
  *
- * Description: Verwerk zoek de input.
+ * Description: Process the search input.
  *
  * In:  $aInput
  * Out:	$aInput
  *
  */
-function ProcesSearchInput($aInput)
+function ProcessSearchInput($aInput)
 {
     $mode = $aInput[5];
         
