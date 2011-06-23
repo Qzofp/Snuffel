@@ -254,7 +254,7 @@ function ShowSearch($aInput)
  * Function:	ShowSearchAddRow
  *
  * Created on May 07, 2011
- * Updated on Jun 20, 2011
+ * Updated on Jun 23, 2011
  *
  * Description: Laat de invoerrij zien.
  *
@@ -279,7 +279,7 @@ function ShowSearchAddRow($aInput)
         $disabled = "";
         $aItems   = explode("|", cCategories);     
         $active   = false;  
-        $message = "Add";
+        $message = "<input type=\"submit\" name=\"OK_1\" value=\"Add\"/>";
         $action  = null;
     }
     else 
@@ -330,7 +330,7 @@ function ShowSearchAddRow($aInput)
  * Function:	ShowSearchEditRow
  *
  * Created on May 28, 2011
- * Updated on Jun 20, 2011
+ * Updated on Jun 23, 2011
  *
  * Description: Laat de wijzigrij zien.
  *
@@ -375,6 +375,9 @@ function ShowSearchEditRow($aInput, $inCategory, $inTitle, $inGenre, $inPoster)
         $key       = null;
     }   
  
+    // The Message submit button.
+    $message = "<input type=\"submit\" name=\"OK_1\" value=\"Edit\"/>";
+    
     // The Submit and Cancel buttons.
     $buttons = "<input type=\"image\" src=\"img/tick.png\" name=\"OK_1\"/><input type=\"image\" src=\"img/slash.png\" name=\"OK_0\"/>";
     
@@ -390,7 +393,7 @@ function ShowSearchEditRow($aInput, $inCategory, $inTitle, $inGenre, $inPoster)
     // Poster veld
     $poster = "<input type=\"text\" size=\"40\" maxlength=\"100\" name=\"txtPOSTER\" value=\"$inPoster\"/>";
 
-    ShowSearchRow(null, "Edit", $buttons, $key, $category, $title, $genre, $poster);
+    ShowSearchRow(null, $message, $buttons, $key, $category, $title, $genre, $poster);
 }
 
 /*
@@ -477,7 +480,7 @@ function ShowSearchRow($action, $message, $buttons, $catkey, $category, $title, 
  * Function:	ShowSearchDeleteRow
  *
  * Created on May 23, 2011
- * Updated on Jun 12, 2011
+ * Updated on Jun 23, 2011
  *
  * Description: Laat een rij van de zoekwaardes tabel zien, die verwijderd gaat worden..
  *
@@ -487,10 +490,13 @@ function ShowSearchRow($action, $message, $buttons, $catkey, $category, $title, 
  */
 function ShowSearchDeleteRow($catkey, $category, $title, $genre, $poster)
 {
+    // The Message submit button.
+    $message = "<input type=\"submit\" name=\"OK_1\" value=\"Delete\"/>"; 
+    
     // The Submit and Cancel buttons.
     $buttons = "<input type=\"image\" src=\"img/tick.png\" name=\"OK_1\"/><input type=\"image\" src=\"img/slash.png\" name=\"OK_0\"/>";
     
-    ShowSearchRow("del", "Delete", $buttons, $catkey, $category, $title, $genre, $poster);
+    ShowSearchRow("del", $message, $buttons, $catkey, $category, $title, $genre, $poster);
 }
 
 

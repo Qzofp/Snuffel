@@ -7,7 +7,7 @@
  * File:    search.css
  *
  * Created on Apr 16, 2011
- * Updated on Jun 22, 2011
+ * Updated on Jun 23, 2011
  *
  * Description: The search css page.
  *
@@ -231,22 +231,31 @@ border-color:#ddd;
 background-color:#fff;
 }
 
-#search td.msg{  
-padding:0 3px 0 1px;
-font-weight:bold;
-text-align:center;
-color:#fff;
-}
-
-#search tr.add td.msg{
-font-size:1em;    
-color:#fff;
-}
-
-#search tr.del td.msg{
+#search td.msg input[type=submit]{
+padding:1px 3px 0 0;
+height:20px;
+width:50px;
+border:0;
+font-family:Arial, Helvetica, Sans-Serif;
 font-size:1em;
+font-weight:bold;
 color:#fff;
+background-color:transparent;
+cursor:pointer
 }
+
+/* FF Hack */
+@-moz-document url-prefix(){
+#search td.msg input[type=submit]
+{padding-bottom:2px;}}
+
+#search tr.gray td.msg input[type=submit]{
+color:#606060;
+}   
+
+#search tr.del td.msg input[type=submit]{
+font-size:0.8em;
+} 
 
 #search tr.blue td.msg{
 background:url(sprite_search.png) no-repeat 0 0px;
@@ -266,33 +275,27 @@ background:url(sprite_search.png) no-repeat 0 -65px;
 
 #search tr.gray td.msg{
 background:url(sprite_search.png) no-repeat 0 -87px;
-color:#000;
 }
 
 
 #search tr.hov:hover.blue td.msg{
 background-position:-52px 0; 
-color:#008edf;
 }
 
 #search tr.hov:hover.orange td.msg{
 background-position:-52px -22px; 
-color:#e9a213;
 }
 
 #search tr.hov:hover.green td.msg{
 background-position:-52px -43px; 
-color:#00de00;
 }
 
 #search tr.hov:hover.red td.msg{
 background-position:-52px -65px; 
-color:#de2500;
 }
 
 #search tr.hov:hover.gray td.msg{
 background-position:-52px -87px; 
-color:#6D7B8D;
 }
 
 #search td.but{
