@@ -7,7 +7,7 @@
  * File:    search.php
  *
  * Created on May 07, 2011
- * Updated on Jun 20, 2011
+ * Updated on Jun 23, 2011
  *
  * Description: This page contains the search functions.
  * 
@@ -500,9 +500,9 @@ function ShowSearchDeleteRow($catkey, $category, $title, $genre, $poster)
  * Function:	ShowSearchRows
  *
  * Created on May 16, 2011
- * Updated on Jun 12, 2011
+ * Updated on Jun 23, 2011
  *
- * Description: Laat de zoekrijen zien.
+ * Description: Show the search rows.
  *
  * In:  $aInput
  * Out:	Zoekrijen
@@ -515,10 +515,11 @@ function ShowSearchRows($aInput)
     
     $aCatItems = explode("|", cCategories);  
     
-    //Geef snuffel zoek items weer.
-    $sql = "SELECT id, cat, title, subcata, subcatd, poster ".
-           "FROM snuffel ".
-           "ORDER BY title";
+    //Query the Snuffel search items.
+    $sql = "SELECT f.id, f.cat, f.title, t.name, f.subcata, f.subcatd, f.poster FROM snuffel f ".
+           "LEFT JOIN snuftag t ".
+           "ON f.cat = t.cat AND (f.subcata = t.tag OR f.subcatd = t.tag) ".
+           "ORDER BY f.title";
 
     $sfdb = OpenDatabase();
     $stmt = $sfdb->prepare($sql);
@@ -532,11 +533,9 @@ function ShowSearchRows($aInput)
 
             if ($rows != 0)
             {                
-                $stmt->bind_result($id, $catkey, $title, $subcata, $subcatd, $poster);
+                $stmt->bind_result($id, $catkey, $title, $genre, $subcata, $subcatd, $poster);
                 while($stmt->fetch())
                 {
-                    $genre = GetGenre($catkey, $subcata, $subcatd);
-                    
                     $category = "";
                     if ($catkey !== null) {
                         $category = $aCatItems[$catkey];
@@ -569,46 +568,15 @@ function ShowSearchRows($aInput)
         else
         {
             die('Ececution query failed: '.mysql_error());
-            // Foutpagina maken, doorgeven fout met session variabele.
         }
         $stmt->close();
     }
     else
     {
         die('Invalid query: '.mysql_error());
-   	// Foutpagina maken, doorgeven fout met session variabele.
     }
 
     CloseDatabase($sfdb); 
-}
-
-/*
- * Function:	GetGenre
- *
- * Created on May 28, 2011
- * Updated on Jun 10, 2011
- *
- * Description: Haal de genre op uit de snufcat tabel.
- *
- * In:  $cat, $a, $b
- * Out:	$aItems[0]
- *
- */
-function GetGenre($cat, $a, $b) 
-{
-    if ($a) {
-        $tag = $a;
-    }
-    else {
-        $tag = $b;
-    }
-    
-    $sql = "SELECT name FROM snuftag ".
-           "WHERE cat = '$cat' AND tag = '$tag'";
-    
-    $aItems = GetItemsFromDatabase($sql);  
-    
-    return $aItems[0];
 }
 
 /*
