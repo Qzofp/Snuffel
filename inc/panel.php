@@ -210,7 +210,7 @@ function UpdateSnuffel()
     $sql = "TRUNCATE snuftmp1";
     mysqli_query($db, $sql);
     
-    // First stage: Copy spots that matches the search criteria from the spots table to the snuftmp1 table.
+    // First stage: Copy spots that matches the snuffel title search criteria from the spots table to the snuftmp1 table.
     $sql = "INSERT INTO snuftmp1(messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, reversestamp, filesize, moderated, commentcount, spotrating) ".
            "SELECT messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, reversestamp, filesize, moderated, commentcount, spotrating FROM spots ".
            "WHERE MATCH(title) ".
@@ -221,7 +221,7 @@ function UpdateSnuffel()
     $sql = "TRUNCATE snuftmp2";
     mysqli_query($db, $sql);
     
-    //Second stage: Copy spots that matches the search criteria from snuftmp1 to the snuftmp2 table. 
+    //Second stage: Copy spots that matches the snuffel other search criteria from snuftmp1 to the snuftmp2 table. 
     $sql = "INSERT INTO snuftmp2(messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, reversestamp, filesize, moderated, commentcount, spotrating) ".
            "SELECT DISTINCT t.messageid, t.poster, t.title, t.tag, t.category, t.subcata, t.subcatb, t.subcatc, IFNULL(CONCAT(f.subcatd,'|'), t.subcatd), t.subcatz, t.stamp, t.reversestamp, t.filesize, t.moderated, t.commentcount, t.spotrating ".
            "FROM snuftmp1 t JOIN snuffel f ON t.title LIKE CONCAT('%', f.title, '%') ".

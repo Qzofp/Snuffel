@@ -355,6 +355,9 @@ function ShowResultsRows($new_spots, $pagenr, $sort)
                         $newrow = "new";
                     }
                     
+                    // Convert special HTML characters.
+                    $title = htmlentities($title);
+                    
                     ShowResultsRow($newrow, $catkey, $category, $title, $genre, $poster, $date, $nzb);
                 }
             }
