@@ -7,7 +7,7 @@
  * File:    results.php
  *
  * Created on Apr 10, 2011
- * Updated on Jun 22, 2011
+ * Updated on Jun 23, 2011
  *
  * Description: This page contains the results functions.
  * 
@@ -22,7 +22,7 @@
  * Function:    CreateResultsPage
  *
  * Created on Jun 18, 2011
- * Updated on Jun 22, 2011
+ * Updated on Jun 23, 2011
  *
  * Description: Create the results page.
  *
@@ -122,7 +122,7 @@ function ProcessResultsInput($aInput, $page)
  * Function:	ShowResults
  *
  * Created on Apr 10, 2011
- * Updated on Jun 22, 2011
+ * Updated on Jun 23, 2011
  *
  * Description: Laat de zoekresultaten zien.
  *
@@ -137,8 +137,12 @@ function ShowResults($new, $aInput)
     if ($new) 
     {
         $days = time() - cDays * 86400;
-        $new_spots = "AND t.stamp > $days";
-    }    
+        $new_spots = "WHERE t.stamp > $days";
+        $sort = "";
+    }
+    else {
+        $sort = " t.title,";
+    }
 
     // Tabel header
     $aHeaders = explode("|", cHeader);
@@ -165,7 +169,7 @@ function ShowResults($new, $aInput)
     echo "   <tbody>\n";
     
     // Show the database results in table rows.
-    ShowResultsRows($new_spots, $aInput["PAGENR"]);
+    ShowResultsRows($new_spots, $aInput["PAGENR"], $sort);
 
     echo "   </tbody>\n";    
     echo "  </table>\n";
@@ -187,7 +191,7 @@ function ShowResults($new, $aInput)
 function ShowResultsFooter($new_spots, $aInput)
 {
     // Count the number of rows from thhe results query.
-    $new_spots = str_replace("AND", "WHERE", $new_spots);
+    //$new_spots = str_replace("AND", "WHERE", $new_spots);
     $sql  = "SELECT * FROM snuftmp2 t $new_spots";
     $rows = CountRows($sql);
     $max  = ceil($rows/cItems);
@@ -310,23 +314,32 @@ function CreateNZBLink($nzb)
  * Function:	ShowResultsRows
  *
  * Created on Jun 11, 2011
- * Updated on Jun 22, 2011
+ * Updated on Jun 23, 2011
  *
  * Description: Show the results table rows.
  *
- * In:  $new_spots, $pagenr
+ * In:  $new_spots, $pagenr, $sort
  * Out:	Results rows
  *
  */
-function ShowResultsRows($new_spots, $pagenr)
+function ShowResultsRows($new_spots, $pagenr, $sort)
 {        
     //The results query.
-    $sql = "SELECT t.category, (SELECT name FROM snufcat WHERE CONCAT(tag,'|') = t.subcata AND cat = t.category) AS name, ".
-                  "t.title, g.name, t.poster, t.stamp, t.messageid ".
-           "FROM snuftmp2 t, snuftag g ".
-           "WHERE t.category = g.cat AND (t.subcata = CONCAT(g.tag,'|') OR t.subcatd LIKE CONCAT('%',g.tag,'|')) ".
-           "$new_spots ".
-           "ORDER BY t.stamp DESC ";
+    $sql = "SELECT t.category, c.name, t.title, g.name, t.poster, t.stamp, t.messageid FROM (snuftmp2 t ".
+           "LEFT JOIN snuftag g ON t.category = g.cat AND (t.subcata = CONCAT(g.tag,'|') OR t.subcatd LIKE CONCAT('%',g.tag,'|'))) ".
+           "LEFT JOIN snufcat c ON t.category = c.cat AND CONCAT(c.tag,'|') = t.subcata ".
+           "$new_spots " .
+           "ORDER BY$sort t.stamp DESC";
+    
+    //$sql = "SELECT t.category, (SELECT name FROM snufcat WHERE CONCAT(tag,'|') = t.subcata AND cat = t.category) AS name, ".
+    //              "t.title, g.name, t.poster, t.stamp, t.messageid ".
+    //       "FROM snuftmp2 t, snuftag g ".
+    //       "WHERE t.category = g.cat AND (t.subcata = CONCAT(g.tag,'|') OR t.subcatd LIKE CONCAT('%',g.tag,'|')) ".
+    //       "$new_spots ".
+    //       "ORDER BY t.stamp DESC ";
+    
+    //echo $sql;
+    
     $sql = AddLimit($sql, $pagenr);
     
     $sfdb = OpenDatabase();
