@@ -329,17 +329,7 @@ function ShowResultsRows($new_spots, $pagenr, $sort)
            "LEFT JOIN snuftag g ON t.category = g.cat AND (t.subcata = CONCAT(g.tag,'|') OR t.subcatd LIKE CONCAT('%',g.tag,'|'))) ".
            "LEFT JOIN snufcat c ON t.category = c.cat AND CONCAT(c.tag,'|') = t.subcata ".
            "$new_spots " .
-           "ORDER BY$sort t.stamp DESC";
-    
-    //$sql = "SELECT t.category, (SELECT name FROM snufcat WHERE CONCAT(tag,'|') = t.subcata AND cat = t.category) AS name, ".
-    //              "t.title, g.name, t.poster, t.stamp, t.messageid ".
-    //       "FROM snuftmp2 t, snuftag g ".
-    //       "WHERE t.category = g.cat AND (t.subcata = CONCAT(g.tag,'|') OR t.subcatd LIKE CONCAT('%',g.tag,'|')) ".
-    //       "$new_spots ".
-    //       "ORDER BY t.stamp DESC ";
-    
-    //echo $sql;
-    
+           "ORDER BY$sort t.stamp DESC";    
     $sql = AddLimit($sql, $pagenr);
     
     $sfdb = OpenDatabase();

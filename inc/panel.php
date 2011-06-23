@@ -7,7 +7,7 @@
  * File:    panel.php
  *
  * Created on Apr 16, 2011
- * Updated on Jun 21, 2011
+ * Updated on Jun 23, 2011
  *
  * Description: This page contains the panel functions.
  *
@@ -189,7 +189,7 @@ function UpdateTime()
  * Function:	UpdateSnuffel
  *
  * Created on Aug 23, 2011
- * Updated on Jun 21, 2011
+ * Updated on Jun 23, 2011
  *
  * Description: Update Snuffel. Note: This is not a Spotweb update! 
  *
@@ -223,14 +223,12 @@ function UpdateSnuffel()
     
     //Second stage: Copy spots that matches the search criteria from snuftmp1 to the snuftmp2 table. 
     $sql = "INSERT INTO snuftmp2(messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, reversestamp, filesize, moderated, commentcount, spotrating) ".
-           "SELECT t.messageid, t.poster, t.title, t.tag, t.category, t.subcata, t.subcatb, t.subcatc, t.subcatd, t.subcatz, t.stamp, t.reversestamp, t.filesize, t.moderated, t.commentcount, t.spotrating ".
-           "FROM snuftmp1 t, snuffel f ".
-           "WHERE t.title LIKE CONCAT('%', f.title, '%') ".
+           "SELECT DISTINCT t.messageid, t.poster, t.title, t.tag, t.category, t.subcata, t.subcatb, t.subcatc, IFNULL(CONCAT(f.subcatd,'|'), t.subcatd), t.subcatz, t.stamp, t.reversestamp, t.filesize, t.moderated, t.commentcount, t.spotrating ".
+           "FROM snuftmp1 t JOIN snuffel f ON t.title LIKE CONCAT('%', f.title, '%') ".
            "AND (t.poster = f.poster OR f.poster IS NULL) ".
            "AND (t.category = f.cat OR f.cat IS NULL) ".
            "AND (t.subcata LIKE CONCAT('%', f.subcata, '|%') OR f.subcata IS NULL) ".
-           "AND (t.subcatd LIKE CONCAT('%', f.subcatd, '|%') OR f.subcatd IS NULL) ".
-           "GROUP BY t.title";
+           "AND (t.subcatd LIKE CONCAT('%', f.subcatd, '|%') OR f.subcatd IS NULL)";
     mysqli_query($db, $sql);
     
     CloseDatabase($db);
