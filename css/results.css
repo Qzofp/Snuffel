@@ -206,6 +206,7 @@ cursor:pointer;
 #results tfoot td.bar input[type=submit]{
 background: url(home.png) no-repeat center 2px;
 background-color:#ececec;
+text-indent:-1000em;
 width:40px;
 }
 

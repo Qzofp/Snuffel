@@ -210,7 +210,7 @@ function ShowResultsFooter($new_spots, $aInput)
                           $next = "     <td class=\"btn\"><input type=\"submit\" name=\"btnNEXT\" value=\"&gt;&gt;\"/></td>\n"; 
         }
 
-        $home = "<input type=\"submit\" name=\"btnHOME\" value=\"_\"/>";
+        $home = "<input type=\"submit\" name=\"btnHOME\" value=\"1\"/>";
         
         $n += 1;
         if ($n < 10) {
