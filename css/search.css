@@ -56,7 +56,6 @@ float:left;
 width:235px;
 height:120px;
 padding:30px 0 0 0;
-/*background-color:cyan*/
 }
 
 #panel_middle{
@@ -64,7 +63,6 @@ clear:left;
 float:left;
 width:235px;
 height:200px;
-/*background-color:chartreuse;*/
 }
 
 #panel_bottom{
@@ -72,19 +70,17 @@ clear:left;
 float:left;
 width:235px;
 height:200px;
-/*background-color:blue;*/
 }
 
 #search_top{
 height:400px;
-margin:0 0 0 235px;
+margin:0 5px 0 235px;
 padding:30px 0 0 0;
-/*background-color:#999;*/
 }
 
 #search_bottom{
 height:100px;
-margin:0 0 0 235px;
+margin:0 5px 0 235px;
 background-color:gainsboro;
 }
 
@@ -177,7 +173,7 @@ background-position:0 -20px;
 
 /* Search Parts */
 table.search{
-margin:5px 5px 0 0;
+margin:5px 0 0 0;
 width:100%;
 border-collapse:collapse;
 }
@@ -191,6 +187,7 @@ table.search thead th{
 padding:3px 0 3px 0;
 background:#565656;
 text-align:left;
+border-bottom:5px solid #fff;
 }
 
 table.search thead th:first-child{

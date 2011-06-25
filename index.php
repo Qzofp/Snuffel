@@ -34,20 +34,22 @@ else {
 
 switch ($page)
 {   
+    // Results
     case 0: require_once "inc/results.php";
-            CreateResultsPage(true);  // New results.
+            CreateResultsPage();
             break;
 
-    case 1: require_once "inc/results.php";
-            CreateResultsPage(false); // All results.
-            break;                    
+    // History
+    //case 1: CreateHistoryPage(); 
+    //        break;                    
 
+    // Search
     case 2: require_once "inc/search.php";
             CreateSearchPage();
             break;
                     
     //Settings
-    //case 3: SettingsPage();
+    //case 3: CreateSettingsPage();
     //        break;     
 
     default: CreateConfigPage($aChecks);

@@ -22,34 +22,27 @@
  * Function:    CreateResultsPage
  *
  * Created on Jun 18, 2011
- * Updated on Jun 23, 2011
+ * Updated on Jun 25, 2011
  *
  * Description: Create the results page.
  *
- * In:  $new
- * Out: -
+ * In:  -
+ * Out: Results page.
  *
  */
-function CreateResultsPage($new)
+function CreateResultsPage()
 {
     PageHeader(cTitle, "css/results.css");
     echo "  <form name=\"".cTitle."\" action=\"".$_SERVER['PHP_SELF']."\" method=\"post\">\n";
-    
-    if ($new) {
-        $page = 0;
-    }
-    else {
-        $page = 1;
-    }
-    
-    ShowPanel($page);  
+     
+    ShowPanel(0);
     
     $aInput = GetResultsInput();
-    $aInput = ProcessResultsInput($aInput, $page);
-    ShowResults($new, $aInput);
+    $aInput = ProcessResultsInput($aInput);
+    ShowResults($aInput);
  
     // Hidden check and page fields.
-    echo "   <input type=\"hidden\" name=\"hidPAGE\" value=\"$page\" />\n"; 
+    echo "   <input type=\"hidden\" name=\"hidPAGE\" value=\"0\" />\n"; 
     echo "   <input type=\"hidden\" name=\"hidPAGENR\" value=\"".$aInput["PAGENR"]."\" />\n";
     echo "   <input type=\"hidden\" name=\"hidCHECK\" value=\"2\" />\n";
     
@@ -92,15 +85,15 @@ function GetResultsInput()
  * Function:	ProcesResultsInput
  *
  * Created on Jun 22, 2011
- * Updated on Jun 22, 2011
+ * Updated on Jun 25, 2011
  *
  * Description: Process the results input.
  *
- * In:  $aInput, $page
+ * In:  $aInput
  * Out:	$aInput
  *
  */
-function ProcessResultsInput($aInput, $page)
+function ProcessResultsInput($aInput)
 {
     if ($aInput["PREV"]) {
         $aInput["PAGENR"] -= 1;
@@ -109,7 +102,7 @@ function ProcessResultsInput($aInput, $page)
         $aInput["PAGENR"] += 1;
     } 
     
-    if ($aInput["PAGE"] != $page || $aInput["HOME"]) {
+    if ($aInput["HOME"]) {
         $aInput["PAGENR"] = 0;        
     }
 
@@ -122,28 +115,16 @@ function ProcessResultsInput($aInput, $page)
  * Function:	ShowResults
  *
  * Created on Apr 10, 2011
- * Updated on Jun 23, 2011
+ * Updated on Jun 25, 2011
  *
- * Description: Laat de zoekresultaten zien.
+ * Description: Show the search results.
  *
- * In:	$new, $aInput
- * Out:	Tabel met zoekresultaten
+ * In:	$aInput
+ * Out:	Table with the search results.
  *
  */
-function ShowResults($new, $aInput)
+function ShowResults($aInput)
 {
-    // Show newest or all spots.
-    $new_spots = "";
-    if ($new) 
-    {
-        $days = time() - cDays * 86400;
-        $new_spots = "WHERE t.stamp > $days";
-        $sort = "";
-    }
-    else {
-        $sort = " t.title,";
-    }
-
     // Tabel header
     $aHeaders = explode("|", cHeader);
     
@@ -162,81 +143,70 @@ function ShowResults($new, $aInput)
     echo "    </tr>\n";
     echo "   </thead>\n";
 
-    // Table footer.
-    ShowResultsFooter($new_spots, $aInput);
+    // Table footer (reserved).
     
     // Table body.
     echo "   <tbody>\n";
     
     // Show the database results in table rows.
-    ShowResultsRows($new_spots, $aInput["PAGENR"], $sort);
+    ShowResultsRows($aInput["PAGENR"]);
 
     echo "   </tbody>\n";    
     echo "  </table>\n";
-    echo "  </div>\n";
+    
+    ShowResultsFooter($aInput);    
+    echo "  </div>\n";   
 }
 
 /*
- * Function:	ShowResultsFooter
- *
- * Created on Jun 22, 2011
- * Updated on Jun 22, 2011
- *
- * Description: Shows the results table footer.
- *
- * In:  $aInput
- * Out:	Table footer
- *
- */
-function ShowResultsFooter($new_spots, $aInput)
+* Function: ShowResultsFooter
+*
+* Created on Jun 22, 2011
+* Updated on Jun 25, 2011
+*
+* Description: Shows the results footer with navigation bar.
+*
+* In: $aInput
+* Out: Results footer
+*
+*/
+function ShowResultsFooter($aInput)
 {
-    // Count the number of rows from thhe results query.
-    $sql  = "SELECT * FROM snuftmp2 t $new_spots";
+    $sql = "SELECT * FROM snuftmp2";
     $rows = CountRows($sql);
-    $max  = ceil($rows/cItems);
+    $max = ceil($rows/cItems);
 
-    // The previous and next buttons. The page number is put in the hidden field: "hidPAGENR". 
-    if ($max > 1) 
+    // The previous and next buttons. The page number is put in the hidden field: "hidPAGENR".
+    if ($max > 1)
     {
        $n = $aInput["PAGENR"];
         switch($n)
         {
-            case 0:       $prev = "     <td class=\"btn\"></td>\n";
-                          $next = "     <td class=\"btn\"><input type=\"submit\" name=\"btnNEXT\" value=\"&gt;&gt;\"/></td>\n"; 
-                          break;
+            case 0     : $prev = "    <input class=\"left\" type=\"button\" name=\"\" value=\"\"/>\n";
+                         $next = "    <input class=\"right\" type=\"submit\" name=\"btnNEXT\" value=\"&gt;&gt;\"/>\n";
+                         break;
         
-            case $max-1:  $prev = "     <td class=\"btn\"><input type=\"submit\" name=\"btnPREV\" value=\"&lt;&lt;\"/></td>\n";                     
-                          $next = "     <td class=\"btn\"></td>\n";
-                          break;
+            case $max-1: $prev = "    <input class=\"left\" type=\"submit\" name=\"btnPREV\" value=\"&lt;&lt;\"/>\n";
+                         $next = "    <input class=\"right\" type=\"button\" name=\"\" value=\"\"/>\n";
+                         break;
                                             
-            default:      $prev = "     <td class=\"btn\"><input type=\"submit\" name=\"btnPREV\" value=\"&lt;&lt;\"/></td>\n";
-                          $next = "     <td class=\"btn\"><input type=\"submit\" name=\"btnNEXT\" value=\"&gt;&gt;\"/></td>\n"; 
+            default:     $prev = "    <input class=\"left\" type=\"submit\" name=\"btnPREV\" value=\"&lt;&lt;\"/>\n";
+                         $next = "    <input class=\"right\" type=\"submit\" name=\"btnNEXT\" value=\"&gt;&gt;\"/>\n";
         }
 
-        $home = "<input type=\"submit\" name=\"btnHOME\" value=\"1\"/>";
-        
-        $n += 1;
-        if ($n < 10) {
-            $n = "00$n";
-        }
-        else if ($n < 100) {
-            $n = "0$n";
-        }
-        
-        // Show the footer.
-        echo "   <tfoot>\n";
-        echo "    <tr>\n";
-        echo "     <td colspan=\"6\"></td>\n";
-        echo "    </tr>\n";    
-        echo "    <tr>\n";
-        echo       $prev;
-        echo "     <td colspan=\"4\" class=\"bar\">$home<span>$n</span></td>\n";
-        echo       $next;
-        echo "    </tr>\n";    
-        echo "   </tfoot>\n";
-    }    
+        $home = "    <input class=\"home\" type=\"submit\" name=\"btnHOME\" value=\"1\"/>\n";
+               
+        // Show footer / navigation bar.
+        echo "  <div class=\"results\">\n";
+        echo "   <div class=\"bar\">\n";
+        echo      $prev; 
+        echo      $home;
+        echo "    <span>".($n+1)."</span>\n";
+        echo      $next;
+        echo "   </div>\n";        
+        echo "  </div>\n";
+    }
 }
-
 
 /*
  * Function:	ShowResultsRow
@@ -313,22 +283,21 @@ function CreateNZBLink($nzb)
  * Function:	ShowResultsRows
  *
  * Created on Jun 11, 2011
- * Updated on Jun 23, 2011
+ * Updated on Jun 25, 2011
  *
  * Description: Show the results table rows.
  *
- * In:  $new_spots, $pagenr, $sort
+ * In:  $pagenr
  * Out:	Results rows
  *
  */
-function ShowResultsRows($new_spots, $pagenr, $sort)
+function ShowResultsRows($pagenr)
 {        
     //The results query.
     $sql = "SELECT t.category, c.name, t.title, g.name, t.poster, t.stamp, t.messageid FROM (snuftmp2 t ".
            "LEFT JOIN snuftag g ON t.category = g.cat AND (t.subcata = CONCAT(g.tag,'|') OR t.subcatd LIKE CONCAT('%',g.tag,'|'))) ".
            "LEFT JOIN snufcat c ON t.category = c.cat AND CONCAT(c.tag,'|') = t.subcata ".
-           "$new_spots " .
-           "ORDER BY$sort t.stamp DESC";    
+           "ORDER BY t.stamp DESC";  
     $sql = AddLimit($sql, $pagenr);
     
     $sfdb = OpenDatabase();
