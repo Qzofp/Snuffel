@@ -2,7 +2,7 @@
 /*
  * Title:   Snuffel
  * Author:  Qzofp Productions
- * Version: 0.2
+ * Version: 0.3
  *
  * File:    panel.php
  *
@@ -90,10 +90,10 @@ function ProcessInput($process, $page)
     
     switch($process)
     {
-        case 3: UpdateSnuffel();
+        case 4: UpdateSnuffel();
                 break;
             
-        case 4: DeleteSearchAll();
+        case 6: DeleteSearchAll();
                 break;
     }
   
@@ -129,8 +129,7 @@ function ShowPanel($button)
     echo "   <ul class=\"btn_top\">\n";
     for ($i = 0; $i < 3; $i++) {
       if ($i != 1) // Skip "Historie". This is for future implementation. 
-      {  
-      
+      {       
         if ($button == $i) {
             echo "    <li><input type=\"button\" name=\"btnPAGE\" value=\"$aButtons[$i]\"/></li>\n";
         }

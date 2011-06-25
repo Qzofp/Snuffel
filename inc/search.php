@@ -2,7 +2,7 @@
 /*
  * Title:   Snuffel
  * Author:  Qzofp Productions
- * Version: 0.2
+ * Version: 0.3
  *
  * File:    search.php
  *

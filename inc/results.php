@@ -2,12 +2,12 @@
 /*
  * Title:   Snuffel
  * Author:  Qzofp Productions
- * Version: 0.2
+ * Version: 0.3
  *
  * File:    results.php
  *
  * Created on Apr 10, 2011
- * Updated on Jun 23, 2011
+ * Updated on Jun 25, 2011
  *
  * Description: This page contains the results functions.
  * 
@@ -147,8 +147,8 @@ function ShowResults($new, $aInput)
     // Tabel header
     $aHeaders = explode("|", cHeader);
     
-    echo "  <div id=\"results\">\n";
-    echo "  <table>\n";
+    echo "  <div id=\"results_top\">\n";
+    echo "  <table class=\"results\">\n";
 
     // Table header.
     echo "   <thead>\n";

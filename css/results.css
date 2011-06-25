@@ -2,12 +2,12 @@
 /*
  * Title:   Snuffel
  * Author:  Qzofp Productions
- * Version: 0.2
+ * Version: 0.3
  *
  * File:    results.css
  *
  * Created on Apr 16, 2011
- * Updated on Jun 22, 2011
+ * Updated on Jun 25, 2011
  *
  * Description: The results css page.
  *
@@ -23,6 +23,10 @@
 /* Tip 2: 0.8em = 8px, 1em = 10px, 1.2em = 12px
 
 /* Body and main parts of the page. */
+html{
+height:100%;
+}
+
 body{
 margin:0;
 height:100%;
@@ -30,30 +34,83 @@ font-family:Arial, Helvetica, Sans-Serif;
 font-size:62.5%; /* =10px */
 }
 
-html{
-height:100%;
-}
-
 #main{
 float:left;
 width:100%;
 min-height:100%;
-_height: 100%;
+margin:-30px 0 0 0;
 }
 
-/*Remove button padding in FF*/
+#main input{
+font-family:Arial, Helvetica, Sans-Serif;  
+}
+
+/* Remove button padding in FireFox */
 #main input::-moz-focus-inner{
 border:0;
 padding:0;
 }
 
-/* Panel parts */
-#panel{
-width:235px;
+#panel_top{
 float:left;
+width:235px;
+height:120px;
+padding:30px 0 0 0;
+/*background-color:cyan*/
 }
 
-#panel h4{
+#panel_middle{
+clear:left;
+float:left;
+width:235px;
+height:200px;
+/*background-color:chartreuse;*/
+}
+
+#panel_bottom{
+clear:left;
+float:left;
+width:235px;
+height:200px;
+/*background-color:blue;*/
+}
+
+#results_top{
+height:400px;
+margin:0 0 0 235px;
+padding:30px 0 0 0;
+/*background-color:#999;*/
+}
+
+#results_bottom{
+height:100px;
+margin:0 0 0 235px;
+background-color:gainsboro;
+}
+
+#footer{
+clear:both;
+height:25px;
+padding:5px 0 0 0;
+background:#fff;
+width:100%;
+text-align:center;
+font-size:1.1em;
+color:#000;
+}
+
+#footer a,
+#footer a:active{
+color:#000;
+text-decoration:none;
+}
+
+#footer a:hover{
+text-decoration:underline;
+}
+
+/* Panel parts */
+.panel h4{
 margin:5px;
 padding:3px;
 -moz-border-radius:4px;
@@ -65,101 +122,100 @@ color:white;
 background:#565656;
 }
 
-#panel ul{
+.panel ul{
 list-style:none;
 margin:0;
 padding:0;
 text-align:center;
 }
 
-#panel input{
+.panel input[type=button],
+.panel input[type=submit]{
 margin:0 5px 2px 5px;
-padding:3px;
+padding:0 0 0 5px;
 -moz-border-radius:4px;
 -webkit-border-radius:4px;
 border-radius:4px;
 height:20px;
-width:225px;
-text-align:left;
 font-size:1.1em;
 font-weight:bold;
-background:#ececec;
 border:none;
 }
 
-#panel input[type=button]{
+.panel .btn_top input{
+width:225px;
+text-align:left;
+background:#ececec;
+}
+
+.panel .btn_top input[type=button]{
 background:#c8c8c8;
 }
 
-#panel input[type=submit]:hover{
+.panel .btn_top input[type=submit]:hover{
 background:white;
 cursor:pointer;
 }
 
-#panel .txt_panel{
+.panel .txt_center{
 font-size:1.1em;
 text-align:center;
 margin-top:1px;
 margin-bottom:5px;
 }
 
-#panel .buttons2 input[type=submit]{
-height:20px;
+.panel .btn_bottom input[type=submit]{
 width:210px;
 text-align:center;
 color:white;
 background:url(sprite_button.png) no-repeat 0 0;
 }
 
-#panel .buttons2 input[type=submit]:hover{
+.panel .btn_bottom input[type=submit]:hover{
 background-position:0 -20px;
 }
 
 /* Results parts */
-#results{
-margin-left:240px;
-}
-
-#results table{
-float:right;
+table.results{
 margin:5px 5px 0 0;
 width:100%;
 border-collapse:collapse;
 }
 
-#results thead tr{
+table.results thead tr{
 font-size:1.1em;
 color:white;
 }
 
-#results thead th{
-padding:3px 0 3px 0;
+table.results thead th{
+padding:3px 0 3px 5px;
 background:#565656;
 text-align:left;
 }
 
-#results thead th:first-child{
+table.results thead th:first-child{
 -moz-border-radius:4px 0 0 4px;
 -webkit-border-radius:4px 0 0 4px;
 border-radius:4px 0 0 4px;
 text-align:center;
 }
 
-#results thead th:last-child{
+table.results thead th:last-child{
 -moz-border-radius:0 4px 4px 0;
 -webkit-border-radius:0 4px 4px 0;
 border-radius:0 4px 4px 0;
 }
 
-#results th.cat{
-width:55px;
+table.results th.cat{
+padding:3px 0 3px 0;
+width:52px;
 }
 
-#results tfoot td{
+table.results tfoot td{
 height:5px;
 }
 
-#results tfoot td.bar{
+table.results tfoot td.bar{
 background:url(sprite_x.png) repeat-x 0 -60px;
 padding:0;
 height:20px;
@@ -168,161 +224,170 @@ font-size:1.1em;
 font-weight:bold;
 }
 
-#results tfoot td.btn{
+table.results tfoot td.btn{
 background-color:#ececec;
 text-align:center;
 padding:0;
-width:55px;
+width:52px;
 }
 
-#results tfoot td:first-child{
+table.results tfoot td:first-child{
 -moz-border-radius:4px 0 0 4px; 
 -webkit-border-radius:4px 0 0 4px; 
 border-radius:4px 0 0 4px;
 }
 
-#results tfoot td:last-child{
+table.results tfoot td:last-child{
 -moz-border-radius:0 4px 4px 0;
 -webkit-border-radius:0 4px 4px 0;
 border-radius:0 4px 4px 0;
 }
 
-/* FF Hack */
-@-moz-document url-prefix(){
-#results tfoot input[type=submit]
-{padding:0 0 2px 0;}}
-
-#results tfoot input[type=submit]{
+table.results tfoot input[type=submit]{
 color:#908F91;    
 background-color:#ececec;
 font-size:1.1em;
 font-weight:bold;
 border:0;
 height:20px;
-width:52px;
+width:50px;
 cursor:pointer;
 }
 
-#results tfoot td.bar input[type=submit]{
+table.results tfoot td.bar input[type=submit]{
 background: url(home.png) no-repeat center 2px;
 background-color:#ececec;
 text-indent:-1000em;
 width:40px;
 }
 
-#results tfoot td.bar span{
+table.results tfoot td.bar span{
 float:right;
 margin:3px 5px 0 0;
 font-size:1em;
 color:#908F91;
 }
 
-#results tbody tr{
+table.results tbody tr{
 font-size:1.1em;
 }
 
-#results tbody td{
-padding:3px 0 3px 0;
+table.results tbody td{
+padding:3px 0 3px 5px;
 border-top:2px solid #fff;
 }
 
-#results tbody td:first-child{
+table.results tbody td:first-child{
 -moz-border-radius:4px 0 0 4px;
 -webkit-border-radius:4px 0 0 4px;
 border-radius:4px 0 0 4px;
 text-align:center;
 }
 
-#results tbody td:last-child{
+table.results tbody td:first-child+td{
+-moz-border-radius:5px 0 0 5px;
+-webkit-border-radius:5px 0 0 5px;
+border-radius:5px 0 0 5px;
+text-align:center;
+}
+
+table.results tbody td:last-child{
 -moz-border-radius:0 4px 4px 0;
 -webkit-border-radius:0 4px 4px 0;
 border-radius:0 4px 4px 0;
 }
 
-#results tr.new td{
+table.results tr td.cat{
+width:50px; 
+min-width:50px;
+line-height:20px;
+vertical-align:top;
+}
+
+table.results tr.new td{
 font-weight:bold;
 }
 
-#results tr.blue td{
+table.results tr.blue td{
 background-color:#daecff;
 }
 
-#results tr.orange td{
+table.results tr.orange td{
 background-color:#fffad3;
 }
 
-#results tr.green td{
+table.results tr.green td{
 background-color:#cbffcb;
 }
 
-#results tr.red td{
+table.results tr.red td{
 background-color:#fedede;
 }
 
-#results tbody tr:hover td{
+table.results tbody tr:hover td{
 background-color:#fff;
 }
 
-#results td.cat{  
-padding:0 4px 0 0;
+table.results td.cat{
+padding:0;
 font-weight:bold;
 color:#fff;
 }
 
-#results tr.blue td.cat{
-background:url(sprite.png) no-repeat 0 0;
+table.results tr.blue td.cat{
+background:url(results_blue.png) no-repeat 0 0;
 }
 
-#results tr.orange td.cat{
-background:url(sprite.png) no-repeat 0 -20px;
+table.results tr.orange td.cat{
+background:url(results_orange.png) no-repeat 0 0px;
 }
 
-#results tr.green td.cat{
-background:url(sprite.png) no-repeat 0 -40px;
+table.results tr.green td.cat{
+background:url(results_green.png) no-repeat 0 0px;
 }
 
-#results tr.red td.cat{
-background:url(sprite.png) no-repeat 0 -60px;
+table.results tr.red td.cat{
+background:url(results_red.png) no-repeat 0 0px;
 }
 
-#results tr:hover.blue td.cat{
+table.results tr:hover.blue td.cat{
 background-position:-52px 0; 
 color:#008edf;
 }
 
-#results tr:hover.orange td.cat{
-background-position:-52px -20px; 
+table.results tr:hover.orange td.cat{
+background-position:-52px 0px; 
 color:#e9a213;
 }
 
-#results tr:hover.green td.cat{
-background-position:-52px -40px; 
+table.results tr:hover.green td.cat{
+background-position:-52px 0px; 
 color:#00de00;
 }
 
-#results tr:hover.red td.cat{
-background-position:-52px -60px; 
+table.results tr:hover.red td.cat{
+background-position:-52px 0px; 
 color:#de2500;
 }
 
-#results td.nzb a{
+table.results td.nzb a{
 font-weight:bold;
 text-decoration:none; 
 cursor:pointer;
 }
 
-#results tr.blue td.nzb a{
+table.results tr.blue td.nzb a{
 color:#008edf;
 }
 
-#results tr.orange td.nzb a{
+table.results tr.orange td.nzb a{
 color:#e9a213;
 }
 
-#results tr.green td.nzb a{
+table.results tr.green td.nzb a{
 color:#00de00;
 }
 
-#results tr.red td.nzb a{
+table.results tr.red td.nzb a{
 color:#de2500;
 }

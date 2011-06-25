@@ -2,7 +2,7 @@
 /*
  * Title:   Snuffel
  * Author:  Qzofp Productions
- * Version: 0.2
+ * Version: 0.3
  *
  * File:    search.css
  *
@@ -232,6 +232,12 @@ table.search tbody td{
 border-top:2px solid #fff;
 }
 
+table.search tbody td:first-child{
+-moz-border-radius:4px 0 0 4px;
+-webkit-border-radius:4px 0 0 4px;
+border-radius:4px 0 0 4px;
+text-align:center;
+}
 
 table.search tbody td:first-child+td{
 -moz-border-radius:5px 0 0 5px;
@@ -330,7 +336,7 @@ background:url(search_orange.png) no-repeat 0 0px;
 }
 
 table.search tr.hov:hover.orange td.msg{
-background-position:-52px -22px; 
+background-position:-52px 0px; 
 }
 
 table.search tr.green td.msg{
@@ -338,7 +344,7 @@ background:url(search_green.png) no-repeat 0 0px;
 }
 
 table.search tr.hov:hover.green td.msg{
-background-position:-52px -44px; 
+background-position:-52px 0px; 
 }
 
 table.search tr.red td.msg{
@@ -346,7 +352,7 @@ background:url(search_red.png) no-repeat 0 0px;
 }
 
 table.search tr.hov:hover.red td.msg{
-background-position:-52px -66px; 
+background-position:-52px 0px; 
 }
 
 table.search tr.gray td.msg{
