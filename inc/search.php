@@ -7,7 +7,7 @@
  * File:    search.php
  *
  * Created on May 07, 2011
- * Updated on Jun 23, 2011
+ * Updated on Jun 25, 2011
  *
  * Description: This page contains the search functions.
  * 
@@ -21,7 +21,7 @@
  * Function:    CreateSearchPage
  *
  * Created on Jun 18, 2011
- * Updated on Jun 18, 2011
+ * Updated on Jun 25, 2011
  *
  * Description: Greate the search page.
  *
@@ -30,9 +30,7 @@
  *
  */
 function CreateSearchPage()
-{
-    //LoadConstants();
-        
+{       
     PageHeader(cTitle, "css/search.css");
     echo "  <form name=\"".cTitle."\" action=\"".$_SERVER['PHP_SELF']."\" method=\"post\">\n";
     
@@ -205,7 +203,7 @@ function ProcessSearchInput($aInput)
  * Function:	ShowSearch
  *
  * Created on May 07, 2011
- * Updated on Jun 12, 2011
+ * Updated on Jun 24, 2011
  *
  * Description: Laat de zoek pagina zien.
  *
@@ -218,8 +216,8 @@ function ShowSearch($aInput)
     // Tabel header
     $aHeaders = explode("|", cHeader);
     
-    echo "  <div id=\"search\">\n";
-    echo "  <table>\n"; //debug border
+    echo "  <div id=\"search_top\">\n";
+    echo "  <table class=\"search\">\n";
 
     // Table header.
     echo "   <thead>\n";
@@ -254,7 +252,7 @@ function ShowSearch($aInput)
  * Function:	ShowSearchAddRow
  *
  * Created on May 07, 2011
- * Updated on Jun 23, 2011
+ * Updated on Jun 24, 2011
  *
  * Description: Laat de invoerrij zien.
  *
@@ -290,7 +288,7 @@ function ShowSearchAddRow($aInput)
         $active   = true;
         $inTitle  = null;
         $inPoster = null;
-        $message = null;
+        $message  = null;
         $action = "hov";
     }
     
@@ -467,13 +465,13 @@ function ShowSearchRow($action, $message, $buttons, $catkey, $category, $title, 
     }
        
     echo "    <tr$class>\n";
-    echo "     <td class=\"msg\">$message</td>\n";    
-    echo "     <td class=\"but\">$buttons</td>\n";
+    echo "     <td class=\"msg\">$message</td>\n";
+    echo "     <td class=\"btn\">$buttons</td>\n";
     echo "     <td>$category</td>\n";
     echo "     <td>$title</td>\n";
     echo "     <td class=\"gen\">$genre</td>\n";
     echo "     <td>$poster</td>\n";
-    echo "    </tr>\n";    
+    echo "    </tr>\n";
 }
 
 /*
@@ -506,7 +504,7 @@ function ShowSearchDeleteRow($catkey, $category, $title, $genre, $poster)
  * Function:	ShowSearchRows
  *
  * Created on May 16, 2011
- * Updated on Jun 23, 2011
+ * Updated on Jun 24, 2011
  *
  * Description: Show the search rows.
  *
@@ -520,7 +518,7 @@ function ShowSearchRows($aInput)
     $key  = $aInput[6];
     
     $aCatItems = explode("|", cCategories);  
-    
+       
     //Query the Snuffel search items.
     $sql = "SELECT f.id, f.cat, f.title, t.name, f.subcata, f.subcatd, f.poster FROM snuffel f ".
            "LEFT JOIN snuftag t ".

@@ -7,7 +7,7 @@
  * File:    tables.php
  *
  * Created on Jun 16, 2011
- * Updated on Jun 19, 2011
+ * Updated on Jun 25, 2011
  *
  * Description: This page containts the create and update tables functions. 
  * 
@@ -45,7 +45,7 @@ function CreateSnuffelTables()
  * Function:	CreateSnufCnf
  *
  * Created on Jun 13, 2011
- * Updated on Jun 22, 2011
+ * Updated on Jun 25, 2011
  *
  * Description: Create or update the Snuffel Configuration table.
  *
@@ -70,7 +70,7 @@ function CreateSnufCnf()
     
     // Fill table.
     $sql = "INSERT INTO `snufcnf` (`name`, `value`) VALUES ".
-           "('Buttons', 'Nieuw|Alles|Zoek|Update Snuffel|Verwijder Zoek'), ".
+           "('Buttons', 'Gevonden|Historie|Zoek Op|Instellingen|Update Snuffel|Verwijder Historie|Verwijder Zoek'), ".
            "('Categories', 'Beeld|Muziek|Spellen|Applicaties'), ".
            "('Days', '14'), ".
            "('Header', 'Cat.|Titel|Genre|Afzender|Datum|NZB|Platform'), ".  
@@ -80,7 +80,7 @@ function CreateSnufCnf()
            "('NZBlink', 'http://localhost/spotweb/?page=getnzb&messageid='), ".    
            "('TimeValues', 'seconde|seconden|minuut|minuten|uur|uur|dag|dagen|week|weken|maand|maanden|jaar|jaar'), ".
            "('Title', 'Snuffel'), ".    
-           "('Version', '0.23');";
+           "('Version', '0.3');";
     
     ExecuteQuery($sql);    
 }

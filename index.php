@@ -7,7 +7,7 @@
  * File:    index.php
  *
  * Created on Apr 09, 2011
- * Updated on Jun 22, 2011
+ * Updated on Jun 25, 2011
  *
  * Description: Snuffel's main page.
  * 
@@ -21,7 +21,7 @@ require_once 'inc/panel.php';
 
 // Put here the Spotweb location.
 define("cSPOTWEB", "../spotweb");
-define("cCurrentVersion", 0.23);
+define("cCurrentVersion", 0.3);
 
 list($check, $process, $page) = GetInput();
 

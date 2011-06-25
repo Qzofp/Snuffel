@@ -6,8 +6,8 @@
  *
  * File:    search.css
  *
- * Created on Apr 16, 2011
- * Updated on Jun 23, 2011
+ * Created on Jun 24, 2011
+ * Updated on Jun 24, 2011
  *
  * Description: The search css page.
  *
@@ -23,6 +23,10 @@
 /* Tip 2: 0.8em = 8px, 1em = 10px, 1.2em = 12px
 
 /* Body and main parts of the page. */
+html{
+height:100%;
+}
+
 body{
 margin:0;
 height:100%;
@@ -30,30 +34,83 @@ font-family:Arial, Helvetica, Sans-Serif;
 font-size:62.5%; /* =10px */
 }
 
-html{
-height:100%;
-}
-
 #main{
 float:left;
 width:100%;
 min-height:100%;
-_height: 100%;
+margin:-30px 0 0 0;
 }
 
-/*Remove button padding in FF*/
+#main input{
+font-family:Arial, Helvetica, Sans-Serif;  
+}
+
+/* Remove button padding in FireFox */
 #main input::-moz-focus-inner{
 border:0;
 padding:0;
 }
 
-/* Panel parts */
-#panel{
-width:235px;
+#panel_top{
 float:left;
+width:235px;
+height:120px;
+padding:30px 0 0 0;
+/*background-color:cyan*/
 }
 
-#panel h4{
+#panel_middle{
+clear:left;
+float:left;
+width:235px;
+height:200px;
+/*background-color:chartreuse;*/
+}
+
+#panel_bottom{
+clear:left;
+float:left;
+width:235px;
+height:200px;
+/*background-color:blue;*/
+}
+
+#search_top{
+height:400px;
+margin:0 0 0 235px;
+padding:30px 0 0 0;
+/*background-color:#999;*/
+}
+
+#search_bottom{
+height:100px;
+margin:0 0 0 235px;
+background-color:gainsboro;
+}
+
+#footer{
+clear:both;
+height:25px;
+padding:5px 0 0 0;
+background:#fff;
+width:100%;
+text-align:center;
+font-size:1.1em;
+color:#000;
+}
+
+#footer a,
+#footer a:active{
+color:#000;
+text-decoration:none;
+}
+
+#footer a:hover{
+text-decoration:underline;
+}
+
+/* Panel parts */
+.panel h4{
 margin:5px;
 padding:3px;
 -moz-border-radius:4px;
@@ -65,178 +122,157 @@ color:white;
 background:#565656;
 }
 
-#panel ul{
+.panel ul{
 list-style:none;
 margin:0;
 padding:0;
 text-align:center;
 }
 
-#panel input{
+.panel input[type=button],
+.panel input[type=submit]{
 margin:0 5px 2px 5px;
-padding:3px;
+padding:0 0 0 5px;
 -moz-border-radius:4px;
 -webkit-border-radius:4px;
 border-radius:4px;
 height:20px;
-width:225px;
-text-align:left;
 font-size:1.1em;
 font-weight:bold;
-background:#ececec;
 border:none;
 }
 
-#panel input[type=button]{
+.panel .btn_top input{
+width:225px;
+text-align:left;
+background:#ececec;
+}
+
+.panel .btn_top input[type=button]{
 background:#c8c8c8;
 }
 
-#panel input[type=submit]:hover{
+.panel .btn_top input[type=submit]:hover{
 background:white;
 cursor:pointer;
 }
 
-#panel .txt_panel{
+.panel .txt_center{
 font-size:1.1em;
 text-align:center;
 margin-top:1px;
 margin-bottom:5px;
 }
 
-#panel .buttons2 input[type=submit]{
-height:20px;
+.panel .btn_bottom input[type=submit]{
 width:210px;
 text-align:center;
 color:white;
 background:url(sprite_button.png) no-repeat 0 0;
 }
 
-#panel .buttons2 input[type=submit]:hover{
+.panel .btn_bottom input[type=submit]:hover{
 background-position:0 -20px;
 }
 
 /* Search Parts */
-#search{
-margin-left:240px;
-}
-
-#search table{
-float:right;
+table.search{
 margin:5px 5px 0 0;
 width:100%;
 border-collapse:collapse;
 }
 
-#search thead tr{
+table.search thead tr{
 font-size:1.1em;
 color:white;
 }
 
-#search thead th{
+table.search thead th{
 padding:3px 0 3px 0;
 background:#565656;
 text-align:left;
 }
 
-#search thead th:first-child{
+table.search thead th:first-child{
 -moz-border-radius:4px 0 0 4px;
 -webkit-border-radius:4px 0 0 4px;
 border-radius:4px 0 0 4px;
 text-align:center;
 }
 
-#search thead th:last-child{
+table.search thead th:last-child{
 -moz-border-radius:0 4px 4px 0;
 -webkit-border-radius:0 4px 4px 0;
 border-radius:0 4px 4px 0;
 }
 
-#search th.msg{
+table.search th.msg{
 width:52px;
 }
 
-#search th.but{
+table.search th.but{
 width:43px;
+min-width:43px;
 }
 
-#search th.cat{
+table.search th.cat{
 width:110px;
 }
 
-#search th.gen{
+table.search th.gen{
 width:155px;
+min-width:155px;
 }
 
-#search tbody tr{
+table.search tbody tr{
 font-size:1.1em;
 }
 
-#search tbody td{
-/*padding:3px 0 3px 0;*/
-
+table.search tbody td{
 border-top:2px solid #fff;
-/* background:lightblue /* debug */
 }
 
-#search tbody td:first-child+td{
+
+table.search tbody td:first-child+td{
 -moz-border-radius:5px 0 0 5px;
 -webkit-border-radius:5px 0 0 5px;
 border-radius:5px 0 0 5px;
 text-align:center;
 }
 
-#search tbody td:last-child{
+table.search tbody td:last-child{
 -moz-border-radius:0 4px 4px 0;
 -webkit-border-radius:0 4px 4px 0;
 border-radius:0 4px 4px 0;
 }
 
-#search tr.add td{
+table.search tr td.msg{
+width:50px; 
+min-width:50px;
+line-height:20px;
+vertical-align:top;
+}
+
+table.search tr td.btn{
+padding:3px 2px 3px 0;
+}
+
+table.search tr.add td{
 font-size:1.2em;    
 font-weight:bold;
 }
 
-#search tr.del td{
+table.search tr.del td{
 font-size:1.2em;    
 font-weight:bold;
 color:#C11B17;
 }
 
-#search tr.blue td{
-background-color:#daecff;
-}
-
-#search tr.orange td{
-background-color:#fffad3;
-}
-
-#search tr.green td{
-background-color:#cbffcb;
-}
-
-#search tr.red td{
-background-color:#fedede;
-}
-
-#search tr.gray td{
-background-color:#ececec;
-}
-
-#search tr.hov:hover td{
-background-color:#fff;
-}
-
-#search tr.hov:hover [disabled]{
-border-color:#ddd;
-background-color:#fff;
-}
-
-#search td.msg input[type=submit]{
-padding:1px 3px 0 0;
+table.search tr td.msg input[type=submit]{
+padding:0px 3px 0 0;
 height:20px;
 width:50px;
 border:0;
-font-family:Arial, Helvetica, Sans-Serif;
 font-size:1em;
 font-weight:bold;
 color:#fff;
@@ -244,90 +280,107 @@ background-color:transparent;
 cursor:pointer
 }
 
-/* FF Hack */
-@-moz-document url-prefix(){
-#search td.msg input[type=submit]
-{padding-bottom:2px;}}
-
-#search tr.gray td.msg input[type=submit]{
+table.search tr.gray td.msg input[type=submit]{
 color:#606060;
 }   
 
-#search tr.del td.msg input[type=submit]{
+table.search tr.del td.msg input[type=submit]{
 font-size:0.8em;
 } 
 
-#search tr.blue td.msg{
-background:url(sprite_search.png) no-repeat 0 0px;
+table.search tr.blue td{
+background-color:#daecff;
 }
 
-#search tr.orange td.msg{
-background:url(sprite_search.png) no-repeat 0 -22px;
+table.search tr.orange td{
+background-color:#fffad3;
 }
 
-#search tr.green td.msg{
-background:url(sprite_search.png) no-repeat 0 -43px;
+table.search tr.green td{
+background-color:#cbffcb;
 }
 
-#search tr.red td.msg{
-background:url(sprite_search.png) no-repeat 0 -65px;
+table.search tr.red td{
+background-color:#fedede;
 }
 
-#search tr.gray td.msg{
-background:url(sprite_search.png) no-repeat 0 -87px;
+table.search tr.gray td{
+background-color:#ececec;
 }
 
+table.search tr.hov:hover td{
+background-color:#fff;
+}
 
-#search tr.hov:hover.blue td.msg{
+table.search tr.hov:hover [disabled]{
+border-color:#ddd;
+background-color:#fff;
+}
+
+table.search tr.blue td.msg{
+background:url(search_blue.png) no-repeat 0 0px;
+}
+
+table.search tr.hov:hover.blue td.msg{
 background-position:-52px 0; 
 }
 
-#search tr.hov:hover.orange td.msg{
+table.search tr.orange td.msg{
+background:url(search_orange.png) no-repeat 0 0px;
+}
+
+table.search tr.hov:hover.orange td.msg{
 background-position:-52px -22px; 
 }
 
-#search tr.hov:hover.green td.msg{
-background-position:-52px -43px; 
+table.search tr.green td.msg{
+background:url(search_green.png) no-repeat 0 0px;
 }
 
-#search tr.hov:hover.red td.msg{
-background-position:-52px -65px; 
+table.search tr.hov:hover.green td.msg{
+background-position:-52px -44px; 
 }
 
-#search tr.hov:hover.gray td.msg{
-background-position:-52px -87px; 
+table.search tr.red td.msg{
+background:url(search_red.png) no-repeat 0 0px;
 }
 
-#search td.but{
-padding:3px 2px 3px 0;
+table.search tr.hov:hover.red td.msg{
+background-position:-52px -66px; 
 }
 
-#search select, input[type="text"]{
+table.search tr.gray td.msg{
+background:url(search_gray.png) no-repeat 0 0px; 
+}
+
+table.search tr.hov:hover.gray td.msg{
+background-position:-52px 0; 
+}
+
+table.search select{
+position:relative;
+left:-4px;
+width:95px;
+background-color:#fff;
+}
+
+table.search select, input[type="text"]{
 margin:0px;
-font-family:Arial, Helvetica, Sans-Serif;    
+font-family:Arial, Helvetica, Sans-Serif; 
 font-size:1.2em;
 border: 1px solid #606060;
 }
 
-#search select{
-width:95px;    
-}
-
-#search td.gen select{
+table.search td.gen select{
 width:140px;   
 }
 
-#search select{
-position:relative;
-left:-4px;
-}
-
-#search input[type="text"]{
+table.search input[type="text"]{
 position:relative;
 left:-3px;
 }
 
-#search [disabled]{
+table.search [disabled]{
 border-color:#999;
 background-color:#D4D0C8;
 }

@@ -191,7 +191,6 @@ function ShowResults($new, $aInput)
 function ShowResultsFooter($new_spots, $aInput)
 {
     // Count the number of rows from thhe results query.
-    //$new_spots = str_replace("AND", "WHERE", $new_spots);
     $sql  = "SELECT * FROM snuftmp2 t $new_spots";
     $rows = CountRows($sql);
     $max  = ceil($rows/cItems);

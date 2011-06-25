@@ -7,7 +7,7 @@
  * File:    panel.php
  *
  * Created on Apr 16, 2011
- * Updated on Jun 23, 2011
+ * Updated on Jun 24, 2011
  *
  * Description: This page contains the panel functions.
  *
@@ -107,7 +107,7 @@ function ProcessInput($process, $page)
  * Function:	ShowPanel
  *
  * Created on Aug 16, 2011
- * Updated on Jun 18, 2011
+ * Updated on Jun 25, 2011
  *
  * Description: Shows the navigation panel.
  *
@@ -117,45 +117,65 @@ function ProcessInput($process, $page)
  */
 function ShowPanel($button)
 {
-    echo "  <div id=\"panel\">\n";
-
-    // Snuffel menu.
-    echo "  <h4>".cTitle."</h4>\n";
+    // Start top panel.
+    echo "  <div id=\"panel_top\">\n";
+    echo "   <div class=\"panel\">\n";
+    echo "   <h4>".cTitle."</h4>\n";
 
     // Snuffel buttons.
     $aButtons = explode("|", cButtons);
     
-    // Show the first 3 buttons: Nieuw, Alles and Zoek.
-    echo "  <ul>\n";
+    // Show buttons: "Gevonden", "Historie", "Zoek Op" and "Instellingen".
+    echo "   <ul class=\"btn_top\">\n";
     for ($i = 0; $i < 3; $i++) {
+      if ($i != 1) // Skip "Historie". This is for future implementation. 
+      {  
+      
         if ($button == $i) {
-            echo "   <li><input type=\"button\" name=\"btnPAGE\" value=\"$aButtons[$i]\"/></li>\n";
+            echo "    <li><input type=\"button\" name=\"btnPAGE\" value=\"$aButtons[$i]\"/></li>\n";
         }
         else {
-            echo "   <li><input type=\"submit\" name=\"btnPAGE\" value=\"$aButtons[$i]\"/></li>\n";
+            echo "    <li><input type=\"submit\" name=\"btnPAGE\" value=\"$aButtons[$i]\"/></li>\n";
         }
+      }  
     }  
-    echo "  </ul>\n";
+    echo "   </ul>\n";
+    echo "   </div>\n";
+    echo "  </div>\n";
+    // End top panel.
 
+    // Start middle panel.
+    echo "  <div id=\"panel_middle\">\n";
+    echo "   <div class=\"panel\">\n";
+    echo "   <h4>Dummy</h4>\n";
+    echo "   </div>\n";    
+    echo "  </div>\n";
+    // End middle panel.
+    
+    // Start bottom panel.
+    echo "  <div id=\"panel_bottom\">\n";
+    echo "   <div class=\"panel\">\n";
+    
     // Maintenance menu.
     $aMenuText = explode("|", cMenuText); 
     $time = strtotime(UpdateTime());
-    echo "  <h4>$aMenuText[0]</h4>\n";
-    echo "  <div class=\"txt_panel\">$aMenuText[1] ".time_ago($time, 1)."</div>\n";
+    echo "   <h4>$aMenuText[0]</h4>\n";
+    echo "   <div class=\"txt_center\">$aMenuText[1] ".time_ago($time, 1)."</div>\n";
 
     // Maintenance buttons
-    echo "  <ul class=\"buttons2\">\n";
+    echo "   <ul class=\"btn_bottom\">\n";
     
     if ($button == 2) {
-        echo "   <li><input type=\"submit\" name=\"btnPROCESS\" value=\"$aButtons[4]\"/></li>\n";
+        echo "    <li><input type=\"submit\" name=\"btnPROCESS\" value=\"$aButtons[6]\"/></li>\n";
     }
     else {
-        echo "   <li><input type=\"submit\" name=\"btnPROCESS\" value=\"$aButtons[3]\"/></li>\n";            
+        echo "    <li><input type=\"submit\" name=\"btnPROCESS\" value=\"$aButtons[4]\"/></li>\n";            
     }
 
-    echo "  </ul>\n";
-
+    echo "   </ul>\n";
+    echo "   </div>\n";
     echo "  </div>\n";
+    // End bottom panel.    
 }
 
 

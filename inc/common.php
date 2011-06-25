@@ -7,7 +7,7 @@
  * File:    common.php
  *
  * Created on Apr 09, 2011
- * Updated on Jun 18, 2011
+ * Updated on Jun 24, 2011
  *
  * Description: Deze pagina bevat de algemene functies.
  * 
@@ -83,7 +83,7 @@ function GetInputValue($name)
  * Function:	Header
  *
  * Created on Aug 14, 2010
- * Updated on Apr 16, 2011
+ * Updated on Jun 24, 2011
  *
  * Description: Returns a page header.
  *
@@ -105,6 +105,8 @@ function PageHeader($title, $css)
     echo " </head>\n";
 
     echo " <body>\n";
+    
+    // Start Main.
     echo "  <div id=\"main\">\n";
 }
 
@@ -112,7 +114,7 @@ function PageHeader($title, $css)
  * Function:	Footer
  *
  * Created on Aug 14, 2010
- * Updated on Apr 16, 2010
+ * Updated on Jun 24, 2010
  *
  * Description: Returns a page footer.
  *
@@ -122,8 +124,10 @@ function PageHeader($title, $css)
  */
 function PageFooter()
 {
-    // HTML end
-    echo "  </div>\n"; // Close div main.
+    echo "  </div>\n";
+    // End Main.
+    
+    echo "  <div id=\"footer\"><a href =\"https://github.com/Qzofp/Snuffel\">Qzofp / Snuffel</a></div>\n";  
     echo " </body>\n";
     echo "</html>";
 }
