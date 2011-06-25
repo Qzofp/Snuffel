@@ -7,7 +7,7 @@
  * File:    config.css
  *
  * Created on Jun 21, 2011
- * Updated on Jun 22, 2011
+ * Updated on Jun 25, 2011
  *
  * Description: The config css page.
  *
@@ -24,6 +24,10 @@
 
 /* Body and main parts of the page. */
 
+html{
+height:100%;
+}
+
 body{
 margin:0;
 height:100%;
@@ -31,35 +35,62 @@ font-family:Arial, Helvetica, Sans-Serif;
 font-size:62.5%; /* =10px */
 }
 
-html{
-height:100%;
-}
-
 #main{
 float:left;
 width:100%;
-text-align:center;
 min-height:100%;
-_height: 100%;
+margin:-30px 0 0 0;
 }
 
-/*Remove button padding in FF*/
+#main input{
+font-family:Arial, Helvetica, Sans-Serif;  
+}
+
+/* Remove button padding in FireFox */
 #main input::-moz-focus-inner{
 border:0;
 padding:0;
 }
 
+#config_middle{
+margin:0 auto 0 auto;
+width:80%;
+/*background-color:azure;*/
+text-align:center;
+}
+
+#footer{
+clear:both;
+height:25px;
+padding:5px 0 0 0;
+background:#fff;
+width:100%;
+text-align:center;
+font-size:1.1em;
+color:#000;
+}
+
+#footer a,
+#footer a:active{
+color:#000;
+text-decoration:none;
+}
+
+#footer a:hover{
+text-decoration:underline;
+}
+
 /* Config parts */
-#gabbo{
-margin:50px auto 0 auto;    
+div.gabbo{
+margin:80px auto 0 auto;
 width:640px;
 height:350px;
 background:url(gabbo.jpg) no-repeat 0 0;
 }
 
-#check{  
+div.gabbo div.chk{  
 float:left;
-margin:110px 0 0 45px;
+margin:115px 0 0 65px;
 width:280px;
 height:200px;
 text-align:left;
@@ -68,15 +99,16 @@ font-size:1.2em;
 font-weight:bold;
 }
 
-#check img{
+div.gabbo div.chk img{
 vertical-align:text-bottom;
 }
 
-#button input{
+div.gabbo div.btn{
 clear:left;
-display:block;
-margin:0 0 0 220px;
-padding:0;
+text-align:center;  
+}
+
+div.gabbo div.btn input{
 height:20px;
 width:210px;
 -moz-border-radius:4px;
@@ -85,31 +117,30 @@ border:none;
 border-radius:4px;
 font-size:1.1em;
 font-weight:bold;
-text-align:center;
 color:white;
 background:url(sprite_button.png) no-repeat 0 0;
 }
 
-#button input:hover{
+div.gabbo div.btn input:hover{
 cursor:pointer;
 color:#FFFC17;
 }
 
-#help{
+div.gabbo div.hlp{
 margin:20px;
 font-size:1.2em;
 color:#C11B17;
 }
 
-#help a{
+div.gabbo div.hlp a{
 text-decoration:none;    
 }
 
-#help a:hover{
+div.gabbo div.hlp a:hover{
 text-decoration:underline;    
 }
 
-#tip{
+div.gabbo div.tip{
 margin:0px auto 0 auto; 
 padding: 5px;
 width:400px;

@@ -21,7 +21,7 @@ require_once 'inc/panel.php';
 
 // Put here the Spotweb location.
 define("cSPOTWEB", "../spotweb");
-define("cCurrentVersion", 0.3);
+define("cCurrentVersion", 0.31);
 
 list($check, $process, $page) = GetInput();
 
