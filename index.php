@@ -7,7 +7,7 @@
  * File:    index.php
  *
  * Created on Apr 09, 2011
- * Updated on Jun 25, 2011
+ * Updated on Jun 26, 2011
  *
  * Description: Snuffel's main page.
  * 
@@ -15,13 +15,11 @@
  *
  */
 
+// The Spotweb location is found in the settings.php file.
+require_once 'inc/settings.php';
 require_once 'inc/common.php';
 require_once 'inc/config.php';
 require_once 'inc/panel.php';
-
-// Put here the Spotweb location.
-define("cSPOTWEB", "../spotweb");
-define("cCurrentVersion", 0.3);
 
 list($check, $process, $page) = GetInput();
 

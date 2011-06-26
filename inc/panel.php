@@ -7,7 +7,7 @@
  * File:    panel.php
  *
  * Created on Apr 16, 2011
- * Updated on Jun 24, 2011
+ * Updated on Jun 26, 2011
  *
  * Description: This page contains the panel functions.
  *
@@ -70,14 +70,7 @@ function GetInput()
  *
  */
 function ProcessInput($process, $page)
-{
-    // Get the database settings from Spotwebs ownsettings.php.
-    include_once(cSPOTWEB."/ownsettings.php");    
-    define("cHOST",  $settings['db']['host']);
-    define("cDBASE", $settings['db']['dbname']);
-    define("cUSER",  $settings['db']['user']);
-    define("cPASS",  $settings['db']['pass']);
-    
+{ 
     LoadConstants();
     
     $aButtons = explode("|", cButtons);

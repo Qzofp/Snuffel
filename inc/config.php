@@ -7,7 +7,7 @@
  * File:    config.php
  *
  * Created on Apr 09, 2011
- * Updated on Jun 25, 2011
+ * Updated on Jun 26, 2011
  *
  * Description: This page containts the check and configuration functions. 
  * 
@@ -55,7 +55,7 @@ function ConfigureSnuffel($check)
  * Function:	CheckSnuffel
  *
  * Created on Jun 13, 2011
- * Updated on Jun 19, 2011
+ * Updated on Jun 26, 2011
  *
  * Description: Perform a couple of checks and record what is needed to succesfully run Snuffel.
  *
@@ -72,41 +72,25 @@ function CheckSnuffel()
                      "SNUFFEL"=>false, "UPGRADE"=>false);
     
     // Check if the Spotweb folder exists.
-    if (file_exists(cSPOTWEB)) {
-        $aChecks["SPOTWEB"] = true;
-    }
+    $aChecks["SPOTWEB"] = cSPOTWEB;
     
     // Check if the Spotweb ownsettings.php page exists and include it.
-    if ($aChecks["SPOTWEB"])
-    {
-        if (file_exists(cSPOTWEB."/ownsettings.php")) 
-        {
-            include_once(cSPOTWEB."/ownsettings.php");
-            $aChecks["OWNSETTINGS"] = true;
-        }
-    }
+    $aChecks["OWNSETTINGS"] = cOWNSETTINGS;   
     
-    // Check if Spotweb uses the MySQL database.
+    // Check if Spotweb uses the MySQL database engine.
     if ($aChecks["OWNSETTINGS"])
     {
-        // The following setting comes from Spotwebs ownsettings.php.
-        if ($settings['db']['engine'] == "mysql") {
+        if (cENGINE == "mysql") {
             $aChecks["MYSQL"] = true;
         }        
     }    
 
     // Check if a connection to the Spotweb database can be succesfully made.
     if ($aChecks["MYSQL"])
-    {
-         // These settings are from Spotwebs ownsettings.php.
-        define("cHOST",  $settings['db']['host']);
-        define("cDBASE", $settings['db']['dbname']);
-        define("cUSER",  $settings['db']['user']);
-        define("cPASS",  $settings['db']['pass']);
-        
+    {       
         if (ConnectToSpots()) {
             $aChecks["CONNECT"] = true;
-        }       
+        }
     }    
     
     // Check if Snuffel exists.
@@ -120,7 +104,8 @@ function CheckSnuffel()
             if ($version != cCurrentVersion) {
                 $aChecks["UPGRADE"] = true;
             }
-            else {
+            else 
+            {
                 LoadConstants();
                 $page = 2;                
             }
@@ -134,7 +119,7 @@ function CheckSnuffel()
  * Function:	InstallSnuffel
  *
  * Created on Jun 16, 2011
- * Updated on Jun 17, 2011
+ * Updated on Jun 26, 2011
  *
  * Description: Install or Upgrade the Snuffel tabels in the Spotweb database.
  *
@@ -143,14 +128,7 @@ function CheckSnuffel()
  *
  */
 function InstallSnuffel()
-{       
-    // Get the database settings from Spotwebs ownsettings.php.
-    include_once(cSPOTWEB."/ownsettings.php");
-    define("cHOST",  $settings['db']['host']);
-    define("cDBASE", $settings['db']['dbname']);
-    define("cUSER",  $settings['db']['user']);
-    define("cPASS",  $settings['db']['pass']);  
-    
+{   
     include_once("inc/tables.php");
     CreateSnuffelTables();
 }
