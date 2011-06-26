@@ -182,7 +182,7 @@ function ShowResultsFooter($aInput)
     $max = ceil($rows/cItems);
 
     // The previous and next buttons. The page number is put in the hidden field: "hidPAGENR".
-    if ($max >= 1)
+    if ($max > 1)
     {
        $n = $aInput["PAGENR"];
         switch($n)
@@ -191,7 +191,7 @@ function ShowResultsFooter($aInput)
                          $next = "<input type=\"submit\" name=\"btnNEXT\" value=\"&gt;&gt;\"/>";
                          break;
         
-            case $max-1: $prev = "<input type=\"submit\" name=\"btnPREV\" value=\"&lt;&lt;\"/>";
+            case $max:   $prev = "<input type=\"submit\" name=\"btnPREV\" value=\"&lt;&lt;\"/>";
                          $next = "<input type=\"button\" name=\"\" value=\"\"/>";
                          break;
                                             

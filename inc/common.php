@@ -390,7 +390,7 @@ function LoadConstants()
  * Function:	AddLimit
  *
  * Created on Okt 03, 2008
- * Updated on Jun 23, 2010
+ * Updated on Jun 26, 2010
  *
  * Description: Determine limit and add it to the SQL query.
  *
@@ -400,6 +400,8 @@ function LoadConstants()
  */
 function AddLimit($sql, $n)
 {
+    $n -= 1;
+    
     $limit = " LIMIT ";
     $limit.= $n * cItems;
     $limit.= ", ";
