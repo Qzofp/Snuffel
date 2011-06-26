@@ -201,7 +201,7 @@ function UpdateTime()
  * Function:	UpdateSnuffel
  *
  * Created on Aug 23, 2011
- * Updated on Jun 23, 2011
+ * Updated on Jun 26, 2011
  *
  * Description: Update Snuffel. Note: This is not a Spotweb update! 
  *
@@ -223,8 +223,8 @@ function UpdateSnuffel()
     mysqli_query($db, $sql);
     
     // First stage: Copy spots that matches the snuffel title search criteria from the spots table to the snuftmp1 table.
-    $sql = "INSERT INTO snuftmp1(messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, reversestamp, filesize, moderated, commentcount, spotrating) ".
-           "SELECT messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, reversestamp, filesize, moderated, commentcount, spotrating FROM spots ".
+    $sql = "INSERT INTO snuftmp1(id, messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, reversestamp, filesize, moderated, commentcount, spotrating) ".
+           "SELECT id, messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, reversestamp, filesize, moderated, commentcount, spotrating FROM spots ".
            "WHERE MATCH(title) ".
            "AGAINST((SELECT GROUP_CONCAT(title) FROM snuffel) IN BOOLEAN MODE)";
     mysqli_query($db, $sql);
@@ -234,8 +234,8 @@ function UpdateSnuffel()
     mysqli_query($db, $sql);
     
     //Second stage: Copy spots that matches the snuffel other search criteria from snuftmp1 to the snuftmp2 table. 
-    $sql = "INSERT INTO snuftmp2(messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, reversestamp, filesize, moderated, commentcount, spotrating) ".
-           "SELECT DISTINCT t.messageid, t.poster, t.title, t.tag, t.category, t.subcata, t.subcatb, t.subcatc, IFNULL(CONCAT(f.subcatd,'|'), t.subcatd), t.subcatz, t.stamp, t.reversestamp, t.filesize, t.moderated, t.commentcount, t.spotrating ".
+    $sql = "INSERT INTO snuftmp2(id, messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, reversestamp, filesize, moderated, commentcount, spotrating) ".
+           "SELECT DISTINCT t.id, t.messageid, t.poster, t.title, t.tag, t.category, t.subcata, t.subcatb, t.subcatc, IFNULL(CONCAT(f.subcatd,'|'), t.subcatd), t.subcatz, t.stamp, t.reversestamp, t.filesize, t.moderated, t.commentcount, t.spotrating ".
            "FROM snuftmp1 t JOIN snuffel f ON t.title LIKE CONCAT('%', f.title, '%') ".
            "AND (t.poster = f.poster OR f.poster IS NULL) ".
            "AND (t.category = f.cat OR f.cat IS NULL) ".
