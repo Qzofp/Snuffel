@@ -309,6 +309,12 @@ background-position:-52px 0px;
 color:#de2500;
 }
 
+table.results td a{
+color:#000;
+text-decoration:none;
+cursor:pointer;
+}
+
 table.results td.nzb a{
 font-weight:bold;
 text-decoration:none; 
@@ -331,24 +337,35 @@ table.results tr.red td.nzb a{
 color:#de2500;
 }
 
-div.results{
-height:20px;
+table.bar{
+margin:5px 0 0 0;
+width:100%;
+border-collapse:collapse;    
 }
 
-div.results div.bar{
-margin:5px 0 0 0;
+table.bar tbody td:first-child{
+-moz-border-radius:4px 0 0 4px;
+-webkit-border-radius:4px 0 0 4px;
+border-radius:4px 0 0 4px;
+}
+
+table.bar tbody td:last-child{
+-moz-border-radius:0 4px 4px 0;
+-webkit-border-radius:0 4px 4px 0;
+border-radius:0 4px 4px 0;
+}
+
+table.bar tr td{
 padding:0;
 height:20px;
--moz-border-radius:4px;
--webkit-border-radius:4px;
-border-radius:4px;
-text-align:center;
-background:url(sprite_x.png) repeat-x 0 -60px;
+background:url(sprite_x.png) repeat-x 0 -60px;   
 }
 
-div.results div.bar input{
-color:#908F91;   
+table.bar tr td input{
+/*color:#908F91;  */
+color:black;
 background-color:#ececec;
+text-align:center;
 font-size:1.1em;
 font-weight:bold;
 border:0;
@@ -357,37 +374,36 @@ width:30px;
 cursor:pointer;
 }
 
-div.results div.bar input[type=button]{
-cursor:default;
+table.bar tr td.prev{
+width:55px;
 }
 
-div.results div.bar input.left{
-float:left;
+table.bar tr td.prev input{ 
 -moz-border-radius:4px 0 0 4px;
 -webkit-border-radius:4px 0 0 4px;
 border-radius:4px 0 0 4px;
-color:black;
 }
 
-div.results div.bar input.right{
-float:right;
+table.bar tr td.next{
+width:30px;
+}
+
+table.bar tr td.next input{
 -moz-border-radius:0 4px 4px 0;
 -webkit-border-radius:0 4px 4px 0;
 border-radius:0 4px 4px 0;
-color:black;
 }
 
-div.results div.bar input.home{
+table.bar tr td.home{
+text-align:center;
+}
+
+table.bar tr td.home input{
 background: url(home.png) no-repeat center 2px;
-text-indent:-1000em;    
+text-indent:-1000em;
 }
 
-div.results div.bar span{
-float:right;
-padding:4px 0 2px 0;
-position:absolute;
-right:50px;
-font-size:1em;
-font-weight:bold;
+table.bar tr td.page{
+width:25px;
 color:#908F91;
 }

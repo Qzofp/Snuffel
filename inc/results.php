@@ -7,7 +7,7 @@
  * File:    results.php
  *
  * Created on Apr 10, 2011
- * Updated on Jun 25, 2011
+ * Updated on Jun 26, 2011
  *
  * Description: This page contains the results functions.
  * 
@@ -57,7 +57,7 @@ function CreateResultsPage()
  * Function:    GetResultsInput
  *
  * Created on Jun 22, 2011
- * Updated on Jun 22, 2011
+ * Updated on Jun 26, 2011
  *
  * Description: Get user results input.
  *
@@ -67,12 +67,17 @@ function CreateResultsPage()
  */
 function GetResultsInput()
 {
-    $aInput = array("PREV"=>null, "HOME"=>null, "NEXT"=>null, "PAGENR"=>0, "PAGE"=>null);
+    $aInput = array("PREV"=>null, "HOME"=>null, "NEXT"=>null, "PAGENR"=>1, "PAGE"=>null);
     
     $aInput["PREV"]   = GetInputValue("btnPREV");
     $aInput["HOME"]   = GetInputValue("btnHOME");    
     $aInput["NEXT"]   = GetInputValue("btnNEXT");
+    
     $aInput["PAGENR"] = GetInputValue("hidPAGENR");
+    if (!$aInput["PAGENR"]) {
+        $aInput["PAGENR"] = 1;
+    }
+    
     $aInput["PAGE"]   = GetInputValue("hidPAGE");  
     
     return $aInput;
@@ -85,7 +90,7 @@ function GetResultsInput()
  * Function:	ProcesResultsInput
  *
  * Created on Jun 22, 2011
- * Updated on Jun 25, 2011
+ * Updated on Jun 26, 2011
  *
  * Description: Process the results input.
  *
@@ -103,7 +108,7 @@ function ProcessResultsInput($aInput)
     } 
     
     if ($aInput["HOME"]) {
-        $aInput["PAGENR"] = 0;        
+        $aInput["PAGENR"] = 1;        
     }
 
     return $aInput;
@@ -162,7 +167,7 @@ function ShowResults($aInput)
 * Function: ShowResultsFooter
 *
 * Created on Jun 22, 2011
-* Updated on Jun 25, 2011
+* Updated on Jun 26, 2011
 *
 * Description: Shows the results footer with navigation bar.
 *
@@ -177,34 +182,36 @@ function ShowResultsFooter($aInput)
     $max = ceil($rows/cItems);
 
     // The previous and next buttons. The page number is put in the hidden field: "hidPAGENR".
-    if ($max > 1)
+    if ($max >= 1)
     {
        $n = $aInput["PAGENR"];
         switch($n)
         {
-            case 0     : $prev = "    <input class=\"left\" type=\"button\" name=\"\" value=\"\"/>\n";
-                         $next = "    <input class=\"right\" type=\"submit\" name=\"btnNEXT\" value=\"&gt;&gt;\"/>\n";
+            case 1     : $prev = "<input type=\"button\" name=\"\" value=\"\"/>";
+                         $next = "<input type=\"submit\" name=\"btnNEXT\" value=\"&gt;&gt;\"/>";
                          break;
         
-            case $max-1: $prev = "    <input class=\"left\" type=\"submit\" name=\"btnPREV\" value=\"&lt;&lt;\"/>\n";
-                         $next = "    <input class=\"right\" type=\"button\" name=\"\" value=\"\"/>\n";
+            case $max-1: $prev = "<input type=\"submit\" name=\"btnPREV\" value=\"&lt;&lt;\"/>";
+                         $next = "<input type=\"button\" name=\"\" value=\"\"/>";
                          break;
                                             
-            default:     $prev = "    <input class=\"left\" type=\"submit\" name=\"btnPREV\" value=\"&lt;&lt;\"/>\n";
-                         $next = "    <input class=\"right\" type=\"submit\" name=\"btnNEXT\" value=\"&gt;&gt;\"/>\n";
+            default:     $prev = "<input type=\"submit\" name=\"btnPREV\" value=\"&lt;&lt;\"/>";
+                         $next = "<input type=\"submit\" name=\"btnNEXT\" value=\"&gt;&gt;\"/>";
         }
 
-        $home = "    <input class=\"home\" type=\"submit\" name=\"btnHOME\" value=\"1\"/>\n";
+        $home = "<input type=\"submit\" name=\"btnHOME\" value=\"1\"/>";
                
         // Show footer / navigation bar.
-        echo "  <div class=\"results\">\n";
-        echo "   <div class=\"bar\">\n";
-        echo      $prev; 
-        echo      $home;
-        echo "    <span>".($n+1)."</span>\n";
-        echo      $next;
-        echo "   </div>\n";        
-        echo "  </div>\n";
+        echo "  <table class=\"bar\">\n";
+        echo "   <tbody>\n";
+        echo "    <tr>\n";
+        echo "     <td class=\"prev\">$prev</td>\n";
+        echo "     <td class=\"home\">$home</td>\n";        
+        echo "     <td class=\"page\">$n</td>\n";
+        echo "     <td class=\"next\">$next</td>\n";        
+        echo "    </tr>\n";
+        echo "   </tbody>\n";        
+        echo "  </table>\n";
     }
 }
 
@@ -212,44 +219,49 @@ function ShowResultsFooter($aInput)
  * Function:	ShowResultsRow
  *
  * Created on Jun 11, 2011
- * Updated on Jun 19, 2011
+ * Updated on Jun 26, 2011
  *
  * Description: Laat een resultaat rij van de tabel zien.
  *
- * In:  $action, $catkey, $category, $title, $genre, $poster, $date, $nzb
+ * In:  $id, $catkey, $category, $title, $genre, $poster, $date, $nzb, $last, $pagenr
  * Out:	rij
  *
  */
-function ShowResultsRow($action, $catkey, $category, $title, $genre, $poster, $date, $nzb)
+function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $nzb, $last, $pagenr)
 {
-    $class = null;    
-    if ($action) {
-        $action   = " $action";
-    }
+    $class = null;     
     
+    $new = null;
+    if ($date > $last) {
+        $new = " new";
+    }
+   
     switch ($catkey)
     {
         case 0: if ($catkey !== null) {
-                    $class =  " class=\"blue$action\"";
+                    $class =  " class=\"blue$new\"";
                 }
                 else {
-                    $class =  " class=\"gray$action\"";
+                    $class =  " class=\"gray$new\"";
                 }
                 break;
             
-        case 1: $class =  " class=\"orange$action\"";
+        case 1: $class =  " class=\"orange$new\"";
                 break;
             
-        case 2: $class =  " class=\"green$action\"";
+        case 2: $class =  " class=\"green$new\"";
                 break;
             
-        case 3: $class =  " class=\"red$action\"";
+        case 3: $class =  " class=\"red$new\"";
                 break;
     }
+    
+    // Convert special HTML characters.
+    $title = htmlentities($title);
        
     echo "    <tr$class>\n";
     echo "     <td class=\"cat\">$category</td>\n";
-    echo "     <td>$title</td>\n";
+    echo "     <td><a href=\"spot.php?id=$id&n=$pagenr\">$title</a></td>\n";
     echo "     <td class=\"gen\">$genre</td>\n";
     echo "     <td>$poster</td>\n";
     echo "     <td>".time_ago($date, 1)."</td>\n";  
@@ -283,7 +295,7 @@ function CreateNZBLink($nzb)
  * Function:	ShowResultsRows
  *
  * Created on Jun 11, 2011
- * Updated on Jun 25, 2011
+ * Updated on Jun 26, 2011
  *
  * Description: Show the results table rows.
  *
@@ -294,7 +306,7 @@ function CreateNZBLink($nzb)
 function ShowResultsRows($pagenr)
 {        
     //The results query.
-    $sql = "SELECT t.category, c.name, t.title, g.name, t.poster, t.stamp, t.messageid FROM (snuftmp2 t ".
+    $sql = "SELECT t.id, t.category, c.name, t.title, g.name, t.poster, t.stamp, t.messageid FROM (snuftmp2 t ".
            "LEFT JOIN snuftag g ON t.category = g.cat AND (t.subcata = CONCAT(g.tag,'|') OR t.subcatd LIKE CONCAT('%',g.tag,'|'))) ".
            "LEFT JOIN snufcat c ON t.category = c.cat AND CONCAT(c.tag,'|') = t.subcata ".
            "ORDER BY t.stamp DESC";  
@@ -315,18 +327,10 @@ function ShowResultsRows($pagenr)
                 $delta = time() - strtotime(UpdateTime());
                 $last  = cLastUpdate + $delta;
                 
-                $stmt->bind_result($catkey, $category, $title, $genre, $poster, $date, $nzb);
+                $stmt->bind_result($id, $catkey, $category, $title, $genre, $poster, $date, $nzb);
                 while($stmt->fetch())
-                {
-                    $newrow = null;
-                    if ($date > $last) {
-                        $newrow = "new";
-                    }
-                    
-                    // Convert special HTML characters.
-                    $title = htmlentities($title);
-                    
-                    ShowResultsRow($newrow, $catkey, $category, $title, $genre, $poster, $date, $nzb);
+                {                   
+                    ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $nzb, $last, $pagenr);
                 }
             }
         }
