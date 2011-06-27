@@ -34,12 +34,13 @@ list($msg) = GetItemsFromDatabase($sql);
 $spot = cSPOTWEBFOLDER."/?page=getspot&amp;messageid=$msg";
 
 PageHeader(cTitle, "css/spot.css");
-echo "  <form name=\"Spot\" action=\"index.php\" method=\"post\">\n";
 
 // Show Spot.
-echo "   <iframe src=\"$spot\" width=\"100%\" height=\"80%\"></iframe>\n";
+echo "  <iframe src=\"$spot\"></iframe>\n";
 
-echo "   <input type=\"submit\" name=\"btnDUMMY\" value=\"SNUFFEL\"/>\n";
+// Return to Snuffel button.
+echo "  <form name=\"Spot\" action=\"index.php\" method=\"post\">\n";
+echo "   <input type=\"submit\" name=\"btnDUMMY\" value=\"".cTitle."\"/>\n";
 
 // Hidden check and page fields.
 echo "   <input type=\"hidden\" name=\"hidPAGE\" value=\"0\" />\n"; 
@@ -48,9 +49,4 @@ echo "   <input type=\"hidden\" name=\"hidCHECK\" value=\"2\" />\n";
 
 echo "  </form>\n";
 PageFooter(false);
-
-
-/////////////////////////////////////////   Query Functions   ////////////////////////////////////////////
-
-
 ?>
