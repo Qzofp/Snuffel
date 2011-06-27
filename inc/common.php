@@ -7,7 +7,7 @@
  * File:    common.php
  *
  * Created on Apr 09, 2011
- * Updated on Jun 24, 2011
+ * Updated on Jun 25, 2011
  *
  * Description: Deze pagina bevat de algemene functies.
  * 
@@ -53,7 +53,7 @@ function GetOk()
 
 
 /*
- * Function:	GetInputValue
+ * Function:	GetButtonValue
  *
  * Created on Jun 17, 2011
  * Updated on Jun 18, 2011
@@ -64,7 +64,7 @@ function GetOk()
  * Out:	$value
  *
  */
-function GetInputValue($name)
+function GetButtonValue($name)
 {
     $value = null;
     
@@ -76,6 +76,30 @@ function GetInputValue($name)
     return $value;
 }
 
+/*
+ * Function:	GetLinkValue
+ *
+ * Created on Jun 26, 2011
+ * Updated on Jun 26, 2011
+ *
+ * Description: Get input value from a link.
+ *
+ * In:	$name
+ * Out:	$value
+ *
+ */
+function GetLinkValue($name)
+{
+    if (isset($_GET[$name])) 
+        {
+        $value = $_GET[$name];
+      
+        // Set value to integer.
+        settype($value, "int"); 
+    }
+    
+    return $value;
+}
 
 /////////////////////////////////////////   Display Functions    /////////////////////////////////////////
 
@@ -114,7 +138,7 @@ function PageHeader($title, $css)
  * Function:	Footer
  *
  * Created on Aug 14, 2010
- * Updated on Jun 24, 2010
+ * Updated on Jun 27, 2010
  *
  * Description: Returns a page footer.
  *
@@ -122,12 +146,15 @@ function PageHeader($title, $css)
  * Out:	footer
  *
  */
-function PageFooter()
+function PageFooter($footer=true)
 {
     echo "  </div>\n";
     // End Main.
     
-    echo "  <div id=\"footer\"><a href =\"https://github.com/Qzofp/Snuffel\">Qzofp / Snuffel</a></div>\n";  
+    if ($footer) {
+        echo "  <div id=\"footer\"><a href =\"https://github.com/Qzofp/Snuffel\">Qzofp / Snuffel</a></div>\n";  
+    }
+    
     echo " </body>\n";
     echo "</html>";
 }

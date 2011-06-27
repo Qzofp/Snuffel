@@ -21,7 +21,7 @@
  * Function:    GetInput
  *
  * Created on Apr 23, 2011
- * Updated on Jun 18, 2011
+ * Updated on Jun 26, 2011
  *
  * Description: Get user input.
  *
@@ -36,18 +36,18 @@ function GetInput()
     $page    = -1;
     
     // Get the hidden check spotweb or upgrade snuffel value.
-    $check = GetInputValue("btnCHECK");
+    $check = GetButtonValue("btnCHECK");
     if (!$check) {
-        $check = GetInputValue("hidCHECK");
+        $check = GetButtonValue("hidCHECK");
     }
     
     if ($check == 2)
     {
-        $process = GetInputValue("btnPROCESS");
+        $process = GetButtonValue("btnPROCESS");
                
-        $page    = GetInputValue("btnPAGE");
+        $page    = GetButtonValue("btnPAGE");
         if (!$page) {
-            $page    = GetInputValue("hidPAGE");
+            $page    = GetButtonValue("hidPAGE");
         }
     }
 
@@ -189,7 +189,7 @@ function UpdateTime()
 {
     $sql = "SELECT UPDATE_TIME ".
            "FROM information_schema.tables ".
-           "WHERE TABLE_SCHEMA = 'spotweb' AND TABLE_NAME = 'snuftmp2'";
+           "WHERE TABLE_SCHEMA = 'spotweb' AND TABLE_NAME = 'snuftmp'";
 
     $aItems = GetItemsFromDatabase($sql);
     $time   = $aItems[0];
@@ -201,7 +201,7 @@ function UpdateTime()
  * Function:	UpdateSnuffel
  *
  * Created on Aug 23, 2011
- * Updated on Jun 26, 2011
+ * Updated on Jun 27, 2011
  *
  * Description: Update Snuffel. Note: This is not a Spotweb update! 
  *
@@ -219,28 +219,22 @@ function UpdateSnuffel()
     mysqli_query($db, $sql);
 
     // Empty snuftmp1 table.
-    $sql = "TRUNCATE snuftmp1";
+    $sql = "TRUNCATE snuftmp";
     mysqli_query($db, $sql);
     
-    // First stage: Copy spots that matches the snuffel title search criteria from the spots table to the snuftmp1 table.
-    $sql = "INSERT INTO snuftmp1(id, messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, reversestamp, filesize, moderated, commentcount, spotrating) ".
-           "SELECT id, messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, reversestamp, filesize, moderated, commentcount, spotrating FROM spots ".
-           "WHERE MATCH(title) ".
-           "AGAINST((SELECT GROUP_CONCAT(title) FROM snuffel) IN BOOLEAN MODE)";
-    mysqli_query($db, $sql);
-
-    // Empty snuftmp2 table.
-    $sql = "TRUNCATE snuftmp2";
-    mysqli_query($db, $sql);
-    
-    //Second stage: Copy spots that matches the snuffel other search criteria from snuftmp1 to the snuftmp2 table. 
-    $sql = "INSERT INTO snuftmp2(id, messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, reversestamp, filesize, moderated, commentcount, spotrating) ".
-           "SELECT DISTINCT t.id, t.messageid, t.poster, t.title, t.tag, t.category, t.subcata, t.subcatb, t.subcatc, IFNULL(CONCAT(f.subcatd,'|'), t.subcatd), t.subcatz, t.stamp, t.reversestamp, t.filesize, t.moderated, t.commentcount, t.spotrating ".
-           "FROM snuftmp1 t JOIN snuffel f ON t.title LIKE CONCAT('%', f.title, '%') ".
+    // Copy spots that matches the snuffel title search criteria from the spots table to the snuftmp1 table.
+    $sql = "INSERT INTO snuftmp(id, messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, ".
+                               "reversestamp, filesize, moderated, commentcount, spotrating) ".
+           "SELECT DISTINCT t.id, t.messageid, t.poster, t.title, t.tag, t.category, t.subcata, t.subcatb, t.subcatc, IFNULL(CONCAT(f.subcatd,'|'), ".
+                           "t.subcatd), t.subcatz, t.stamp, t.reversestamp, t.filesize, t.moderated, t.commentcount, t.spotrating ".
+           "FROM spots t JOIN snuffel f ON t.title LIKE CONCAT('%', f.title, '%') ".
            "AND (t.poster = f.poster OR f.poster IS NULL) ".
            "AND (t.category = f.cat OR f.cat IS NULL) ".
            "AND (t.subcata LIKE CONCAT('%', f.subcata, '|%') OR f.subcata IS NULL) ".
-           "AND (t.subcatd LIKE CONCAT('%', f.subcatd, '|%') OR f.subcatd IS NULL)";
+           "AND (t.subcatd LIKE CONCAT('%', f.subcatd, '|%') OR f.subcatd IS NULL) ".
+           "WHERE MATCH(t.title) ".
+           "AGAINST((SELECT GROUP_CONCAT(title) FROM snuffel) IN BOOLEAN MODE) ".
+           "ORDER BY t.title";
     mysqli_query($db, $sql);
     
     CloseDatabase($db);
@@ -250,7 +244,7 @@ function UpdateSnuffel()
  * Function:	DeleteSearchAll
  *
  * Created on Jun 06, 2011
- * Updated on Jun 21, 2011
+ * Updated on Jun 27, 2011
  *
  * Description: Deletes all the search records from the snuftemp and snuffel table.
  *
@@ -260,11 +254,8 @@ function UpdateSnuffel()
  */
 function DeleteSearchAll()
 {
-    $sql = "TRUNCATE snuftmp1";
-    ExecuteQuery($sql);  
-    
-    $sql = "TRUNCATE snuftmp2";
-    ExecuteQuery($sql);  
+    $sql = "TRUNCATE snuftmp";
+    ExecuteQuery($sql);
     
     $sql = "TRUNCATE snuffel";
     ExecuteQuery($sql);

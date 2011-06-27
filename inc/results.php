@@ -69,16 +69,16 @@ function GetResultsInput()
 {
     $aInput = array("PREV"=>null, "HOME"=>null, "NEXT"=>null, "PAGENR"=>1, "PAGE"=>null);
     
-    $aInput["PREV"]   = GetInputValue("btnPREV");
-    $aInput["HOME"]   = GetInputValue("btnHOME");    
-    $aInput["NEXT"]   = GetInputValue("btnNEXT");
+    $aInput["PREV"]   = GetButtonValue("btnPREV");
+    $aInput["HOME"]   = GetButtonValue("btnHOME");    
+    $aInput["NEXT"]   = GetButtonValue("btnNEXT");
     
-    $aInput["PAGENR"] = GetInputValue("hidPAGENR");
+    $aInput["PAGENR"] = GetButtonValue("hidPAGENR");
     if (!$aInput["PAGENR"]) {
         $aInput["PAGENR"] = 1;
     }
     
-    $aInput["PAGE"]   = GetInputValue("hidPAGE");  
+    $aInput["PAGE"]   = GetButtonValue("hidPAGE");  
     
     return $aInput;
 }
@@ -177,7 +177,7 @@ function ShowResults($aInput)
 */
 function ShowResultsFooter($aInput)
 {
-    $sql = "SELECT * FROM snuftmp2";
+    $sql = "SELECT * FROM snuftmp";
     $rows = CountRows($sql);
     $max = ceil($rows/cItems);
 
@@ -295,7 +295,7 @@ function CreateNZBLink($nzb)
  * Function:	ShowResultsRows
  *
  * Created on Jun 11, 2011
- * Updated on Jun 26, 2011
+ * Updated on Jun 27, 2011
  *
  * Description: Show the results table rows.
  *
@@ -306,7 +306,7 @@ function CreateNZBLink($nzb)
 function ShowResultsRows($pagenr)
 {        
     //The results query.
-    $sql = "SELECT t.id, t.category, c.name, t.title, g.name, t.poster, t.stamp, t.messageid FROM (snuftmp2 t ".
+    $sql = "SELECT t.id, t.category, c.name, t.title, g.name, t.poster, t.stamp, t.messageid FROM (snuftmp t ".
            "LEFT JOIN snuftag g ON t.category = g.cat AND (t.subcata = CONCAT(g.tag,'|') OR t.subcatd LIKE CONCAT('%',g.tag,'|'))) ".
            "LEFT JOIN snufcat c ON t.category = c.cat AND CONCAT(c.tag,'|') = t.subcata ".
            "ORDER BY t.stamp DESC";  

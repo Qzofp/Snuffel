@@ -7,7 +7,7 @@
  * File:    tables.php
  *
  * Created on Jun 16, 2011
- * Updated on Jun 25, 2011
+ * Updated on Jun 27, 2011
  *
  * Description: This page containts the create and update tables functions. 
  * 
@@ -21,7 +21,7 @@
  * Function:	CreateSnuffelTables
  *
  * Created on Jun 13, 2011
- * Updated on Jun 21, 2011
+ * Updated on Jun 27, 2011
  *
  * Description: Create or update the Snuffel tables.
  *
@@ -33,8 +33,7 @@ function CreateSnuffelTables()
 {
     CreateSnufCnf();
     CreateSnuffel();
-    CreateSnufTmp("snuftmp1");
-    CreateSnufTmp("snuftmp2");    
+    CreateSnufTmp(); 
     CreateSnufCat();
     CreateSnufTag();
 }
@@ -80,7 +79,7 @@ function CreateSnufCnf()
            "('NZBlink', 'http://localhost/spotweb/?page=getnzb&messageid='), ".    
            "('TimeValues', 'seconde|seconden|minuut|minuten|uur|uur|dag|dagen|week|weken|maand|maanden|jaar|jaar'), ".
            "('Title', 'Snuffel'), ".    
-           "('Version', '0.3');";
+           "('Version', '0.31');";
     
     ExecuteQuery($sql);    
 }
@@ -120,26 +119,28 @@ function CreateSnuffel()
  * Function:	CreateSnufTmp
  *
  * Created on Jun 13, 2011
- * Updated on Jun 21, 2011
+ * Updated on Jun 27, 2011
  *
  * Description: Create or update the Snuffel temporary (cache) table.
  *
- * In:	$table
+ * In:	-
  * Out:	snuftmp table
  *
  */
-function CreateSnufTmp($table)
+function CreateSnufTmp()
 {
     // If exists drop table. This is the old snuftmp table.
     $sql = "DROP TABLE IF EXISTS `snuftmp`";    
     ExecuteQuery($sql);
     
-    // If exists drop table.
-    #$sql = "DROP TABLE IF EXISTS `$table`";    
-    #ExecuteQuery($sql);    
+    $sql = "DROP TABLE IF EXISTS `snuftmp1`";    
+    ExecuteQuery($sql);
     
+    $sql = "DROP TABLE IF EXISTS `snuftmp2`";    
+    ExecuteQuery($sql);
+       
     // Create table.
-    $sql = "CREATE TABLE IF NOT EXISTS `$table` ( ".
+    $sql = "CREATE TABLE IF NOT EXISTS `snuftmp` ( ".
              "`id` int(11) NOT NULL AUTO_INCREMENT, ".
              "`messageid` varchar(128) CHARACTER SET ascii NOT NULL DEFAULT '', ".
              "`poster` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL, ".
