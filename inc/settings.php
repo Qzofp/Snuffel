@@ -16,7 +16,7 @@
  */
 
 // Snuffel's current version.
-define("cCurrentVersion", 0.31);
+define("cCurrentVersion", 0.32);
 
 // Put here the Spotweb location.
 define("cSPOTWEBFOLDER", "../spotweb");

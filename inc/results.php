@@ -7,7 +7,7 @@
  * File:    results.php
  *
  * Created on Apr 10, 2011
- * Updated on Jun 26, 2011
+ * Updated on Jun 27, 2011
  *
  * Description: This page contains the results functions.
  * 
@@ -219,7 +219,7 @@ function ShowResultsFooter($aInput)
  * Function:	ShowResultsRow
  *
  * Created on Jun 11, 2011
- * Updated on Jun 26, 2011
+ * Updated on Jun 27, 2011
  *
  * Description: Laat een resultaat rij van de tabel zien.
  *
@@ -261,31 +261,12 @@ function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date,
        
     echo "    <tr$class>\n";
     echo "     <td class=\"cat\">$category</td>\n";
-    echo "     <td><a href=\"spot.php?id=$id&n=$pagenr\">$title</a></td>\n";
+    echo "     <td><a href=\"spot.php?id=$id&s=$pagenr\">$title</a></td>\n";
     echo "     <td class=\"gen\">$genre</td>\n";
     echo "     <td>$poster</td>\n";
     echo "     <td>".time_ago($date, 1)."</td>\n";  
-    echo "     <td class=\"nzb\">".CreateNZBLink($nzb)."</td>\n";
+    echo "     <td class=\"nzb\"><a href=\"spot.php?id=$id&n=$pagenr\">NZB</a></td>\n";
     echo "    </tr>\n";
-}
-
-/*
- * Function:	CreateNZBLink
- *
- * Created on Jun 12, 2011
- * Updated on Jun 12, 2011
- *
- * Description: Laat een resultaat rij van de tabel zien.
- *
- * In:  $nzb
- * Out:	$nzblink
- *
- */
-function CreateNZBLink($nzb)
-{
-    $nzblink = "<a href=\"".cNZBlink.$nzb."\">NZB</a>";
-    
-    return $nzblink;
 }
 
 

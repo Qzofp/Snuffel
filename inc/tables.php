@@ -44,7 +44,7 @@ function CreateSnuffelTables()
  * Function:	CreateSnufCnf
  *
  * Created on Jun 13, 2011
- * Updated on Jun 25, 2011
+ * Updated on Jun 27, 2011
  *
  * Description: Create or update the Snuffel Configuration table.
  *
@@ -75,11 +75,10 @@ function CreateSnufCnf()
            "('Header', 'Cat.|Titel|Genre|Afzender|Datum|NZB|Platform'), ".  
            "('Items', '30'), ".
            "('LastUpdate', '0'), ".
-           "('MenuText', 'Onderhoud|Laatste update:'), ".   
-           "('NZBlink', 'http://localhost/spotweb/?page=getnzb&messageid='), ".    
+           "('MenuText', 'Onderhoud|Laatste update:'), ".     
            "('TimeValues', 'seconde|seconden|minuut|minuten|uur|uur|dag|dagen|week|weken|maand|maanden|jaar|jaar'), ".
            "('Title', 'Snuffel'), ".    
-           "('Version', '0.31');";
+           "('Version', '0.32');";
     
     ExecuteQuery($sql);    
 }
@@ -130,8 +129,8 @@ function CreateSnuffel()
 function CreateSnufTmp()
 {
     // If exists drop table. This is the old snuftmp table.
-    $sql = "DROP TABLE IF EXISTS `snuftmp`";    
-    ExecuteQuery($sql);
+    #$sql = "DROP TABLE IF EXISTS `snuftmp`";    
+    #ExecuteQuery($sql);
     
     $sql = "DROP TABLE IF EXISTS `snuftmp1`";    
     ExecuteQuery($sql);

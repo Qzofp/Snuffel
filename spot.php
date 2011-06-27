@@ -25,28 +25,41 @@ LoadConstants();
 
 // GetSpotInput
 $id     = GetLinkValue('id');
-$pagenr = GetLinkValue('n');
 
 // Get the spot message id.
 $sql = "SELECT messageid FROM snuftmp ".
        "WHERE id = $id";
 list($msg) = GetItemsFromDatabase($sql);
-$spot = cSPOTWEBFOLDER."/?page=getspot&amp;messageid=$msg";
 
-PageHeader(cTitle, "css/spot.css");
+// Download nzb file or show spot details.
+$pagenr = GetLinkValue('s');
+if (!$pagenr)
+{
+    $pagenr = GetLinkValue('n');
+    $nzb = cSPOTWEBFOLDER."/?page=getnzb&messageid=$msg";
+    
+    // Download nzb file.
+    header("Location: $nzb");
+}
+else 
+{    
+    $spot = cSPOTWEBFOLDER."/?page=getspot&amp;messageid=$msg";
 
-// Show Spot.
-echo "  <iframe src=\"$spot\"></iframe>\n";
+    PageHeader(cTitle, "css/spot.css");
 
-// Return to Snuffel button.
-echo "  <form name=\"Spot\" action=\"index.php\" method=\"post\">\n";
-echo "   <input type=\"submit\" name=\"btnDUMMY\" value=\"".cTitle."\"/>\n";
+    // Show spot.
+    echo "  <iframe src=\"$spot\"></iframe>\n";
 
-// Hidden check and page fields.
-echo "   <input type=\"hidden\" name=\"hidPAGE\" value=\"0\" />\n"; 
-echo "   <input type=\"hidden\" name=\"hidPAGENR\" value=\"$pagenr\" />\n";
-echo "   <input type=\"hidden\" name=\"hidCHECK\" value=\"2\" />\n";
+    // Return to Snuffel button.
+    echo "  <form name=\"Spot\" action=\"index.php\" method=\"post\">\n";
+    echo "   <input type=\"submit\" name=\"btnDUMMY\" value=\"".cTitle."\"/>\n";
+    
+    // Hidden check and page fields.
+    echo "   <input type=\"hidden\" name=\"hidPAGE\" value=\"0\" />\n"; 
+    echo "   <input type=\"hidden\" name=\"hidPAGENR\" value=\"$pagenr\" />\n";
+    echo "   <input type=\"hidden\" name=\"hidCHECK\" value=\"2\" />\n";
 
-echo "  </form>\n";
-PageFooter(false);
+    echo "  </form>\n";
+    PageFooter(false);
+}
 ?>

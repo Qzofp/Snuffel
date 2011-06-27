@@ -7,7 +7,7 @@
  * File:    common.php
  *
  * Created on Apr 09, 2011
- * Updated on Jun 25, 2011
+ * Updated on Jun 27, 2011
  *
  * Description: Deze pagina bevat de algemene functies.
  * 
@@ -80,7 +80,7 @@ function GetButtonValue($name)
  * Function:	GetLinkValue
  *
  * Created on Jun 26, 2011
- * Updated on Jun 26, 2011
+ * Updated on Jun 27, 2011
  *
  * Description: Get input value from a link.
  *
@@ -90,6 +90,8 @@ function GetButtonValue($name)
  */
 function GetLinkValue($name)
 {
+    $value = null;
+    
     if (isset($_GET[$name])) 
         {
         $value = $_GET[$name];
