@@ -7,7 +7,7 @@
  * File:    search.php
  *
  * Created on May 07, 2011
- * Updated on Jun 25, 2011
+ * Updated on Jun 28, 2011
  *
  * Description: This page contains the search functions.
  * 
@@ -252,16 +252,17 @@ function ShowSearch($aInput)
  * Function:	ShowSearchAddRow
  *
  * Created on May 07, 2011
- * Updated on Jun 24, 2011
+ * Updated on Jun 28, 2011
  *
- * Description: Laat de invoerrij zien.
+ * Description: Show the add input field. 
  *
  * In:  $aInput
- * Out:	Invoerrij
+ * Out:	input field.
  *
  */
 function ShowSearchAddRow($aInput)
 {
+    $inOk       = $aInput[0];   
     $inCategory = $aInput[1];
     $inTitle    = $aInput[2];
     $inGenre    = $aInput[3];
@@ -283,7 +284,7 @@ function ShowSearchAddRow($aInput)
     else 
     {
         $ok = "<img src=\"img/empty.png\"/>";
-        $disabled = "disabled";
+        $disabled = " disabled";
         $aItems   = array("empty");
         $active   = true;
         $inTitle  = null;
@@ -292,13 +293,19 @@ function ShowSearchAddRow($aInput)
         $action = "hov";
     }
     
-    // Categorie dropbox
+    // Category dropbox
     $category = DropDownBox("lstCategories", cTitle, $aItems, true, $inCategory, $active);
 
-    // Titel veld
-    $title = "<input type=\"text\" size=\"40\" maxlength=\"100\" name=\"txtTITLE\" value=\"$inTitle\" $disabled/>";
+    // Title field. Show messsage if Ok button if pushed and the title field is empty. This filed is mandatory.
+    if ($inOk == 1 && !$inTitle) {
+        $title = "<input class=\"warning\" type=\"text\" maxlength=\"100\" name=\"txtTITLE\" value=\"".cWarning."\" ".
+                        "onfocus=\"if(!this._haschanged){this.value=''};this._haschanged=true;\" />";
+    }
+    else {
+        $title = "<input type=\"text\" maxlength=\"100\" name=\"txtTITLE\" value=\"$inTitle\"$disabled />";
+    }    
 
-    // Genre veld
+    // Genre field
     if ($inCategory && $mode == "ADD")     // Controleer of category bestaat.
     {
         $key = array_search($inCategory, $aItems);
@@ -318,8 +325,8 @@ function ShowSearchAddRow($aInput)
     
     $genre = DropDownBox("lstGenre", cTitle, $aItems, true, $inGenre, $active);
     
-    // Poster veld
-    $poster = "<input type=\"text\" size=\"40\" maxlength=\"100\" name=\"txtPOSTER\" value=\"$inPoster\" $disabled/>";
+    // Poster field
+    $poster = "<input type=\"text\" size=\"40\" maxlength=\"100\" name=\"txtPOSTER\" value=\"$inPoster\"$disabled />";
 
     ShowSearchRow($action, $message, $ok, $key, $category, $title, $genre, $poster);
 }
@@ -587,7 +594,7 @@ function ShowSearchRows($aInput)
  * Function:	AddSearch
  *
  * Created on May 21, 2011
- * Updated on Jun 18, 2011
+ * Updated on Jun 28, 2011
  *
  * Description: Voeg zoekwaarde toe.
  *
@@ -617,7 +624,7 @@ function AddSearch($aInput)
             $key = $aItems[0];
         }
         
-        $aInput = array(null, null, null, null, null, "ADD", $key, null);     
+        $aInput = array(!$check, null, null, null, null, "ADD", $key, null);  
     }
     
     if ($ok == 0)
@@ -704,7 +711,7 @@ function DelSearch($aInput)
  * Function:	CheckAndFixInput
  *
  * Created on May 28, 2011
- * Updated on Jun 10, 2011
+ * Updated on Jun 28, 2011
  *
  * Description: Controleer en repareer input.
  *
@@ -747,7 +754,8 @@ function CheckAndFixInput($aInput)
         }
     }
     
-    if ($title) {
+    if ($title && $title != cWarning) 
+    {
         $title = "'$title'";
         $check = true;
     }

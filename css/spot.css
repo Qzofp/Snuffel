@@ -7,7 +7,7 @@
  * File:    search.css
  *
  * Created on Jun 27, 2011
- * Updated on Jun 27, 2011
+ * Updated on Jun 28, 2011
  *
  * Description: The spot css page.
  *
@@ -63,4 +63,5 @@ font-size:1.1em;
 font-weight:bold;
 color:white;
 background:url(sprite_button.png) no-repeat 0 0;
+cursor:pointer;
 }

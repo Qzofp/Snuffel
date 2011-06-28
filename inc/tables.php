@@ -78,7 +78,8 @@ function CreateSnufCnf()
            "('MenuText', 'Onderhoud|Laatste update:'), ".     
            "('TimeValues', 'seconde|seconden|minuut|minuten|uur|uur|dag|dagen|week|weken|maand|maanden|jaar|jaar'), ".
            "('Title', 'Snuffel'), ".    
-           "('Version', '0.32');";
+           "('Version', '0.33'), ".
+           "('Warning', 'Titel is verplicht!');";
     
     ExecuteQuery($sql);    
 }

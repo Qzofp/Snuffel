@@ -7,7 +7,7 @@
  * File:    search.css
  *
  * Created on Jun 24, 2011
- * Updated on Jun 24, 2011
+ * Updated on Jun 28, 2011
  *
  * Description: The search css page.
  *
@@ -379,6 +379,7 @@ width:140px;
 }
 
 table.search input[type="text"]{
+width:300px;
 position:relative;
 left:-3px;
 }
@@ -386,4 +387,8 @@ left:-3px;
 table.search [disabled]{
 border-color:#999;
 background-color:#D4D0C8;
+}
+
+table.search input[type="text"].warning{
+font-style:italic;
 }
