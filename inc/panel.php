@@ -7,7 +7,7 @@
  * File:    panel.php
  *
  * Created on Apr 16, 2011
- * Updated on Jun 26, 2011
+ * Updated on Jun 27, 2011
  *
  * Description: This page contains the panel functions.
  *
@@ -61,7 +61,7 @@ function GetInput()
  * Function:    ProcessInput
  *
  * Created on Jun 17, 2011
- * Updated on Jun 17, 2011
+ * Updated on Jun 28, 2011
  *
  * Description: Process the user input.
  *
@@ -84,6 +84,7 @@ function ProcessInput($process, $page)
     switch($process)
     {
         case 4: UpdateSnuffel();
+                $page = 0;
                 break;
             
         case 6: DeleteSearchAll();
@@ -100,7 +101,7 @@ function ProcessInput($process, $page)
  * Function:	ShowPanel
  *
  * Created on Aug 16, 2011
- * Updated on Jun 25, 2011
+ * Updated on Jun 28, 2011
  *
  * Description: Shows the navigation panel.
  *
@@ -157,11 +158,9 @@ function ShowPanel($button)
     // Maintenance buttons
     echo "   <ul class=\"btn_bottom\">\n";
     
+    echo "    <li><input type=\"submit\" name=\"btnPROCESS\" value=\"$aButtons[4]\"/></li>\n";  
     if ($button == 2) {
         echo "    <li><input type=\"submit\" name=\"btnPROCESS\" value=\"$aButtons[6]\"/></li>\n";
-    }
-    else {
-        echo "    <li><input type=\"submit\" name=\"btnPROCESS\" value=\"$aButtons[4]\"/></li>\n";            
     }
 
     echo "   </ul>\n";

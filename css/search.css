@@ -161,6 +161,7 @@ margin-bottom:5px;
 }
 
 .panel .btn_bottom input[type=submit]{
+margin:0 0 5px 0;
 width:210px;
 text-align:center;
 color:white;
