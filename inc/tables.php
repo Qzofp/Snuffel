@@ -74,11 +74,11 @@ function CreateSnufCnf()
            "('Days', '14'), ".
            "('Header', 'Cat.|Titel|Genre|Afzender|Datum|NZB|Platform'), ".  
            "('Items', '30'), ".
-           "('LastUpdate', '0'), ".
+           "('LastMessage', '0'), ".
            "('MenuText', 'Onderhoud|Laatste update:'), ".     
            "('TimeValues', 'seconde|seconden|minuut|minuten|uur|uur|dag|dagen|week|weken|maand|maanden|jaar|jaar'), ".
            "('Title', 'Snuffel'), ".    
-           "('Version', '0.33'), ".
+           "('Version', '0.34'), ".
            "('Warning', 'Titel is verplicht!');";
     
     ExecuteQuery($sql);    

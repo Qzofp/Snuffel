@@ -219,7 +219,7 @@ function ShowResultsFooter($aInput)
  * Function:	ShowResultsRow
  *
  * Created on Jun 11, 2011
- * Updated on Jun 27, 2011
+ * Updated on Jun 28, 2011
  *
  * Description: Laat een resultaat rij van de tabel zien.
  *
@@ -227,12 +227,12 @@ function ShowResultsFooter($aInput)
  * Out:	rij
  *
  */
-function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $nzb, $last, $pagenr)
+function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $nzb, $pagenr)
 {
     $class = null;     
     
     $new = null;
-    if ($date > $last) {
+    if ($id > cLastMessage) {
         $new = " new";
     }
    
@@ -276,7 +276,7 @@ function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date,
  * Function:	ShowResultsRows
  *
  * Created on Jun 11, 2011
- * Updated on Jun 27, 2011
+ * Updated on Jun 28, 2011
  *
  * Description: Show the results table rows.
  *
@@ -305,13 +305,13 @@ function ShowResultsRows($pagenr)
 
             if ($rows != 0)
             {
-                $delta = time() - strtotime(UpdateTime());
-                $last  = cLastUpdate + $delta;
+                //$delta = time() - strtotime(UpdateTime());
+                //$last  = cLastUpdate + $delta;
                 
                 $stmt->bind_result($id, $catkey, $category, $title, $genre, $poster, $date, $nzb);
                 while($stmt->fetch())
                 {                   
-                    ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $nzb, $last, $pagenr);
+                    ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $nzb, $pagenr);
                 }
             }
         }

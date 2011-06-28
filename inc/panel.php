@@ -200,7 +200,7 @@ function UpdateTime()
  * Function:	UpdateSnuffel
  *
  * Created on Aug 23, 2011
- * Updated on Jun 27, 2011
+ * Updated on Jun 28, 2011
  *
  * Description: Update Snuffel. Note: This is not a Spotweb update! 
  *
@@ -211,10 +211,10 @@ function UpdateTime()
 function UpdateSnuffel()
 {
     $db = OpenDatabase();
-    // Add last update time to snufcnf table.
-    $last =  strtotime(UpdateTime());
-    $sql = "UPDATE snufcnf SET value = '$last' ".
-           "WHERE name = 'LastUpdate'";        
+    
+    // Add last message to snufcnf table.
+    $sql = "UPDATE snufcnf SET value = (SELECT MAX(id) FROM snuftmp) ".
+           "WHERE name = 'LastMessage'";        
     mysqli_query($db, $sql);
 
     // Empty snuftmp1 table.
