@@ -7,7 +7,7 @@
  * File:    tables.php
  *
  * Created on Jun 16, 2011
- * Updated on Jun 27, 2011
+ * Updated on Jun 29, 2011
  *
  * Description: This page containts the create and update tables functions. 
  * 
@@ -44,7 +44,7 @@ function CreateSnuffelTables()
  * Function:	CreateSnufCnf
  *
  * Created on Jun 13, 2011
- * Updated on Jun 27, 2011
+ * Updated on Jun 29, 2011
  *
  * Description: Create or update the Snuffel Configuration table.
  *
@@ -72,13 +72,13 @@ function CreateSnufCnf()
            "('Buttons', 'Gevonden|Historie|Zoek Op|Instellingen|Update Snuffel|Verwijder Historie|Verwijder Zoek'), ".
            "('Categories', 'Beeld|Muziek|Spellen|Applicaties'), ".
            "('Days', '14'), ".
-           "('Header', 'Cat.|Titel|Genre|Afzender|Datum|NZB|Platform'), ".  
+           "('Header', 'Cat.|Titel|#|Genre|Afzender|Datum|NZB|Platform'), ".
            "('Items', '30'), ".
            "('LastMessage', '0'), ".
            "('MenuText', 'Onderhoud|Laatste update:'), ".     
            "('TimeValues', 'seconde|seconden|minuut|minuten|uur|uur|dag|dagen|week|weken|maand|maanden|jaar|jaar'), ".
            "('Title', 'Snuffel'), ".    
-           "('Version', '0.34'), ".
+           "('Version', '0.35'), ".
            "('Warning', 'Titel is verplicht!');";
     
     ExecuteQuery($sql);    
