@@ -21,7 +21,7 @@
  * Function:    CreateSearchPage
  *
  * Created on Jun 18, 2011
- * Updated on Jun 25, 2011
+ * Updated on Jun 29, 2011
  *
  * Description: Greate the search page.
  *
@@ -36,10 +36,10 @@ function CreateSearchPage()
     
     ShowPanel(2);
     
-    $aSearchInput = GetSearchInput();
-    $aSearchInput = ProcessSearchInput($aSearchInput);
-    ShowSearch($aSearchInput);
-    ShowSearchHiddenFields($aSearchInput);
+    $aInput = GetSearchInput();
+    $aInput = ProcessSearchInput($aInput);
+    ShowSearch($aInput);
+    ShowSearchHiddenFields($aInput);
  
     // Hidden check and page fields.
     echo "   <input type=\"hidden\" name=\"hidPAGE\" value=\"2\" />\n";    
@@ -56,7 +56,7 @@ function CreateSearchPage()
  * Function:    GetSearchInput
  *
  * Created on May 15, 2011
- * Updated on May 23, 2011
+ * Updated on Jun 29, 2011
  *
  * Description: Get user search input.
  *
@@ -67,51 +67,26 @@ function CreateSearchPage()
 function GetSearchInput()
 {
     // Initial values for gategory, title, genre and poster.
-    $aInput = array(null, null, null, null, null, null, null, null);
-
-    // Get the Ok button.
-    $aInput[0] = GetOk();  
+    $aInput = array("OK"=>null, "CAT"=>null, "TITLE"=>null, "GENRE"=>null, "POSTER"=>null, "MODE"=>null, "ID"=>0, 
+                    "CHECK"=>false, "PREV"=>null, "HOME"=>null, "NEXT"=>null, "PAGENR"=>1, "PAGE"=>null);
     
-    // Get gategory value.
-    $name = "lstCategories";
-    if (isset($_POST[$name]) && !empty($_POST[$name])) {
-        $aInput[1] = $_POST[$name];
-    }  
-
-    // Get hidden title.
-    $name = "hidTITLE";
-    if (isset($_POST[$name]) && !empty($_POST[$name]))
-    {
-        $aInput[2] = $_POST[$name];
+    $aInput["OK"]     = GetOk();
+    $aInput["CAT"]    = GetButtonValue("lstCATEGORIES");
+    $aInput["GENRE"]  = GetButtonValue("lstGENRE"); 
+    
+    $aInput["TITLE"]  = GetButtonValue("txtTITLE"); 
+    if (!$aInput["TITLE"]) {
+        $aInput["TITLE"]  = GetButtonValue("hidTITLE");    
     }
-
-    // Get title value.
-    $name = "txtTITLE";
-    if (isset($_POST[$name]) && !empty($_POST[$name])) {
-        $aInput[2] = $_POST[$name];
+    
+    $aInput["POSTER"]  = GetButtonValue("txtPOSTER"); 
+    if (!$aInput["POSTER"]) {
+        $aInput["POSTER"]  = GetButtonValue("hidPOSTER");    
     }    
     
-    // Get genre value.
-    $name = "lstGenre";
-    if (isset($_POST[$name]) && !empty($_POST[$name])) {
-        $aInput[3] = $_POST[$name];
-    }      
+    list($aInput["MODE"], $aInput["ID"], $aInput["CHECK"]) = GetSearchMode();
     
-    // Get hidden poster.
-    $name = "hidPOSTER";
-    if (isset($_POST[$name]) && !empty($_POST[$name]))
-    {
-        $aInput[4] = $_POST[$name];
-    }
-
-    // Get poster value.
-    $name = "txtPOSTER";
-    if (isset($_POST[$name]) && !empty($_POST[$name])) {
-        $aInput[4] = $_POST[$name];
-    }      
     
-    // Get mode value: Add, Edit or Delete.
-    list($aInput[5], $aInput[6], $aInput[7]) = GetSearchMode();
     
     return $aInput;
 }
@@ -133,7 +108,7 @@ function GetSearchMode()
     $mode  = "ADD";
     $key   = 0;
     $check = false;
-
+    
     // Get the hidden mode value.
     if (isset($_POST['hidMODE']) && !empty($_POST['hidMODE']))
     {
@@ -158,7 +133,7 @@ function GetSearchMode()
             }
 	}
     }
-    
+       
     return array($mode, $key, $check);
 }
 
@@ -169,7 +144,7 @@ function GetSearchMode()
  * Function:	ProcesSearchInput
  *
  * Created on May 16, 2011
- * Updated on May 28, 2011
+ * Updated on May 29, 2011
  *
  * Description: Process the search input.
  *
@@ -178,10 +153,8 @@ function GetSearchMode()
  *
  */
 function ProcessSearchInput($aInput)
-{
-    $mode = $aInput[5];
-        
-    switch ($mode)
+{      
+    switch ($aInput["MODE"])
     {
         case "ADD"  :   $aInput = AddSearch($aInput);                       
                         break;
@@ -205,15 +178,15 @@ function ProcessSearchInput($aInput)
  * Created on May 07, 2011
  * Updated on Jun 29, 2011
  *
- * Description: Laat de zoek pagina zien.
+ * Description: Show the search page.
  *
  * In:  $aInput
- * Out:	Tabel met zoek items.
+ * Out:	Table with search items.
  *
  */
 function ShowSearch($aInput)
 {
-    // Tabel header
+    // Table header
     $aHeaders = explode("|", cHeader);
     
     echo "  <div id=\"search_top\">\n";
@@ -236,10 +209,10 @@ function ShowSearch($aInput)
 
     // Table body.
     echo "   <tbody>\n";
-    // Toevoegen zoek item (rij).
+    // The first row is the add row.
     ShowSearchAddRow($aInput);
     
-    // Laat overige rijen zien.
+    // The rest of the rows.
     ShowSearchRows($aInput);
     
     echo "   </tbody>\n";
@@ -252,27 +225,20 @@ function ShowSearch($aInput)
  * Function:	ShowSearchAddRow
  *
  * Created on May 07, 2011
- * Updated on Jun 28, 2011
+ * Updated on Jun 29, 2011
  *
  * Description: Show the add input field. 
  *
  * In:  $aInput
- * Out:	input field.
+ * Out:	input field
  *
  */
 function ShowSearchAddRow($aInput)
-{
-    $inOk       = $aInput[0];   
-    $inCategory = $aInput[1];
-    $inTitle    = $aInput[2];
-    $inGenre    = $aInput[3];
-    $inPoster   = $aInput[4];
-    $mode       = $aInput[5];
-    
-    $key        = -1;
+{   
+    $key = -1;   
 
     // Ok buttons (submit|cancel or add).
-    if ($mode == "ADD") 
+    if ($aInput["MODE"] == "ADD")
     {
         $ok = "<input type=\"image\" src=\"img/tick.png\" name=\"OK_1\"/><input type=\"image\" src=\"img/slash.png\" name=\"OK_0\"/>";
         $disabled = "";
@@ -294,21 +260,21 @@ function ShowSearchAddRow($aInput)
     }
     
     // Category dropbox
-    $category = DropDownBox("lstCategories", cTitle, $aItems, true, $inCategory, $active);
+    $category = DropDownBox("lstCATEGORIES", cTitle, $aItems, true, $aInput["CAT"], $active);
 
     // Title field. Show messsage if Ok button if pushed and the title field is empty. This filed is mandatory.
-    if ($inOk == 1 && !$inTitle) {
+    if ($aInput["OK"] == 1 && !$aInput["TITLE"]) {
         $title = "<input class=\"warning\" type=\"text\" maxlength=\"100\" name=\"txtTITLE\" value=\"".cWarning."\" ".
                         "onfocus=\"if(!this._haschanged){this.value=''};this._haschanged=true;\" />";
     }
     else {
-        $title = "<input type=\"text\" maxlength=\"100\" name=\"txtTITLE\" value=\"$inTitle\"$disabled />";
+        $title = "<input type=\"text\" maxlength=\"100\" name=\"txtTITLE\" value=\"".$aInput["TITLE"]."\"$disabled />";
     }    
 
     // Genre field
-    if ($inCategory && $mode == "ADD")     // Controleer of category bestaat.
+    if ($aInput["CAT"] && $aInput["MODE"] == "ADD")     // Controleer of category bestaat.
     {
-        $key = array_search($inCategory, $aItems);
+        $key = array_search($aInput["CAT"], $aItems);
         
         $sql = "SELECT name FROM snuftag ".
                "WHERE cat = $key AND hide = 0 ".
@@ -323,10 +289,10 @@ function ShowSearchAddRow($aInput)
         $active = true;
     }   
     
-    $genre = DropDownBox("lstGenre", cTitle, $aItems, true, $inGenre, $active);
+    $genre = DropDownBox("lstGENRE", cTitle, $aItems, true, $aInput["GENRE"], $active);
     
     // Poster field
-    $poster = "<input type=\"text\" size=\"40\" maxlength=\"100\" name=\"txtPOSTER\" value=\"$inPoster\"$disabled />";
+    $poster = "<input type=\"text\" size=\"40\" maxlength=\"100\" name=\"txtPOSTER\" value=\"".$aInput["POSTER"]."\"$disabled />";
 
     ShowSearchRow($action, $message, $ok, $key, $category, $title, $genre, $poster);
 }
@@ -335,49 +301,43 @@ function ShowSearchAddRow($aInput)
  * Function:	ShowSearchEditRow
  *
  * Created on May 28, 2011
- * Updated on Jun 23, 2011
+ * Updated on Jun 29, 2011
  *
- * Description: Laat de wijzigrij zien.
+ * Description: Show the edit row.
  *
- * In:  $aInput, $inCategory, $inTitle, $inGenre, $inPoster
+ * In:  $aInput, $catnr, $title, $genre, $poster
  * Out:	Wijzigrij
  *
  */
-function ShowSearchEditRow($aInput, $inCategory, $inTitle, $inGenre, $inPoster)
-{      
-    $inCategory2 = $aInput[1];
-    $inGenre2    = $aInput[3];
-    $check       = $aInput[7];
-   
+function ShowSearchEditRow($aInput, $catnr, $title, $genre, $poster)
+{   
     // Fill items array with the categories.
-    $aCatItems = explode("|", cCategories);  
+    $aCategories = explode("|", cCategories);  
     
     // Check if the edit button is pushed, otherwise use the database values. 
-    if (!$check) 
+    if (!$aInput["CHECK"]) 
     {
-        $inCategory = array_search($inCategory2, $aCatItems);
-        $inGenre    = $inGenre2;
+        $catnr   = array_search($aInput["CAT"], $aCategories);
+        $inGenre = $aInput["GENRE"];
     }    
-    
-    $key = $inCategory;
-    
+       
     // Controleer of category bestaat.
-    if (strlen($inCategory))     
+    if (strlen($catnr)) 
     {     
-        $catitem = $aCatItems[$inCategory];
+        $category = $aCategories[$catnr];
         $sql = "SELECT name FROM snuftag ".
-               "WHERE cat = $inCategory AND hide = 0 ".
+               "WHERE cat = $catnr AND hide = 0 ".
                "ORDER BY name";
         
-        $aGenItems = GetItemsFromDatabase($sql);  
+        $aGenres = GetItemsFromDatabase($sql);  
         $active    = false;
     }
     else 
     {
-        $catitem   = null; 
-        $aGenItems = array("empty");
-        $active    = true;
-        $key       = null;
+        $category = null; 
+        $aGenres  = array("empty");
+        $active   = true;
+        $catnr    = null;
     }   
  
     // The Message submit button.
@@ -387,25 +347,25 @@ function ShowSearchEditRow($aInput, $inCategory, $inTitle, $inGenre, $inPoster)
     $buttons = "<input type=\"image\" src=\"img/tick.png\" name=\"OK_1\"/><input type=\"image\" src=\"img/slash.png\" name=\"OK_0\"/>";
     
     // Categorie dropbox    
-    $category = DropDownBox("lstCategories", cTitle, $aCatItems, true, $catitem);
+    $category = DropDownBox("lstCATEGORIES", cTitle, $aCategories, true, $category);
  
     // Titel veld
-    $title = "<input type=\"text\" size=\"40\" maxlength=\"100\" name=\"txtTITLE\" value=\"$inTitle\"/>";    
+    $title = "<input type=\"text\" size=\"40\" maxlength=\"100\" name=\"txtTITLE\" value=\"$title\"/>";    
     
     // Genre veld
-    $genre = DropDownBox("lstGenre", cTitle, $aGenItems, true, $inGenre, $active);
+    $genre = DropDownBox("lstGENRE", cTitle, $aGenres, true, $genre, $active);
     
     // Poster veld
-    $poster = "<input type=\"text\" size=\"40\" maxlength=\"100\" name=\"txtPOSTER\" value=\"$inPoster\"/>";
+    $poster = "<input type=\"text\" size=\"40\" maxlength=\"100\" name=\"txtPOSTER\" value=\"$poster\"/>";
 
-    ShowSearchRow(null, $message, $buttons, $key, $category, $title, $genre, $poster);
+    ShowSearchRow(null, $message, $buttons, $catnr, $category, $title, $genre, $poster);
 }
 
 /*
  * Function:	ShowSearchHiddenFields
  *
  * Created on May 16, 2011
- * Updated on Jun 18, 2011
+ * Updated on Jun 29, 2011
  *
  * Description: Laat de hidden fields titel en poster zien.
  *
@@ -415,18 +375,18 @@ function ShowSearchEditRow($aInput, $inCategory, $inTitle, $inGenre, $inPoster)
  */
 function ShowSearchHiddenFields($aInput)
 {
-    // Title veld
-    echo "   <input type=\"hidden\" name=\"hidTITLE\" value=\"$aInput[2]\" />\n";
+    // Title field
+    echo "   <input type=\"hidden\" name=\"hidTITLE\" value=\"".$aInput["TITLE"]."\" />\n";
     
-    // Poster veld
-    echo "   <input type=\"hidden\" name=\"hidPOSTER\" value=\"$aInput[4]\" />\n";    
+    // Poster field
+    echo "   <input type=\"hidden\" name=\"hidPOSTER\" value=\"".$aInput["POSTER"]."\" />\n";    
 
-    // Mode veld
-    if ($aInput[5]) {
-        $aInput[5] .= '_';
+    // Mode field
+    if ($aInput["MODE"]) {
+        $aInput["MODE"] .= '_';
     }
     
-    echo "   <input type=\"hidden\" name=\"hidMODE\" value=\"$aInput[5]$aInput[6]\" />\n";
+    echo "   <input type=\"hidden\" name=\"hidMODE\" value=\"".$aInput["MODE"].$aInput["ID"]."\" />\n";
 }
 
 /*
@@ -511,7 +471,7 @@ function ShowSearchDeleteRow($catkey, $category, $title, $genre, $poster)
  * Function:	ShowSearchRows
  *
  * Created on May 16, 2011
- * Updated on Jun 24, 2011
+ * Updated on Jun 29, 2011
  *
  * Description: Show the search rows.
  *
@@ -521,10 +481,10 @@ function ShowSearchDeleteRow($catkey, $category, $title, $genre, $poster)
  */
 function ShowSearchRows($aInput)
 {
-    $mode = $aInput[5];
-    $key  = $aInput[6];
+    //$mode = $aInput[5];
+    //$key  = $aInput[6];
     
-    $aCatItems = explode("|", cCategories);  
+    $aCategories = explode("|", cCategories);
        
     //Query the Snuffel search items.
     $sql = "SELECT f.id, f.cat, f.title, t.name, f.subcata, f.subcatd, f.poster FROM snuffel f ".
@@ -532,8 +492,8 @@ function ShowSearchRows($aInput)
            "ON f.cat = t.cat AND (f.subcata = t.tag OR f.subcatd = t.tag) ".
            "ORDER BY f.title";
 
-    $sfdb = OpenDatabase();
-    $stmt = $sfdb->prepare($sql);
+    $db = OpenDatabase();
+    $stmt = $db->prepare($sql);
     if($stmt)
     {
         if($stmt->execute())
@@ -544,34 +504,34 @@ function ShowSearchRows($aInput)
 
             if ($rows != 0)
             {                
-                $stmt->bind_result($id, $catkey, $title, $genre, $subcata, $subcatd, $poster);
+                $stmt->bind_result($id, $catnr, $title, $genre, $subcata, $subcatd, $poster);
                 while($stmt->fetch())
                 {
                     $category = "";
-                    if ($catkey !== null) {
-                        $category = $aCatItems[$catkey];
+                    if ($catnr !== null) {
+                        $category = $aCategories[$catnr];
                     }
 
                     // Edit and delete buttons.
-                    if ($id == $key) 
+                    if ($id == $aInput["ID"]) 
                     {                       
-                        switch ($mode)
+                        switch ($aInput["MODE"])
                         {
                             case "ADD"  : $buttons = "<input type=\"image\" src=\"img/edit.png\" name=\"EDIT_$id\"/><input type=\"image\" src=\"img/del.png\" name=\"DEL_$id\"/>";
-                                          ShowSearchRow("hov add", null, $buttons, $catkey, $category, $title, $genre, $poster);
+                                          ShowSearchRow("hov add", null, $buttons, $catnr, $category, $title, $genre, $poster);
                                           break;
                                 
-                            case "EDIT" : ShowSearchEditRow($aInput, $catkey, $title, $genre, $poster);
+                            case "EDIT" : ShowSearchEditRow($aInput, $catnr, $title, $genre, $poster);
                                           break;
                                       
-                            case "DEL"  : ShowSearchDeleteRow($catkey, $category, $title, $genre, $poster);
+                            case "DEL"  : ShowSearchDeleteRow($catnr, $category, $title, $genre, $poster);
                                           break;
                         } 
                     }
                     else 
                     {
                         $buttons = "<input type=\"image\" src=\"img/edit.png\" name=\"EDIT_$id\"/><input type=\"image\" src=\"img/del.png\" name=\"DEL_$id\"/>";   
-                        ShowSearchRow("hov", null, $buttons, $catkey, $category, $title, $genre, $poster);
+                        ShowSearchRow("hov", null, $buttons, $catnr, $category, $title, $genre, $poster);
                     }
                 }
             }
@@ -587,14 +547,14 @@ function ShowSearchRows($aInput)
         die('Invalid query: '.mysql_error());
     }
 
-    CloseDatabase($sfdb); 
+    CloseDatabase($db); 
 }
 
 /*
  * Function:	AddSearch
  *
  * Created on May 21, 2011
- * Updated on Jun 28, 2011
+ * Updated on Jun 29, 2011
  *
  * Description: Voeg zoekwaarde toe.
  *
@@ -604,32 +564,43 @@ function ShowSearchRows($aInput)
  */
 function AddSearch($aInput)
 {
-    $ok = $aInput[0];  
-
-    if ($ok == 1)
+    if ($aInput["OK"] == 1)
     {        
-        $key = null;
-        list($check, $category, $title, $poster, $subcata, $subcatd) = CheckAndFixInput($aInput);
+        $id = null;
+        list($check, $catnr, $title, $poster, $subcata, $subcatd) = CheckAndFixInput($aInput);
 
         // Add search values to the database.
         $sql = "INSERT INTO snuffel (cat, title, poster, subcata, subcatd) ".
-               "VALUES ($category, $title, $poster, $subcata, $subcatd)";
-    
+               "VALUES ($catnr, $title, $poster, $subcata, $subcatd)";
+        
         if ($check) 
         {
             ExecuteQuery($sql);
         
-            $sql    = "SELECT MAX(id) FROM snuffel";
-            $aItems = GetItemsFromDatabase($sql);
-            $key = $aItems[0];
+            $sql      = "SELECT MAX(id) FROM snuffel";
+            list($id) = GetItemsFromDatabase($sql);
+            
+            // Reset values.
+            $aInput["CAT"]    = null;
+            $aInput["TITLE"]  = null;
+            $aInput["GENRE"]  = null;
+            $aInput["POSTER"] = null;
         }
         
-        $aInput = array(!$check, null, null, null, null, "ADD", $key, null);  
+        $aInput["OK"]   = !$check;
+        $aInput["MODE"] = "ADD";
+        $aInput["ID"]   = $id;
     }
     
-    if ($ok == 0)
+    if ($aInput["OK"] == 0)
     {
-        $aInput = array(null, null, null, null, null, "ADD", null, null);        
+        // Reset values.
+        $aInput["CAT"]    = null;
+        $aInput["TITLE"]  = null;
+        $aInput["GENRE"]  = null;
+        $aInput["POSTER"] = null;         
+        
+        $aInput["MODE"] = "ADD";
     }
         
     return $aInput;
@@ -639,9 +610,9 @@ function AddSearch($aInput)
  * Function:	EditSearch
  *
  * Created on May 28, 2011
- * Updated on May 29, 2011
+ * Updated on Jun 29, 2011
  *
- * Description: Wijig zoekwaardes.
+ * Description: Edit search values.
  *
  * In:  $aInput
  * Out:	$aInput
@@ -649,28 +620,41 @@ function AddSearch($aInput)
  */
 function EditSearch($aInput)
 {
-    $ok  = $aInput[0];
-    $key = $aInput[6];
-
-    if ($ok == 1)
+    if ($aInput["OK"] == 1)
     {
-        list($check, $cat, $title, $poster, $subcata, $subcatd) = CheckAndFixInput($aInput);
+        list($check, $catnr, $title, $poster, $subcata, $subcatd) = CheckAndFixInput($aInput);
 
         // Update search values in the database.
         $sql = "UPDATE snuffel ".
-               "SET cat = $cat, title = $title, poster = $poster,  subcata = $subcata, subcatd = $subcatd ".
-               "WHERE id = $key";
+               "SET cat = $catnr, title = $title, poster = $poster,  subcata = $subcata, subcatd = $subcatd ".
+               "WHERE id = ".$aInput["ID"];
         
         if ($check) {
             ExecuteQuery($sql);
         }
         
-        $aInput = array(null, null, null, null, null, "ADD", $key, null);         
+        // Reset values.
+        $aInput["CAT"]    = null;
+        $aInput["TITLE"]  = null;
+        $aInput["GENRE"]  = null;
+        $aInput["POSTER"] = null;
+        
+        $aInput["OK"]   = -1;
+        $aInput["MODE"] = "ADD";
+        $aInput["ID"]   = $aInput["ID"];      
+        
     }
     
-    if ($ok == 0)
-    {
-        $aInput = array(null, null, null, null, null, "ADD", null, null);
+    if ($aInput["OK"] == 0)
+    {   
+        // Reset values.
+        $aInput["CAT"]    = null;
+        $aInput["TITLE"]  = null;
+        $aInput["GENRE"]  = null;
+        $aInput["POSTER"] = null;
+        
+        $aInput["MODE"] = "ADD";
+        $aInput["ID"]   = 0;
     }
         
     return $aInput;
@@ -680,7 +664,7 @@ function EditSearch($aInput)
  * Function:	DelSearch
  *
  * Created on May 23, 2011
- * Updated on May 29, 2011
+ * Updated on Jun 29, 2011
  *
  * Description: Verwijder zoekwaarde.
  *
@@ -689,19 +673,24 @@ function EditSearch($aInput)
  *
  */
 function DelSearch($aInput)
-{
-    $ok   = $aInput[0];
-    $key  = $aInput[6];
-    
-    if ($ok == 1)
+{    
+    if ($aInput["OK"] == 1)
     {
-        $sql = "DELETE FROM snuffel WHERE id = $key";
+        $sql = "DELETE FROM snuffel WHERE id = ".$aInput["ID"];
         ExecuteQuery($sql);    
     }
     
-    if ($ok != -1)
-    {    
-        $aInput = array(null, null, null, null, null, "ADD", null, null);  
+    if ($aInput["OK"]!= -1)
+    {        
+        // Reset values.
+        $aInput["CAT"]    = null;
+        $aInput["TITLE"]  = null;
+        $aInput["GENRE"]  = null;
+        $aInput["POSTER"] = null;
+        
+        $aInput["OK"]   = -1;        
+        $aInput["MODE"] = "ADD";
+        $aInput["ID"]   = 0;        
     }
     
     return $aInput;    
@@ -711,7 +700,7 @@ function DelSearch($aInput)
  * Function:	CheckAndFixInput
  *
  * Created on May 28, 2011
- * Updated on Jun 28, 2011
+ * Updated on Jun 29, 2011
  *
  * Description: Controleer en repareer input.
  *
@@ -722,54 +711,50 @@ function DelSearch($aInput)
 function CheckAndFixInput($aInput)
 {
     $check  = false;
-    $cat    = $aInput[1];
-    $title  = $aInput[2];
-    $genre  = $aInput[3];
-    $poster = $aInput[4];
     
     $subcata = "NULL";
     $subcatd = "NULL";   
    
     $aCategories = explode("|", cCategories);
-    $cat = array_search($cat, $aCategories);
-    if ($cat === false) {
-        $cat = "NULL";
+    $catnr = array_search($aInput["CAT"], $aCategories);
+    if ($aInput["CAT"] === false) {
+        $aInput["CAT"] = "NULL";
     }
     else 
     {    
         // Get the correct subcategory.
         $sql = "SELECT tag ".
                "FROM snuftag ".
-               "WHERE cat = '$cat' AND name = '$genre'";
-           
-        $aItems = GetItemsFromDatabase($sql);  
-        if ($aItems)
+               "WHERE cat = '$catnr' AND name = '".$aInput["GENRE"]."'";
+        list($tag) = GetItemsFromDatabase($sql);
+        
+        if ($tag)
         {
-            if ($cat < 2) {       
-                $subcatd = "'$aItems[0]'";
+            if ($catnr < 2) {     
+                $subcatd = "'$tag'";
             }
             else {
-                $subcata = "'$aItems[0]'";
+                $subcata = "'$tag'";
             }
         }
     }
     
-    if ($title && $title != cWarning) 
+    if ($aInput["TITLE"] && $aInput["TITLE"] != cWarning) 
     {
-        $title = "'$title'";
+        $aInput["TITLE"] = "'".$aInput["TITLE"]."'";
         $check = true;
     }
     else {
-        $title = "NULL";
+        $aInput["TITLE"] = null;
     }    
     
-    if ($poster) {
-        $poster = "'$poster'";
+    if ($aInput["POSTER"]) {
+        $aInput["POSTER"] = "'".$aInput["POSTER"]."'";
     }
     else {
-        $poster = "NULL";
+        $aInput["POSTER"] = "NULL";
     }
     
-    return array($check, $cat, $title, $poster, $subcata, $subcatd);
+    return array($check, $catnr, $aInput["TITLE"], $aInput["POSTER"], $subcata, $subcatd);
 }
 ?>

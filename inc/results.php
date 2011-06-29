@@ -292,7 +292,7 @@ function ShowResultsRows($pagenr)
     $sql = "SELECT t.id, t.category, c.name, t.title, g.name, t.poster, t.stamp, t.commentcount FROM (snuftmp t ".
            "LEFT JOIN snuftag g ON t.category = g.cat AND (t.subcata = CONCAT(g.tag,'|') OR t.subcatd LIKE CONCAT('%',g.tag,'|'))) ".
            "LEFT JOIN snufcat c ON t.category = c.cat AND CONCAT(c.tag,'|') = t.subcata ".
-           "ORDER BY t.stamp DESC";  
+           "ORDER BY t.title DESC, t.stamp DESC";  
     $sql = AddLimit($sql, $pagenr);
     
     $sfdb = OpenDatabase();
