@@ -7,7 +7,7 @@
  * File:    results.php
  *
  * Created on Apr 10, 2011
- * Updated on Jun 27, 2011
+ * Updated on Jun 29, 2011
  *
  * Description: This page contains the results functions.
  * 
@@ -120,7 +120,7 @@ function ProcessResultsInput($aInput)
  * Function:	ShowResults
  *
  * Created on Apr 10, 2011
- * Updated on Jun 25, 2011
+ * Updated on Jun 29, 2011
  *
  * Description: Show the search results.
  *
@@ -141,10 +141,10 @@ function ShowResults($aInput)
     echo "    <tr>\n";
     echo "     <th class=\"cat\">$aHeaders[0]</th>\n";
     echo "     <th>$aHeaders[1]</th>\n";
-    echo "     <th>$aHeaders[2]</th>\n";
-    echo "     <th>$aHeaders[3]</th>\n";
-    echo "     <th>$aHeaders[4]</th>\n";
-    echo "     <th>$aHeaders[5]</th>\n";    
+    echo "     <th class=\"gen\">$aHeaders[2]</th>\n";
+    echo "     <th class=\"pos\">$aHeaders[3]</th>\n";
+    echo "     <th class=\"dat\">$aHeaders[4]</th>\n";
+    echo "     <th class=\"nzb\">$aHeaders[5]</th>\n";    
     echo "    </tr>\n";
     echo "   </thead>\n";
 
@@ -276,7 +276,7 @@ function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date,
  * Function:	ShowResultsRows
  *
  * Created on Jun 11, 2011
- * Updated on Jun 28, 2011
+ * Updated on Jun 29, 2011
  *
  * Description: Show the results table rows.
  *
@@ -304,10 +304,7 @@ function ShowResultsRows($pagenr)
             $rows = $stmt->num_rows;
 
             if ($rows != 0)
-            {
-                //$delta = time() - strtotime(UpdateTime());
-                //$last  = cLastUpdate + $delta;
-                
+            {              
                 $stmt->bind_result($id, $catkey, $category, $title, $genre, $poster, $date, $nzb);
                 while($stmt->fetch())
                 {                   

@@ -7,7 +7,7 @@
  * File:    results.css
  *
  * Created on Apr 16, 2011
- * Updated on Jun 27, 2011
+ * Updated on Jun 29, 2011
  *
  * Description: The results css page.
  *
@@ -207,6 +207,26 @@ border-radius:0 4px 4px 0;
 table.results th.cat{
 padding:3px 0 3px 0;
 width:52px;
+}
+
+table.results th.gen{
+min-width:120px; 
+width:120px;
+}
+
+table.results th.pos{
+min-width:110px; 
+width:110px; 
+}
+
+table.results th.dat{
+min-width:140px;
+width:140px;
+}
+
+table.results th.nzb{
+min-width:26px;
+width:26px;
 }
 
 table.results tbody tr{

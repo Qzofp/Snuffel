@@ -200,7 +200,7 @@ function UpdateTime()
  * Function:	UpdateSnuffel
  *
  * Created on Aug 23, 2011
- * Updated on Jun 28, 2011
+ * Updated on Jun 29, 2011
  *
  * Description: Update Snuffel. Note: This is not a Spotweb update! 
  *
@@ -232,8 +232,7 @@ function UpdateSnuffel()
            "AND (t.subcata LIKE CONCAT('%', f.subcata, '|%') OR f.subcata IS NULL) ".
            "AND (t.subcatd LIKE CONCAT('%', f.subcatd, '|%') OR f.subcatd IS NULL) ".
            "WHERE MATCH(t.title) ".
-           "AGAINST((SELECT GROUP_CONCAT(title) FROM snuffel) IN BOOLEAN MODE) ".
-           "ORDER BY t.title";
+           "AGAINST((SELECT GROUP_CONCAT(title) FROM snuffel) IN BOOLEAN MODE)";
     mysqli_query($db, $sql);
     
     CloseDatabase($db);

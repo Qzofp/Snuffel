@@ -49,7 +49,7 @@ else
 
     // Show spot.
     echo "  <iframe src=\"$spot\"></iframe>\n";
-
+    
     // Return to Snuffel button.
     echo "  <form name=\"Spot\" action=\"index.php\" method=\"post\">\n";
     echo "   <input type=\"submit\" name=\"btnDUMMY\" value=\"".cTitle."\"/>\n";
