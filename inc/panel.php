@@ -209,17 +209,15 @@ function UpdateTime()
  *
  */
 function UpdateSnuffel()
-{
-    $db = OpenDatabase();
-    
+{    
     // Add last message to snufcnf table.
     $sql = "UPDATE snufcnf SET value = (SELECT MAX(id) FROM snuftmp) ".
-           "WHERE name = 'LastMessage'";        
-    mysqli_query($db, $sql);
+           "WHERE name = 'LastMessage'";
+    ExecuteQuery($sql);
 
     // Empty snuftmp1 table.
     $sql = "TRUNCATE snuftmp";
-    mysqli_query($db, $sql);
+    ExecuteQuery($sql);
     
     // Copy spots that matches the snuffel title search criteria from the spots table to the snuftmp1 table.
     $sql = "INSERT INTO snuftmp(id, messageid, poster, title, tag, category, subcata, subcatb, subcatc, subcatd, subcatz, stamp, ".
@@ -233,9 +231,7 @@ function UpdateSnuffel()
            "AND (t.subcatd LIKE CONCAT('%', f.subcatd, '|%') OR f.subcatd IS NULL) ".
            "WHERE MATCH(t.title) ".
            "AGAINST((SELECT GROUP_CONCAT(title) FROM snuffel) IN BOOLEAN MODE)";
-    mysqli_query($db, $sql);
-    
-    CloseDatabase($db);
+    ExecuteQuery($sql);
 }
 
 /*

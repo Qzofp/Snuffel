@@ -157,7 +157,7 @@ function PageFooter($footer=true)
         echo "  <div id=\"footer\"><a href =\"https://github.com/Qzofp/Snuffel\">Qzofp / Snuffel</a></div>\n";  
     }
     
-    echo " </body>\n";
+    //echo " </body>\n";
     echo "</html>";
 }
 
