@@ -7,7 +7,7 @@
  * File:    search.php
  *
  * Created on May 07, 2011
- * Updated on Jun 28, 2011
+ * Updated on Jun 29, 2011
  *
  * Description: This page contains the search functions.
  * 
@@ -203,7 +203,7 @@ function ProcessSearchInput($aInput)
  * Function:	ShowSearch
  *
  * Created on May 07, 2011
- * Updated on Jun 24, 2011
+ * Updated on Jun 29, 2011
  *
  * Description: Laat de zoek pagina zien.
  *
@@ -226,8 +226,8 @@ function ShowSearch($aInput)
     echo "     <th class=\"but\"></th>\n";
     echo "     <th class=\"cat\">$aHeaders[0]</th>\n";
     echo "     <th>$aHeaders[1]</th>\n";
-    echo "     <th class=\"gen\">$aHeaders[2] / $aHeaders[6]</th>\n";
-    echo "     <th>$aHeaders[3]</th>\n";
+    echo "     <th class=\"gen\">$aHeaders[3] / $aHeaders[7]</th>\n";
+    echo "     <th>$aHeaders[4]</th>\n";
     echo "    </tr>\n";
     echo "   </thead>\n";
 

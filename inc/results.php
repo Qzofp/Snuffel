@@ -141,10 +141,11 @@ function ShowResults($aInput)
     echo "    <tr>\n";
     echo "     <th class=\"cat\">$aHeaders[0]</th>\n";
     echo "     <th>$aHeaders[1]</th>\n";
-    echo "     <th class=\"gen\">$aHeaders[2]</th>\n";
-    echo "     <th class=\"pos\">$aHeaders[3]</th>\n";
-    echo "     <th class=\"dat\">$aHeaders[4]</th>\n";
-    echo "     <th class=\"nzb\">$aHeaders[5]</th>\n";    
+    echo "     <th class=\"com\">$aHeaders[2]</th>\n";    
+    echo "     <th class=\"gen\">$aHeaders[3]</th>\n";
+    echo "     <th class=\"pos\">$aHeaders[4]</th>\n";
+    echo "     <th class=\"dat\">$aHeaders[5]</th>\n";
+    echo "     <th class=\"nzb\">$aHeaders[6]</th>\n";
     echo "    </tr>\n";
     echo "   </thead>\n";
 
@@ -219,15 +220,15 @@ function ShowResultsFooter($aInput)
  * Function:	ShowResultsRow
  *
  * Created on Jun 11, 2011
- * Updated on Jun 28, 2011
+ * Updated on Jun 29, 2011
  *
  * Description: Laat een resultaat rij van de tabel zien.
  *
- * In:  $id, $catkey, $category, $title, $genre, $poster, $date, $nzb, $last, $pagenr
+ * In:  $id, $catkey, $category, $title, $genre, $poster, $date, $comment, $pagenr
  * Out:	rij
  *
  */
-function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $nzb, $pagenr)
+function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $pagenr)
 {
     $class = null;     
     
@@ -262,6 +263,7 @@ function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date,
     echo "    <tr$class>\n";
     echo "     <td class=\"cat\">$category</td>\n";
     echo "     <td><a href=\"spot.php?id=$id&s=$pagenr\">$title</a></td>\n";
+    echo "     <td class=\"com\">$comment</td>\n";
     echo "     <td class=\"gen\">$genre</td>\n";
     echo "     <td>$poster</td>\n";
     echo "     <td>".time_ago($date, 1)."</td>\n";  
@@ -287,7 +289,7 @@ function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date,
 function ShowResultsRows($pagenr)
 {        
     //The results query.
-    $sql = "SELECT t.id, t.category, c.name, t.title, g.name, t.poster, t.stamp, t.messageid FROM (snuftmp t ".
+    $sql = "SELECT t.id, t.category, c.name, t.title, g.name, t.poster, t.stamp, t.commentcount FROM (snuftmp t ".
            "LEFT JOIN snuftag g ON t.category = g.cat AND (t.subcata = CONCAT(g.tag,'|') OR t.subcatd LIKE CONCAT('%',g.tag,'|'))) ".
            "LEFT JOIN snufcat c ON t.category = c.cat AND CONCAT(c.tag,'|') = t.subcata ".
            "ORDER BY t.stamp DESC";  
@@ -305,10 +307,10 @@ function ShowResultsRows($pagenr)
 
             if ($rows != 0)
             {              
-                $stmt->bind_result($id, $catkey, $category, $title, $genre, $poster, $date, $nzb);
+                $stmt->bind_result($id, $catkey, $category, $title, $genre, $poster, $date, $comment);
                 while($stmt->fetch())
                 {                   
-                    ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $nzb, $pagenr);
+                    ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $pagenr);
                 }
             }
         }

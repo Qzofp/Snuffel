@@ -209,6 +209,14 @@ padding:3px 0 3px 0;
 width:52px;
 }
 
+table.results td.com,
+table.results th.com{
+text-align:center;
+width:34px; 
+min-width:34px;
+padding:0;
+}
+
 table.results th.gen{
 min-width:120px; 
 width:120px;
@@ -358,6 +366,40 @@ table.results tr.red td.nzb a{
 color:#de2500;
 }
 
+table.results tr td.com{
+text-align:center;
+padding:0; 
+background-image:url(sprite_y.png); 
+background-repeat:repeat-y;
+font-weight:bold; 
+color:#fff;
+}
+
+table.results tr:hover td.com{
+color:#000;
+}
+
+table.results tr:hover td.com{
+background-image:none 
+!important;
+}
+
+table.results tr.blue td.com{
+background-position:0 0;
+}
+
+table.results tr.orange td.com{
+background-position:-34px 0;
+}
+
+table.results tr.green td.com{
+background-position:-68px 0;
+}
+
+table.results tr.red td.com{
+background-position:-102px 0;
+}
+
 table.bar{
 margin:5px 0 0 0;
 width:100%;
@@ -383,7 +425,6 @@ background:url(sprite_x.png) repeat-x 0 -60px;
 }
 
 table.bar tr td input{
-/*color:#908F91;  */
 color:black;
 background-color:#ececec;
 text-align:center;
