@@ -7,7 +7,7 @@
  * File:    results.php
  *
  * Created on Apr 10, 2011
- * Updated on Jun 29, 2011
+ * Updated on Jul 02, 2011
  *
  * Description: This page contains the results functions.
  * 
@@ -78,7 +78,7 @@ function GetResultsInput()
         $aInput["PAGENR"] = 1;
     }
     
-    $aInput["PAGE"]   = GetButtonValue("hidPAGE");  
+    //$aInput["PAGE"]   = GetButtonValue("hidPAGE");
     
     return $aInput;
 }
@@ -120,7 +120,7 @@ function ProcessResultsInput($aInput)
  * Function:	ShowResults
  *
  * Created on Apr 10, 2011
- * Updated on Jun 29, 2011
+ * Updated on Jul 02, 2011
  *
  * Description: Show the search results.
  *
@@ -160,60 +160,10 @@ function ShowResults($aInput)
     echo "   </tbody>\n";    
     echo "  </table>\n";
     
-    ShowResultsFooter($aInput);    
-    echo "  </div>\n";   
-}
-
-/*
-* Function: ShowResultsFooter
-*
-* Created on Jun 22, 2011
-* Updated on Jun 26, 2011
-*
-* Description: Shows the results footer with navigation bar.
-*
-* In: $aInput
-* Out: Results footer
-*
-*/
-function ShowResultsFooter($aInput)
-{
     $sql = "SELECT * FROM snuftmp";
-    $rows = CountRows($sql);
-    $max = ceil($rows/cItems);
-
-    // The previous and next buttons. The page number is put in the hidden field: "hidPAGENR".
-    if ($max > 1)
-    {
-       $n = $aInput["PAGENR"];
-        switch($n)
-        {
-            case 1     : $prev = "<input type=\"button\" name=\"\" value=\"\"/>";
-                         $next = "<input type=\"submit\" name=\"btnNEXT\" value=\"&gt;&gt;\"/>";
-                         break;
-        
-            case $max:   $prev = "<input type=\"submit\" name=\"btnPREV\" value=\"&lt;&lt;\"/>";
-                         $next = "<input type=\"button\" name=\"\" value=\"\"/>";
-                         break;
-                                            
-            default:     $prev = "<input type=\"submit\" name=\"btnPREV\" value=\"&lt;&lt;\"/>";
-                         $next = "<input type=\"submit\" name=\"btnNEXT\" value=\"&gt;&gt;\"/>";
-        }
-
-        $home = "<input type=\"submit\" name=\"btnHOME\" value=\"1\"/>";
-               
-        // Show footer / navigation bar.
-        echo "  <table class=\"bar\">\n";
-        echo "   <tbody>\n";
-        echo "    <tr>\n";
-        echo "     <td class=\"prev\">$prev</td>\n";
-        echo "     <td class=\"home\">$home</td>\n";        
-        echo "     <td class=\"page\">$n</td>\n";
-        echo "     <td class=\"next\">$next</td>\n";        
-        echo "    </tr>\n";
-        echo "   </tbody>\n";        
-        echo "  </table>\n";
-    }
+    ShowResultsFooter($sql, $aInput, cItems);
+    
+    echo "  </div>\n";   
 }
 
 /*
@@ -293,7 +243,7 @@ function ShowResultsRows($pagenr)
            "LEFT JOIN snuftag g ON t.category = g.cat AND (t.subcata = CONCAT(g.tag,'|') OR t.subcatd LIKE CONCAT('%',g.tag,'|'))) ".
            "LEFT JOIN snufcat c ON t.category = c.cat AND CONCAT(c.tag,'|') = t.subcata ".
            "ORDER BY t.title DESC, t.stamp DESC";  
-    $sql = AddLimit($sql, $pagenr);
+    $sql = AddLimit($sql, $pagenr, cItems);
     
     $sfdb = OpenDatabase();
     $stmt = $sfdb->prepare($sql);

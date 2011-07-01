@@ -394,3 +394,73 @@ background-color:#D4D0C8;
 table.search input[type="text"].warning{
 font-style:italic;
 }
+
+table.bar{
+margin:5px 0 0 0;
+width:100%;
+border-collapse:collapse;    
+}
+
+table.bar tbody td:first-child{
+-moz-border-radius:4px 0 0 4px;
+-webkit-border-radius:4px 0 0 4px;
+border-radius:4px 0 0 4px;
+}
+
+table.bar tbody td:last-child{
+-moz-border-radius:0 4px 4px 0;
+-webkit-border-radius:0 4px 4px 0;
+border-radius:0 4px 4px 0;
+}
+
+table.bar tr td{
+padding:0;
+height:20px;
+background:url(sprite_x.png) repeat-x 0 -60px;   
+}
+
+table.bar tr td input{
+color:black;
+background-color:#ececec;
+text-align:center;
+font-size:1.1em;
+font-weight:bold;
+border:0;
+height:20px;
+width:30px;
+cursor:pointer;
+}
+
+table.bar tr td.prev{
+width:55px;
+}
+
+table.bar tr td.prev input{ 
+-moz-border-radius:4px 0 0 4px;
+-webkit-border-radius:4px 0 0 4px;
+border-radius:4px 0 0 4px;
+}
+
+table.bar tr td.next{
+width:30px;
+}
+
+table.bar tr td.next input{
+-moz-border-radius:0 4px 4px 0;
+-webkit-border-radius:0 4px 4px 0;
+border-radius:0 4px 4px 0;
+}
+
+table.bar tr td.home{
+text-align:center;
+}
+
+table.bar tr td.home input{
+background: url(home.png) no-repeat center 2px;
+text-indent:-1000em;
+}
+
+table.bar tr td.page{
+width:25px;
+color:#908F91;
+}

@@ -21,7 +21,7 @@
  * Function:    CreateSearchPage
  *
  * Created on Jun 18, 2011
- * Updated on Jun 29, 2011
+ * Updated on Jul 02, 2011
  *
  * Description: Greate the search page.
  *
@@ -42,7 +42,8 @@ function CreateSearchPage()
     ShowSearchHiddenFields($aInput);
  
     // Hidden check and page fields.
-    echo "   <input type=\"hidden\" name=\"hidPAGE\" value=\"2\" />\n";    
+    echo "   <input type=\"hidden\" name=\"hidPAGE\" value=\"2\" />\n";  
+    echo "   <input type=\"hidden\" name=\"hidPAGENR\" value=\"".$aInput["PAGENR"]."\" />\n";    
     echo "   <input type=\"hidden\" name=\"hidCHECK\" value=\"2\" />\n";
     
     echo "  </form>\n";
@@ -56,7 +57,7 @@ function CreateSearchPage()
  * Function:    GetSearchInput
  *
  * Created on May 15, 2011
- * Updated on Jun 29, 2011
+ * Updated on Jul 02, 2011
  *
  * Description: Get user search input.
  *
@@ -86,7 +87,14 @@ function GetSearchInput()
     
     list($aInput["MODE"], $aInput["ID"], $aInput["CHECK"]) = GetSearchMode();
     
+    $aInput["PREV"] = GetButtonValue("btnPREV");
+    $aInput["HOME"] = GetButtonValue("btnHOME");   
+    $aInput["NEXT"] = GetButtonValue("btnNEXT");
     
+    $aInput["PAGENR"] = GetButtonValue("hidPAGENR");
+    if (!$aInput["PAGENR"]) {
+        $aInput["PAGENR"] = 1;
+    }
     
     return $aInput;
 }
@@ -144,7 +152,7 @@ function GetSearchMode()
  * Function:	ProcesSearchInput
  *
  * Created on May 16, 2011
- * Updated on May 29, 2011
+ * Updated on Jul 02, 2011
  *
  * Description: Process the search input.
  *
@@ -154,6 +162,17 @@ function GetSearchMode()
  */
 function ProcessSearchInput($aInput)
 {      
+    if ($aInput["PREV"]) {
+        $aInput["PAGENR"] -= 1;
+    }
+    else if ($aInput["NEXT"]) {
+        $aInput["PAGENR"] += 1;
+    } 
+    
+    if ($aInput["HOME"]) {
+        $aInput["PAGENR"] = 1;        
+    }
+    
     switch ($aInput["MODE"])
     {
         case "ADD"  :   $aInput = AddSearch($aInput);                       
@@ -176,7 +195,7 @@ function ProcessSearchInput($aInput)
  * Function:	ShowSearch
  *
  * Created on May 07, 2011
- * Updated on Jun 29, 2011
+ * Updated on Jul 02, 2011
  *
  * Description: Show the search page.
  *
@@ -217,6 +236,9 @@ function ShowSearch($aInput)
     
     echo "   </tbody>\n";
     echo "  </table>\n";
+    
+    $sql = "SELECT * FROM snuffel";
+    ShowResultsFooter($sql, $aInput, cItems - 4);
     
     echo "  </div>\n";
 }
@@ -471,7 +493,7 @@ function ShowSearchDeleteRow($catkey, $category, $title, $genre, $poster)
  * Function:	ShowSearchRows
  *
  * Created on May 16, 2011
- * Updated on Jun 29, 2011
+ * Updated on Jul 02, 2011
  *
  * Description: Show the search rows.
  *
@@ -480,10 +502,7 @@ function ShowSearchDeleteRow($catkey, $category, $title, $genre, $poster)
  *
  */
 function ShowSearchRows($aInput)
-{
-    //$mode = $aInput[5];
-    //$key  = $aInput[6];
-    
+{    
     $aCategories = explode("|", cCategories);
        
     //Query the Snuffel search items.
@@ -491,6 +510,7 @@ function ShowSearchRows($aInput)
            "LEFT JOIN snuftag t ".
            "ON f.cat = t.cat AND (f.subcata = t.tag OR f.subcatd = t.tag) ".
            "ORDER BY f.title";
+    $sql = AddLimit($sql, $aInput['PAGENR'], cItems - 4);
 
     $db = OpenDatabase();
     $stmt = $db->prepare($sql);
