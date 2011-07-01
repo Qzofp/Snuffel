@@ -7,7 +7,7 @@
  * File:    panel.php
  *
  * Created on Apr 16, 2011
- * Updated on Jun 27, 2011
+ * Updated on Jul 01, 2011
  *
  * Description: This page contains the panel functions.
  *
@@ -100,8 +100,8 @@ function ProcessInput($process, $page)
 /*
  * Function:	ShowPanel
  *
- * Created on Aug 16, 2011
- * Updated on Jun 28, 2011
+ * Created on Apr 16, 2011
+ * Updated on Jul 02, 2011
  *
  * Description: Shows the navigation panel.
  *
@@ -153,12 +153,20 @@ function ShowPanel($button)
     $aMenuText = explode("|", cMenuText); 
     $time = strtotime(UpdateTime());
     echo "   <h4>$aMenuText[0]</h4>\n";
-    echo "   <div class=\"txt_center\">$aMenuText[1] ".time_ago($time, 1)."</div>\n";
+    
+    // Last update time or loading...
+    echo "   <div class=\"txt_center\">\n";
+    echo "    <div id=\"update\">$aMenuText[1] ".time_ago($time, 1)."</div>\n";
+    echo "    <div id=\"loading\" style=\"display:none\"><img src=\"img/loading.gif\" /></div>\n";
+    echo "   </div>\n";
 
-    // Maintenance buttons
+    // Maintenance buttons.
     echo "   <ul class=\"btn_bottom\">\n";
     
-    echo "    <li><input type=\"submit\" name=\"btnPROCESS\" value=\"$aButtons[4]\"/></li>\n";  
+    // Update button.
+    echo "    <li onclick=\"toggle('update','loading')\"><input type=\"submit\" name=\"btnPROCESS\" value=\"$aButtons[4]\"/></li>\n";
+    
+    // Remove search button.
     if ($button == 2) {
         echo "    <li><input type=\"submit\" name=\"btnPROCESS\" value=\"$aButtons[6]\"/></li>\n";
     }
@@ -175,7 +183,7 @@ function ShowPanel($button)
 /*
  * Function:	UpdateTime
  *
- * Created on Aug 23, 2011
+ * Created on Apr 23, 2011
  * Updated on Jun 10, 2011
  *
  * Description: Haal de tijd op wanneer de tabel snuftemp voor het laatst is gewijzigd.
@@ -199,7 +207,7 @@ function UpdateTime()
 /*
  * Function:	UpdateSnuffel
  *
- * Created on Aug 23, 2011
+ * Created on Apr 23, 2011
  * Updated on Jun 29, 2011
  *
  * Description: Update Snuffel. Note: This is not a Spotweb update! 

@@ -7,7 +7,7 @@
  * File:    common.php
  *
  * Created on Apr 09, 2011
- * Updated on Jun 27, 2011
+ * Updated on Jul 01, 2011
  *
  * Description: Deze pagina bevat de algemene functies.
  * 
@@ -109,7 +109,7 @@ function GetLinkValue($name)
  * Function:	Header
  *
  * Created on Aug 14, 2010
- * Updated on Jun 24, 2011
+ * Updated on Jul 01, 2011
  *
  * Description: Returns a page header.
  *
@@ -128,6 +128,7 @@ function PageHeader($title, $css)
     echo "  <title>$title</title> \n";
     echo "  <meta http-equiv=\"content-type\" content=\"text/html;charset=ISO-8859-1\" />\n";
     echo "  <link href=\"$css\" rel=\"stylesheet\" type=\"text/css\" />\n";
+    echo "  <script language=\"JavaScript\" type=\"text/javascript\" src=\"scr/misc.js\"></script>\n";
     echo " </head>\n";
 
     echo " <body>\n";
