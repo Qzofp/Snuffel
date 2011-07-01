@@ -228,7 +228,7 @@ function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date,
  * Function:	ShowResultsRows
  *
  * Created on Jun 11, 2011
- * Updated on Jun 29, 2011
+ * Updated on Jul 02, 2011
  *
  * Description: Show the results table rows.
  *
@@ -242,7 +242,7 @@ function ShowResultsRows($pagenr)
     $sql = "SELECT t.id, t.category, c.name, t.title, g.name, t.poster, t.stamp, t.commentcount FROM (snuftmp t ".
            "LEFT JOIN snuftag g ON t.category = g.cat AND (t.subcata = CONCAT(g.tag,'|') OR t.subcatd LIKE CONCAT('%',g.tag,'|'))) ".
            "LEFT JOIN snufcat c ON t.category = c.cat AND CONCAT(c.tag,'|') = t.subcata ".
-           "ORDER BY t.title DESC, t.stamp DESC";  
+           "ORDER BY t.title, t.stamp DESC";  
     $sql = AddLimit($sql, $pagenr, cItems);
     
     $sfdb = OpenDatabase();
