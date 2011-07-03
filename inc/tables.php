@@ -7,7 +7,7 @@
  * File:    tables.php
  *
  * Created on Jun 16, 2011
- * Updated on Jun 29, 2011
+ * Updated on Jul 02, 2011
  *
  * Description: This page containts the create and update tables functions. 
  * 
@@ -69,16 +69,16 @@ function CreateSnufCnf()
     
     // Fill table.
     $sql = "INSERT INTO `snufcnf` (`name`, `value`) VALUES ".
-           "('Buttons', 'Gevonden|Historie|Zoek Op|Instellingen|Update Snuffel|Verwijder Historie|Verwijder Zoek'), ".
+           "('Buttons', 'Gevonden|Historie|Zoek Op|Instellingen|Reset|Nieuw|Update Snuffel|Verwijder Historie|Verwijder Zoek'), ".
            "('Categories', 'Beeld|Muziek|Spellen|Applicaties'), ".
            "('Days', '14'), ".
            "('Header', 'Cat.|Titel|#|Genre|Afzender|Datum|NZB|Platform'), ".
            "('Items', '30'), ".
            "('LastMessage', '0'), ".
-           "('MenuText', 'Onderhoud|Laatste update:'), ".     
+           "('MenuText', 'Filters|Onderhoud|Laatste update:'), ".     
            "('TimeValues', 'seconde|seconden|minuut|minuten|uur|uur|dag|dagen|week|weken|maand|maanden|jaar|jaar'), ".
            "('Title', 'Snuffel'), ".    
-           "('Version', '0.35'), ".
+           "('Version', '0.36'), ".
            "('Warning', 'Titel is verplicht!');";
     
     ExecuteQuery($sql);    
@@ -119,7 +119,7 @@ function CreateSnuffel()
  * Function:	CreateSnufTmp
  *
  * Created on Jun 13, 2011
- * Updated on Jun 27, 2011
+ * Updated on Jul 02, 2011
  *
  * Description: Create or update the Snuffel temporary (cache) table.
  *
@@ -132,13 +132,7 @@ function CreateSnufTmp()
     // If exists drop table. This is the old snuftmp table.
     #$sql = "DROP TABLE IF EXISTS `snuftmp`";    
     #ExecuteQuery($sql);
-    
-    $sql = "DROP TABLE IF EXISTS `snuftmp1`";    
-    ExecuteQuery($sql);
-    
-    $sql = "DROP TABLE IF EXISTS `snuftmp2`";    
-    ExecuteQuery($sql);
-       
+           
     // Create table.
     $sql = "CREATE TABLE IF NOT EXISTS `snuftmp` ( ".
              "`id` int(11) NOT NULL AUTO_INCREMENT, ".

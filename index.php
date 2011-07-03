@@ -7,7 +7,7 @@
  * File:    index.php
  *
  * Created on Apr 09, 2011
- * Updated on Jun 26, 2011
+ * Updated on Jul 03, 2011
  *
  * Description: Snuffel's main page.
  * 
@@ -21,20 +21,20 @@ require_once 'inc/common.php';
 require_once 'inc/config.php';
 require_once 'inc/panel.php';
 
-list($check, $process, $page) = GetInput();
+$aInput = GetInput();
 
-if ($check == 2) {
-    list($page) = ProcessInput($process, $page);
+if ($aInput["CHECK"] == 2) {
+    list($page) = ProcessInput($aInput["PROCESS"], $aInput["PAGE"]);
 }    
 else {
-    list($page, $aChecks) = ConfigureSnuffel($check);
+    list($page, $aChecks) = ConfigureSnuffel($aInput["CHECK"]);
 }
 
 switch ($page)
 {   
     // Results
     case 0: require_once "inc/results.php";
-            CreateResultsPage();
+            CreateResultsPage($aInput);
             break;
 
     // History

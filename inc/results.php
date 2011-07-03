@@ -7,7 +7,7 @@
  * File:    results.php
  *
  * Created on Apr 10, 2011
- * Updated on Jul 02, 2011
+ * Updated on Jul 03, 2011
  *
  * Description: This page contains the results functions.
  * 
@@ -22,28 +22,29 @@
  * Function:    CreateResultsPage
  *
  * Created on Jun 18, 2011
- * Updated on Jun 25, 2011
+ * Updated on Jul 03, 2011
  *
  * Description: Create the results page.
  *
- * In:  -
+ * In:  $aFilters
  * Out: Results page.
  *
  */
-function CreateResultsPage()
+function CreateResultsPage($aFilters)
 {
     PageHeader(cTitle, "css/results.css");
     echo "  <form name=\"".cTitle."\" action=\"".$_SERVER['PHP_SELF']."\" method=\"post\">\n";
      
-    ShowPanel(0);
+    ShowPanel(0, $aFilters);
     
     $aInput = GetResultsInput();
-    $aInput = ProcessResultsInput($aInput);
+    $aInput = ProcessResultsInput($aInput, $aFilters);
     ShowResults($aInput);
  
     // Hidden check and page fields.
     echo "   <input type=\"hidden\" name=\"hidPAGE\" value=\"0\" />\n"; 
     echo "   <input type=\"hidden\" name=\"hidPAGENR\" value=\"".$aInput["PAGENR"]."\" />\n";
+    echo "   <input type=\"hidden\" name=\"hidFILTER\" value=\"".$aFilters["FILTER"]."\" />\n";
     echo "   <input type=\"hidden\" name=\"hidCHECK\" value=\"2\" />\n";
     
     echo "  </form>\n";
@@ -57,28 +58,23 @@ function CreateResultsPage()
  * Function:    GetResultsInput
  *
  * Created on Jun 22, 2011
- * Updated on Jun 26, 2011
+ * Updated on Jul 03, 2011
  *
  * Description: Get user results input.
  *
- * In:  -
+ * In:  $filter
  * Out: $aInput
  *
  */
 function GetResultsInput()
 {
-    $aInput = array("PREV"=>null, "HOME"=>null, "NEXT"=>null, "PAGENR"=>1, "PAGE"=>null);
-    
+    $aInput = array("PREV"=>null, "HOME"=>null, "NEXT"=>null, "PAGENR"=>1, "PAGE"=>null, "SQLFILTER"=>null);
+        
     $aInput["PREV"]   = GetButtonValue("btnPREV");
-    $aInput["HOME"]   = GetButtonValue("btnHOME");    
+    $aInput["HOME"]   = GetButtonValue("btnHOME");
     $aInput["NEXT"]   = GetButtonValue("btnNEXT");
-    
+    $aInput["PAGE"]   = GetButtonValue("hidPAGE");
     $aInput["PAGENR"] = GetButtonValue("hidPAGENR");
-    if (!$aInput["PAGENR"]) {
-        $aInput["PAGENR"] = 1;
-    }
-    
-    //$aInput["PAGE"]   = GetButtonValue("hidPAGE");
     
     return $aInput;
 }
@@ -90,16 +86,23 @@ function GetResultsInput()
  * Function:	ProcesResultsInput
  *
  * Created on Jun 22, 2011
- * Updated on Jun 26, 2011
+ * Updated on Jul 03 , 2011
  *
  * Description: Process the results input.
  *
- * In:  $aInput
+ * In:  $aInput, $aFilters
  * Out:	$aInput
  *
  */
-function ProcessResultsInput($aInput)
+function ProcessResultsInput($aInput, $aFilters)
 {
+    // Create filter query condition.
+    $aInput["SQLFILTER"] = CreateFilter($aFilters["FILTER"]);
+    
+    if (!$aInput["PAGENR"] || $aInput["PAGE"] != 0) {
+        $aInput["PAGENR"] = 1;
+    }
+    
     if ($aInput["PREV"]) {
         $aInput["PAGENR"] -= 1;
     }
@@ -107,10 +110,10 @@ function ProcessResultsInput($aInput)
         $aInput["PAGENR"] += 1;
     } 
     
-    if ($aInput["HOME"]) {
+    if ($aInput["HOME"] || $aFilters["RESET"]) {
         $aInput["PAGENR"] = 1;        
     }
-
+    
     return $aInput;
 }
 
@@ -120,7 +123,7 @@ function ProcessResultsInput($aInput)
  * Function:	ShowResults
  *
  * Created on Apr 10, 2011
- * Updated on Jul 02, 2011
+ * Updated on Jul 03, 2011
  *
  * Description: Show the search results.
  *
@@ -155,12 +158,11 @@ function ShowResults($aInput)
     echo "   <tbody>\n";
     
     // Show the database results in table rows.
-    ShowResultsRows($aInput["PAGENR"]);
+    $sql = ShowResultsRows($aInput);
 
     echo "   </tbody>\n";    
     echo "  </table>\n";
     
-    $sql = "SELECT * FROM snuftmp";
     ShowResultsFooter($sql, $aInput, cItems);
     
     echo "  </div>\n";   
@@ -228,22 +230,25 @@ function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date,
  * Function:	ShowResultsRows
  *
  * Created on Jun 11, 2011
- * Updated on Jul 02, 2011
+ * Updated on Jul 03, 2011
  *
  * Description: Show the results table rows.
  *
- * In:  $pagenr
- * Out:	Results rows
+ * In:  $aInput
+ * Out:	$query
  *
  */
-function ShowResultsRows($pagenr)
+function ShowResultsRows($aInput)
 {        
     //The results query.
-    $sql = "SELECT t.id, t.category, c.name, t.title, g.name, t.poster, t.stamp, t.commentcount FROM (snuftmp t ".
-           "LEFT JOIN snuftag g ON t.category = g.cat AND (t.subcata = CONCAT(g.tag,'|') OR t.subcatd LIKE CONCAT('%',g.tag,'|'))) ".
-           "LEFT JOIN snufcat c ON t.category = c.cat AND CONCAT(c.tag,'|') = t.subcata ".
-           "ORDER BY t.title, t.stamp DESC";  
-    $sql = AddLimit($sql, $pagenr, cItems);
+    $sql  = "SELECT t.id, t.category, c.name, t.title, g.name, t.poster, t.stamp, t.commentcount FROM (snuftmp t ".
+            "LEFT JOIN snuftag g ON t.category = g.cat AND (t.subcata = CONCAT(g.tag,'|') OR t.subcatd LIKE CONCAT('%',g.tag,'|'))) ".
+            "LEFT JOIN snufcat c ON t.category = c.cat AND CONCAT(c.tag,'|') = t.subcata ";
+    $sql .= $aInput["SQLFILTER"];
+    
+    $query = $sql;
+    
+    $sql  = AddLimit($sql, $aInput["PAGENR"], cItems);
     
     $sfdb = OpenDatabase();
     $stmt = $sfdb->prepare($sql);
@@ -260,23 +265,59 @@ function ShowResultsRows($pagenr)
                 $stmt->bind_result($id, $catkey, $category, $title, $genre, $poster, $date, $comment);
                 while($stmt->fetch())
                 {                   
-                    ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $pagenr);
+                    ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $aInput["PAGENR"]);
                 }
             }
         }
         else
         {
             die('Ececution query failed: '.mysql_error());
-            // Foutpagina maken, doorgeven fout met session variabele.
         }
         $stmt->close();
     }
     else
     {
         die('Invalid query: '.mysql_error());
-   	// Foutpagina maken, doorgeven fout met session variabele.
     }    
 
-    CloseDatabase($sfdb);    
+    CloseDatabase($sfdb);  
+    
+    return $query;
+}
+
+/*
+ * Function:	CreateFilter
+ *
+ * Created on Jul 02, 2011
+ * Updated on Jul 03, 2011
+ *
+ * Description: Create filter condition which is added to the final query.
+ *
+ * In:	$filter
+ * Out:	$sql
+ *
+ */
+function CreateFilter($filter)
+{
+    $sql = "ORDER BY t.title, t.stamp DESC";
+    $check = false;
+    
+    $aButtons = explode("|", cButtons);
+      
+     // No "Reset"
+    if ($filter != $aButtons[4])
+    {   
+        $check = true;
+        
+        // "Nieuw"
+        if ($filter == $aButtons[5]) {  
+            $sql = "WHERE t.id > ".cLastMessage." ORDER BY t.stamp DESC";
+        }
+        else if ($filter){
+            $sql = "WHERE MATCH(t.title) AGAINST ('$filter' IN BOOLEAN MODE) ORDER BY t.stamp DESC";
+        } 
+    }
+    
+    return $sql;
 }
 ?>

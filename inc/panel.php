@@ -7,7 +7,7 @@
  * File:    panel.php
  *
  * Created on Apr 16, 2011
- * Updated on Jul 01, 2011
+ * Updated on Jul 03, 2011
  *
  * Description: This page contains the panel functions.
  *
@@ -21,37 +21,44 @@
  * Function:    GetInput
  *
  * Created on Apr 23, 2011
- * Updated on Jun 26, 2011
+ * Updated on Jul 03, 2011
  *
  * Description: Get user input.
  *
  * In:  -
- * Out: $check, $process, $page
+ * Out: $aInput
  *
  */
 function GetInput()
 {  
-    $check   = 0;
-    $process = -1;
-    $page    = -1;
+    $aInput = array("CHECK"=>false, "PAGE"=>-1, "PROCESS"=>-1, "FILTER"=>null, "RESET"=>false);
+    
     
     // Get the hidden check spotweb or upgrade snuffel value.
-    $check = GetButtonValue("btnCHECK");
-    if (!$check) {
-        $check = GetButtonValue("hidCHECK");
+    $aInput["CHECK"] = GetButtonValue("btnCHECK");
+    if (!$aInput["CHECK"]) {
+        $aInput["CHECK"] = GetButtonValue("hidCHECK");
     }
     
-    if ($check == 2)
-    {
-        $process = GetButtonValue("btnPROCESS");
-               
-        $page    = GetButtonValue("btnPAGE");
-        if (!$page) {
-            $page    = GetButtonValue("hidPAGE");
+    if ($aInput["CHECK"] == 2)
+    {          
+        $aInput["PAGE"] = GetButtonValue("btnPAGE");
+        if (!$aInput["PAGE"]) {
+            $aInput["PAGE"] = GetButtonValue("hidPAGE");
         }
+
+        $aInput["FILTER"] = GetButtonValue("btnFILTER");
+        if (!$aInput["FILTER"]) {
+            $aInput["FILTER"] = GetButtonValue("hidFILTER");
+        }
+        else {
+            $aInput["RESET"] = true;
+        }
+        
+        $aInput["PROCESS"] = GetButtonValue("btnPROCESS");
     }
 
-    return array($check, $process, $page);
+    return $aInput;
 }
 
 
@@ -83,11 +90,11 @@ function ProcessInput($process, $page)
     
     switch($process)
     {
-        case 4: UpdateSnuffel();
+        case 6: UpdateSnuffel();
                 $page = 0;
                 break;
             
-        case 6: DeleteSearchAll();
+        case 8: DeleteSearchAll();
                 break;
     }
   
@@ -101,23 +108,24 @@ function ProcessInput($process, $page)
  * Function:	ShowPanel
  *
  * Created on Apr 16, 2011
- * Updated on Jul 02, 2011
+ * Updated on Jul 03, 2011
  *
  * Description: Shows the navigation panel.
  *
- * In:  $button
+ * In:  $button, $aFilters
  * Out:	panel
  *
  */
-function ShowPanel($button)
+function ShowPanel($button, $aFilters = false)
 {
     // Start top panel.
     echo "  <div id=\"panel_top\">\n";
     echo "   <div class=\"panel\">\n";
     echo "   <h4>".cTitle."</h4>\n";
 
-    // Snuffel buttons.
-    $aButtons = explode("|", cButtons);
+    // Snuffel buttons and menu text.
+    $aButtons  = explode("|", cButtons);    
+    $aMenuText = explode("|", cMenuText); 
     
     // Show buttons: "Gevonden", "Historie", "Zoek Op" and "Instellingen".
     echo "   <ul class=\"btn_top\">\n";
@@ -140,7 +148,25 @@ function ShowPanel($button)
     // Start middle panel.
     echo "  <div id=\"panel_middle\">\n";
     echo "   <div class=\"panel\">\n";
-    echo "   <h4>Dummy</h4>\n";
+    echo "   <h4>$aMenuText[0]</h4>\n";
+    
+    // Show filter buttons.
+    if ($button == 0)
+    {    
+        echo "   <ul class=\"btn_top\">\n";
+        for ($i = 4; $i < 6; $i++) 
+        {
+            if ($aButtons[$i] == $aFilters["FILTER"] && $aButtons[4] != $aFilters["FILTER"]) {
+                echo "    <li><input type=\"button\" name=\"btnFILTER\" value=\"$aButtons[$i]\"/></li>\n";
+            }
+            else {
+                echo "    <li><input type=\"submit\" name=\"btnFILTER\" value=\"$aButtons[$i]\"/></li>\n";                
+            }
+        }
+
+        echo "   </ul>\n";
+    }
+    
     echo "   </div>\n";    
     echo "  </div>\n";
     // End middle panel.
@@ -150,13 +176,12 @@ function ShowPanel($button)
     echo "   <div class=\"panel\">\n";
     
     // Maintenance menu.
-    $aMenuText = explode("|", cMenuText); 
     $time = strtotime(UpdateTime());
-    echo "   <h4>$aMenuText[0]</h4>\n";
+    echo "   <h4>$aMenuText[1]</h4>\n";
     
     // Last update time or loading...
     echo "   <div class=\"txt_center\">\n";
-    echo "    <div id=\"update\">$aMenuText[1] ".time_ago($time, 1)."</div>\n";
+    echo "    <div id=\"update\">$aMenuText[2] ".time_ago($time, 1)."</div>\n";
     echo "    <div id=\"loading\" style=\"display:none\"><img src=\"img/loading.gif\" /></div>\n";
     echo "   </div>\n";
 
@@ -164,11 +189,11 @@ function ShowPanel($button)
     echo "   <ul class=\"btn_bottom\">\n";
     
     // Update button.
-    echo "    <li onclick=\"toggle('update','loading')\"><input type=\"submit\" name=\"btnPROCESS\" value=\"$aButtons[4]\"/></li>\n";
+    echo "    <li onclick=\"toggle('update','loading')\"><input type=\"submit\" name=\"btnPROCESS\" value=\"$aButtons[6]\"/></li>\n";
     
-    // Remove search button.
+    // Show "Zoek Op" button.
     if ($button == 2) {
-        echo "    <li><input type=\"submit\" name=\"btnPROCESS\" value=\"$aButtons[6]\"/></li>\n";
+        echo "    <li><input type=\"submit\" name=\"btnPROCESS\" value=\"$aButtons[8]\"/></li>\n";
     }
 
     echo "   </ul>\n";

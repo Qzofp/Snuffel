@@ -57,7 +57,7 @@ function CreateSearchPage()
  * Function:    GetSearchInput
  *
  * Created on May 15, 2011
- * Updated on Jul 02, 2011
+ * Updated on Jul 01, 2011
  *
  * Description: Get user search input.
  *
@@ -87,14 +87,12 @@ function GetSearchInput()
     
     list($aInput["MODE"], $aInput["ID"], $aInput["CHECK"]) = GetSearchMode();
     
-    $aInput["PREV"] = GetButtonValue("btnPREV");
-    $aInput["HOME"] = GetButtonValue("btnHOME");   
-    $aInput["NEXT"] = GetButtonValue("btnNEXT");
-    
+    $aInput["PREV"]   = GetButtonValue("btnPREV");
+    $aInput["HOME"]   = GetButtonValue("btnHOME");   
+    $aInput["NEXT"]   = GetButtonValue("btnNEXT");    
+    $aInput["PAGE"]   = GetButtonValue("hidPAGE");
     $aInput["PAGENR"] = GetButtonValue("hidPAGENR");
-    if (!$aInput["PAGENR"]) {
-        $aInput["PAGENR"] = 1;
-    }
+
     
     return $aInput;
 }
@@ -162,6 +160,10 @@ function GetSearchMode()
  */
 function ProcessSearchInput($aInput)
 {      
+    if (!$aInput["PAGENR"] || $aInput["PAGE"] != 2) {
+        $aInput["PAGENR"] = 1;
+    }
+    
     if ($aInput["PREV"]) {
         $aInput["PAGENR"] -= 1;
     }
