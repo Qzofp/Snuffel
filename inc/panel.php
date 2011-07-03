@@ -68,37 +68,36 @@ function GetInput()
  * Function:    ProcessInput
  *
  * Created on Jun 17, 2011
- * Updated on Jun 28, 2011
+ * Updated on Jul 03, 2011
  *
  * Description: Process the user input.
  *
- * In:  $process, $page
+ * In:  $aInput
  * Out: $page
  *
  */
-function ProcessInput($process, $page)
+function ProcessInput($aInput)
 { 
     LoadConstants();
     
     $aButtons = explode("|", cButtons);
     
-    if (strlen($page) > 1) {
-         $page = array_search($page, $aButtons);
+    if (strlen($aInput["PAGE"]) > 1) {
+         $aInput["PAGE"] = array_search($aInput["PAGE"], $aButtons);
     }
-
-   $process = array_search($process, $aButtons);
     
-    switch($process)
+    switch($aInput["PROCESS"])
     {
-        case 6: UpdateSnuffel();
-                $page = 0;
-                break;
+        case $aButtons[6]: UpdateSnuffel();
+             $aInput["FILTER"] = $aButtons[5];
+             $aInput["PAGE"] = 0;
+             break;
             
-        case 8: DeleteSearchAll();
-                break;
+        case $aButtons[8]: DeleteSearchAll();
+             break;
     }
   
-    return array($page);
+    return $aInput;
 }
 
 
@@ -233,7 +232,7 @@ function UpdateTime()
  * Function:	UpdateSnuffel
  *
  * Created on Apr 23, 2011
- * Updated on Jun 29, 2011
+ * Updated on Jul 03, 2011
  *
  * Description: Update Snuffel. Note: This is not a Spotweb update! 
  *
@@ -244,7 +243,7 @@ function UpdateTime()
 function UpdateSnuffel()
 {    
     // Add last message to snufcnf table.
-    $sql = "UPDATE snufcnf SET value = (SELECT MAX(id) FROM snuftmp) ".
+    $sql = "UPDATE snufcnf SET value = (SELECT IFNULL(MAX(id), 0) FROM snuftmp) ".
            "WHERE name = 'LastMessage'";
     ExecuteQuery($sql);
 

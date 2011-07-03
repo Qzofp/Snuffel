@@ -249,7 +249,7 @@ function ShowResultsRows($aInput)
     $query = $sql;
     
     $sql  = AddLimit($sql, $aInput["PAGENR"], cItems);
-    
+        
     $sfdb = OpenDatabase();
     $stmt = $sfdb->prepare($sql);
     if($stmt)

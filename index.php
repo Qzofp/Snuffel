@@ -24,13 +24,13 @@ require_once 'inc/panel.php';
 $aInput = GetInput();
 
 if ($aInput["CHECK"] == 2) {
-    list($page) = ProcessInput($aInput["PROCESS"], $aInput["PAGE"]);
+    $aInput = ProcessInput($aInput);
 }    
 else {
-    list($page, $aChecks) = ConfigureSnuffel($aInput["CHECK"]);
+    list($aInput["PAGE"], $aChecks) = ConfigureSnuffel($aInput["CHECK"]);
 }
 
-switch ($page)
+switch ($aInput["PAGE"])
 {   
     // Results
     case 0: require_once "inc/results.php";
