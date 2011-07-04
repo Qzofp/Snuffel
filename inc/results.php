@@ -174,10 +174,10 @@ function ShowResults($aInput)
  * Created on Jun 11, 2011
  * Updated on Jun 29, 2011
  *
- * Description: Laat een resultaat rij van de tabel zien.
+ * Description: Show the results in a table row.
  *
  * In:  $id, $catkey, $category, $title, $genre, $poster, $date, $comment, $pagenr
- * Out:	rij
+ * Out:	row
  *
  */
 function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $pagenr)
@@ -223,6 +223,25 @@ function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date,
     echo "    </tr>\n";
 }
 
+/*
+ * Function:	NoResults
+ *
+ * Created on Jul 04, 2011
+ * Updated on Jul 04, 2011
+ *
+ * Description: Laat een resultaat rij van de tabel zien.
+ *
+ * In:  -
+ * Out:	no results message
+ *
+ */
+function NoResults()
+{
+    echo "    <tr class=\"no_results\">\n";
+    echo "     <td colspan=\"7\">Niets gevonden!</td>\n";
+    echo "    </tr>\n";    
+}
+
 
 /////////////////////////////////////////   Query Functions   ////////////////////////////////////////////
 
@@ -230,7 +249,7 @@ function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date,
  * Function:	ShowResultsRows
  *
  * Created on Jun 11, 2011
- * Updated on Jul 03, 2011
+ * Updated on Jul 04, 2011
  *
  * Description: Show the results table rows.
  *
@@ -270,6 +289,9 @@ function ShowResultsRows($aInput)
                 {                   
                     ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $aInput["PAGENR"]);
                 }
+            }
+            else {
+                NoResults();
             }
         }
         else

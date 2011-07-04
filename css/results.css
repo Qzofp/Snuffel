@@ -401,6 +401,12 @@ table.results tr.red td.com{
 background-position:-102px 0;
 }
 
+table.results tr.no_results td{
+font-size:1em;    
+font-weight:bold;
+color:#C11B17;
+}
+
 table.bar{
 margin:5px 0 0 0;
 width:100%;
