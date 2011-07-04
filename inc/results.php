@@ -7,7 +7,7 @@
  * File:    results.php
  *
  * Created on Apr 10, 2011
- * Updated on Jul 03, 2011
+ * Updated on Jul 04, 2011
  *
  * Description: This page contains the results functions.
  * 
@@ -249,6 +249,9 @@ function ShowResultsRows($aInput)
     $query = $sql;
     
     $sql  = AddLimit($sql, $aInput["PAGENR"], cItems);
+    
+    //Debug
+    //echo $sql;
         
     $sfdb = OpenDatabase();
     $stmt = $sfdb->prepare($sql);
@@ -289,7 +292,7 @@ function ShowResultsRows($aInput)
  * Function:	CreateFilter
  *
  * Created on Jul 02, 2011
- * Updated on Jul 03, 2011
+ * Updated on Jul 04, 2011
  *
  * Description: Create filter condition which is added to the final query.
  *
@@ -310,8 +313,13 @@ function CreateFilter($filter)
         $check = true;
         
         // "Nieuw"
-        if ($filter == $aButtons[5]) {  
-            $sql = "WHERE t.id > ".cLastMessage." ORDER BY t.stamp DESC";
+        if ($filter == $aButtons[5]) 
+        {  
+            // Get last message id.
+            $sql  = "SELECT value FROM snufcnf WHERE name = 'LastMessage'";
+            list($last) = GetItemsFromDatabase($sql);
+            
+            $sql = "WHERE t.id > $last ORDER BY t.stamp DESC";
         }
         else if ($filter){
             $sql = "WHERE MATCH(t.title) AGAINST ('$filter' IN BOOLEAN MODE) ORDER BY t.stamp DESC";
