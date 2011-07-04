@@ -45,6 +45,7 @@ function CreateResultsPage($aFilters)
     echo "   <input type=\"hidden\" name=\"hidPAGE\" value=\"0\" />\n"; 
     echo "   <input type=\"hidden\" name=\"hidPAGENR\" value=\"".$aInput["PAGENR"]."\" />\n";
     echo "   <input type=\"hidden\" name=\"hidFILTER\" value=\"".$aFilters["FILTER"]."\" />\n";
+    echo "   <input type=\"hidden\" name=\"hidFILTERNR\" value=\"".$aFilters["FILTERNR"]."\" />\n";   
     echo "   <input type=\"hidden\" name=\"hidCHECK\" value=\"2\" />\n";
     
     echo "  </form>\n";
@@ -68,7 +69,8 @@ function CreateResultsPage($aFilters)
  */
 function GetResultsInput()
 {
-    $aInput = array("PREV"=>null, "HOME"=>null, "NEXT"=>null, "PAGENR"=>1, "PAGE"=>null, "SQLFILTER"=>null, "FILTERID"=>-1);
+    $aInput = array("PREV"=>null, "HOME"=>null, "NEXT"=>null, "PAGENR"=>1, "PAGE"=>null, "SQLFILTER"=>null, 
+                    "FILTERID"=>-1, "FILTERNR"=>1);
         
     $aInput["PREV"]   = GetButtonValue("btnPREV");
     $aInput["HOME"]   = GetButtonValue("btnHOME");
@@ -98,6 +100,7 @@ function ProcessResultsInput($aInput, $aFilters)
 {
     // Create filter query condition and determine filter id.
     list($aInput["SQLFILTER"], $aInput["FILTERID"]) = CreateFilter($aFilters["FILTER"]);
+    $aInput["FILTERNR"] = $aFilters["FILTERNR"];
     
     if (!$aInput["PAGENR"] || $aInput["PAGE"] != 0) {
         $aInput["PAGENR"] = 1;
@@ -176,11 +179,11 @@ function ShowResults($aInput)
  *
  * Description: Show the results in a table row.
  *
- * In:  $id, $catkey, $category, $title, $genre, $poster, $date, $comment, $pagenr, $filterid
+ * In:  $id, $catkey, $category, $title, $genre, $poster, $date, $comment, $aInput
  * Out:	row
  *
  */
-function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $pagenr, $filterid)
+function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $aInput)
 {
     $class = null;     
     
@@ -214,12 +217,12 @@ function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date,
        
     echo "    <tr$class>\n";
     echo "     <td class=\"cat\">$category</td>\n";
-    echo "     <td><a href=\"spot.php?id=$id&s=$pagenr&f=$filterid\">$title</a></td>\n";
+    echo "     <td><a href=\"spot.php?id=$id&s=".$aInput["PAGENR"].",&f=".$aInput["FILTERID"].",&p=".$aInput["FILTERNR"]."\">$title</a></td>\n";
     echo "     <td class=\"com\">$comment</td>\n";
     echo "     <td class=\"gen\">$genre</td>\n";
     echo "     <td>$poster</td>\n";
     echo "     <td>".time_ago($date, 1)."</td>\n";  
-    echo "     <td class=\"nzb\"><a href=\"spot.php?id=$id&n=$pagenr\">NZB</a></td>\n";
+    echo "     <td class=\"nzb\"><a href=\"spot.php?id=$id&n=".$aInput["PAGENR"]."\">NZB</a></td>\n";
     echo "    </tr>\n";
 }
 
@@ -287,7 +290,7 @@ function ShowResultsRows($aInput)
                 $stmt->bind_result($id, $catkey, $category, $title, $genre, $poster, $date, $comment);
                 while($stmt->fetch())
                 {                   
-                    ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $aInput["PAGENR"], $aInput["FILTERID"]);
+                    ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $aInput);
                 }
             }
             else {

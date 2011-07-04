@@ -73,13 +73,13 @@ function CreateSnufCnf()
            "('Categories', 'Beeld|Muziek|Spellen|Applicaties'), ".
            "('Days', '14'), ".
            "('Header', 'Cat.|Titel|#|Genre|Afzender|Datum|NZB|Platform'), ".
-           "('Items', '30'), ".
+           "('Items', '30'), ".  
            "('LastMessage', '0'), ".
            "('MenuText', 'Filters|Onderhoud|Laatste update:'), ".
            "('NoResults', 'Niets gevonden!'), ".  
            "('TimeValues', 'seconde|seconden|minuut|minuten|uur|uur|dag|dagen|week|weken|maand|maanden|jaar|jaar'), ".
            "('Title', 'Snuffel'), ".    
-           "('Version', '0.37'), ".
+           "('Version', '0.38'), ".
            "('Warning', 'Titel is verplicht!');";
     
     ExecuteQuery($sql);    

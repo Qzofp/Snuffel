@@ -60,6 +60,9 @@ else
         list($filter) = GetItemsFromDatabase($sql);
     }
     
+    // Get the filter page number.
+    $filternr = GetLinkValue('p');
+    
     $spot = cSPOTWEBFOLDER."/?page=getspot&amp;messageid=$msg";
 
     PageHeader(cTitle, "css/spot.css");
@@ -75,6 +78,7 @@ else
     echo "   <input type=\"hidden\" name=\"hidPAGE\" value=\"0\" />\n"; 
     echo "   <input type=\"hidden\" name=\"hidPAGENR\" value=\"$pagenr\" />\n";
     echo "   <input type=\"hidden\" name=\"hidFILTER\" value=\"$filter\" />\n";
+    echo "   <input type=\"hidden\" name=\"hidFILTERNR\" value=\"$filternr\" />\n";
     echo "   <input type=\"hidden\" name=\"hidCHECK\" value=\"2\" />\n";
 
     echo "  </form>\n";

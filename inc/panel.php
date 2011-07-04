@@ -31,8 +31,8 @@
  */
 function GetInput()
 {  
-    $aInput = array("CHECK"=>false, "PAGE"=>-1, "PROCESS"=>-1, "FILTER"=>null, "RESET"=>false);
-    
+    $aInput = array("CHECK"=>false, "PAGE"=>-1, "PROCESS"=>-1, "FILTER"=>null, "RESET"=>false, 
+                    "UP"=>null, "DOWN"=>null, "FILTERNR"=>1);
     
     // Get the hidden check spotweb or upgrade snuffel value.
     $aInput["CHECK"] = GetButtonValue("btnCHECK");
@@ -56,6 +56,10 @@ function GetInput()
         }
         
         $aInput["PROCESS"] = GetButtonValue("btnPROCESS");
+        
+        $aInput["UP"]       = GetButtonValue("btnUP");
+        $aInput["DOWN"]     = GetButtonValue("btnDOWN");
+        $aInput["FILTERNR"] = GetButtonValue("hidFILTERNR");
     }
 
     return $aInput;
@@ -68,7 +72,7 @@ function GetInput()
  * Function:    ProcessInput
  *
  * Created on Jun 17, 2011
- * Updated on Jul 03, 2011
+ * Updated on Jul 04, 2011
  *
  * Description: Process the user input.
  *
@@ -77,13 +81,24 @@ function GetInput()
  *
  */
 function ProcessInput($aInput)
-{ 
+{
     LoadConstants();
        
     $aButtons = explode("|", cButtons);
     
     if (strlen($aInput["PAGE"]) > 1) {
          $aInput["PAGE"] = array_search($aInput["PAGE"], $aButtons);
+    }
+       
+    if ($aInput["UP"]) {
+        $aInput["FILTERNR"] -= 1;
+    }
+    else if ($aInput["DOWN"]) 
+    {
+        $aInput["FILTERNR"] += 1;
+    } 
+    else if ($aInput["FILTER"] == $aButtons[4] || !$aInput["FILTERNR"]) {
+        $aInput["FILTERNR"] = 1;
     }
     
     switch($aInput["PROCESS"])
@@ -150,37 +165,11 @@ function ShowPanel($button, $aFilters = false)
     echo "   <h4>$aMenuText[0]</h4>\n";
     
     // Show filter buttons.
-    if ($button == 0)
+    if ($button == 0) 
     {    
-        echo "   <ul class=\"btn_top\">\n";
-        for ($i = 4; $i < 6; $i++) 
-        {
-            if ($aButtons[$i] == $aFilters["FILTER"] && $aButtons[4] != $aFilters["FILTER"]) {
-                echo "    <li><input type=\"button\" name=\"btnFILTER\" value=\"$aButtons[$i]\"/></li>\n";
-            }
-            else {
-                echo "    <li><input type=\"submit\" name=\"btnFILTER\" value=\"$aButtons[$i]\"/></li>\n";                
-            }
-        }
-
-        // Get search titles.
-        $sql = "SELECT title FROM snuffel ".
-               "ORDER BY title ".
-               "LIMIT 0, 15";
-        $aTitles = GetItemsFromDatabase($sql);
-        
-        // Show titles as filters.
-        foreach ($aTitles as $vTitle) 
-        {
-            if ($vTitle == $aFilters["FILTER"]) {
-                echo "    <li><input type=\"button\" name=\"btnFILTER\" value=\"$vTitle\"/></li>\n";
-            }
-            else {
-                echo "    <li><input type=\"submit\" name=\"btnFILTER\" value=\"$vTitle\"/></li>\n";                
-            }            
-        }
-        
-        echo "   </ul>\n";
+        $aTitles = GetFilterTitles($aFilters);
+        ShowFilterButtons($aButtons, $aTitles, $aFilters);
+        ShowFilterFooter($aFilters);
     }
     
     echo "   </div>\n";    
@@ -216,6 +205,96 @@ function ShowPanel($button, $aFilters = false)
     echo "   </div>\n";
     echo "  </div>\n";
     // End bottom panel.    
+}
+
+/*
+ * Function:	ShowFilterButtons
+ *
+ * Created on Jul 04, 2011
+ * Updated on Jul 04, 2011
+ *
+ * Description: Shows the filter buttons.
+ *
+ * In:  $aButtons, $aTitles, $aFilters
+ * Out:	filter buttons
+ *
+ */
+function ShowFilterButtons($aButtons, $aTitles, $aFilters)
+{
+    echo "   <ul class=\"btn_top\">\n";
+    for ($i = 4; $i < 6; $i++) 
+    {
+        if ($aButtons[$i] == $aFilters["FILTER"] && $aButtons[4] != $aFilters["FILTER"]) {
+            echo "    <li><input type=\"button\" name=\"btnFILTER\" value=\"$aButtons[$i]\"/></li>\n";
+        }
+        else {
+            echo "    <li><input type=\"submit\" name=\"btnFILTER\" value=\"$aButtons[$i]\"/></li>\n";                
+        }
+    }
+       
+    // Show titles as filters.
+    if (!empty($aTitles))
+    {    
+        foreach ($aTitles as $vTitle) 
+        {
+            if ($vTitle == $aFilters["FILTER"]) {
+                echo "    <li><input type=\"button\" name=\"btnFILTER\" value=\"$vTitle\"/></li>\n";
+            }
+            else {
+                echo "    <li><input type=\"submit\" name=\"btnFILTER\" value=\"$vTitle\"/></li>\n";                
+            }            
+        }
+    }   
+    echo "   </ul>\n";    
+}
+
+/*
+ * Function:	ShowFilterFooter
+ *
+ * Created on Jul 04, 2011
+ * Updated on Jul 04, 2011
+ *
+ * Description: Shows the filter footer with the up and down buttons.
+ *
+ * In:  $aInput
+ * Out:	filter footer
+ *
+ */
+function ShowFilterFooter($aInput)
+{
+    $items = cItems/2;
+    $sql   = "SELECT title FROM snuffel";
+    $rows  = CountRows($sql);
+    $max   = ceil($rows/$items);
+
+    // The up and down buttons. The filter number is put in the hidden field: "hidFILTERNR".
+    if ($max > 1)
+    {
+       $n = $aInput["FILTERNR"];
+        switch($n)
+        {
+            case 1     : $up   = "<input type=\"button\" name=\"\" value=\"\"/>";
+                         $down = "<input type=\"submit\" name=\"btnDOWN\" value=\"&gt;&gt;\"/>";
+                         break;
+        
+            case $max:   $up   = "<input type=\"submit\" name=\"btnUP\" value=\"&lt;&lt;\"/>";
+                         $down = "<input type=\"button\" name=\"\" value=\"\"/>";
+                         break;
+                                            
+            default:     $up   = "<input type=\"submit\" name=\"btnUP\" value=\"&lt;&lt;\"/>";
+                         $down = "<input type=\"submit\" name=\"btnDOWN\" value=\"&gt;&gt;\"/>";
+        }
+               
+        // Show footer / navigation bar.
+        echo "   <table class=\"filter\">\n";
+        echo "    <tbody>\n";
+        echo "     <tr>\n";
+        echo "      <td class=\"up\">$up</td>\n";
+        echo "      <td class=\"down\">$down</td>\n";        
+        echo "     </tr>\n";
+        echo "    </tbody>\n";        
+        echo "   </table>\n";
+    }    
 }
 
 
@@ -302,5 +381,28 @@ function DeleteSearchAll()
     
     $sql = "TRUNCATE snuffel";
     ExecuteQuery($sql);
+}
+
+/*
+ * Function:	GetFilterTitles
+ *
+ * Created on Jul 04, 2011
+ * Updated on Jul 04, 2011
+ *
+ * Description: Get search titles for the filters.
+ *
+ * In:  -
+ * Out:	$aInput
+ *
+ */
+function GetFilterTitles($aInput)
+{
+    $sql = "SELECT title FROM snuffel ".
+           "ORDER BY title ";
+    $sql  = AddLimit($sql, $aInput["FILTERNR"], cItems/2);
+    
+    $aTitles = GetItemsFromDatabase($sql);
+    
+    return $aTitles;
 }
 ?>
