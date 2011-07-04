@@ -58,7 +58,7 @@ function CreateResultsPage($aFilters)
  * Function:    GetResultsInput
  *
  * Created on Jun 22, 2011
- * Updated on Jul 03, 2011
+ * Updated on Jul 04, 2011
  *
  * Description: Get user results input.
  *
@@ -68,7 +68,7 @@ function CreateResultsPage($aFilters)
  */
 function GetResultsInput()
 {
-    $aInput = array("PREV"=>null, "HOME"=>null, "NEXT"=>null, "PAGENR"=>1, "PAGE"=>null, "SQLFILTER"=>null);
+    $aInput = array("PREV"=>null, "HOME"=>null, "NEXT"=>null, "PAGENR"=>1, "PAGE"=>null, "SQLFILTER"=>null, "FILTERID"=>-1);
         
     $aInput["PREV"]   = GetButtonValue("btnPREV");
     $aInput["HOME"]   = GetButtonValue("btnHOME");
@@ -86,7 +86,7 @@ function GetResultsInput()
  * Function:	ProcesResultsInput
  *
  * Created on Jun 22, 2011
- * Updated on Jul 03 , 2011
+ * Updated on Jul 04 , 2011
  *
  * Description: Process the results input.
  *
@@ -96,8 +96,8 @@ function GetResultsInput()
  */
 function ProcessResultsInput($aInput, $aFilters)
 {
-    // Create filter query condition.
-    $aInput["SQLFILTER"] = CreateFilter($aFilters["FILTER"]);
+    // Create filter query condition and determine filter id.
+    list($aInput["SQLFILTER"], $aInput["FILTERID"]) = CreateFilter($aFilters["FILTER"]);
     
     if (!$aInput["PAGENR"] || $aInput["PAGE"] != 0) {
         $aInput["PAGENR"] = 1;
@@ -172,15 +172,15 @@ function ShowResults($aInput)
  * Function:	ShowResultsRow
  *
  * Created on Jun 11, 2011
- * Updated on Jun 29, 2011
+ * Updated on Jul 04, 2011
  *
  * Description: Show the results in a table row.
  *
- * In:  $id, $catkey, $category, $title, $genre, $poster, $date, $comment, $pagenr
+ * In:  $id, $catkey, $category, $title, $genre, $poster, $date, $comment, $pagenr, $filterid
  * Out:	row
  *
  */
-function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $pagenr)
+function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $pagenr, $filterid)
 {
     $class = null;     
     
@@ -214,7 +214,7 @@ function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date,
        
     echo "    <tr$class>\n";
     echo "     <td class=\"cat\">$category</td>\n";
-    echo "     <td><a href=\"spot.php?id=$id&s=$pagenr\">$title</a></td>\n";
+    echo "     <td><a href=\"spot.php?id=$id&s=$pagenr&f=$filterid\">$title</a></td>\n";
     echo "     <td class=\"com\">$comment</td>\n";
     echo "     <td class=\"gen\">$genre</td>\n";
     echo "     <td>$poster</td>\n";
@@ -238,8 +238,8 @@ function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date,
 function NoResults()
 {
     echo "    <tr class=\"no_results\">\n";
-    echo "     <td colspan=\"7\">Niets gevonden!</td>\n";
-    echo "    </tr>\n";    
+    echo "     <td colspan=\"7\">".cNoResults."</td>\n";
+    echo "    </tr>\n";
 }
 
 
@@ -287,7 +287,7 @@ function ShowResultsRows($aInput)
                 $stmt->bind_result($id, $catkey, $category, $title, $genre, $poster, $date, $comment);
                 while($stmt->fetch())
                 {                   
-                    ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $aInput["PAGENR"]);
+                    ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $aInput["PAGENR"], $aInput["FILTERID"]);
                 }
             }
             else {
@@ -319,11 +319,14 @@ function ShowResultsRows($aInput)
  * Description: Create filter condition which is added to the final query.
  *
  * In:	$filter
- * Out:	$sql
+ * Out:	$sql, id
  *
  */
 function CreateFilter($filter)
 {
+    // Reset id.
+    $id  = -1;
+    
     $sql = "ORDER BY t.title, t.stamp DESC";
     $check = false;
     
@@ -337,17 +340,26 @@ function CreateFilter($filter)
         // "Nieuw"
         if ($filter == $aButtons[5]) 
         {  
+            // "Nieuw" id.
+            $id = 0;
+            
             // Get last message id.
             $sql  = "SELECT value FROM snufcnf WHERE name = 'LastMessage'";
             list($last) = GetItemsFromDatabase($sql);
             
             $sql = "WHERE t.id > $last ORDER BY t.stamp DESC";
         }
-        else if ($filter){
+        else if ($filter)
+        {
+            // Determine filter id.
+            $sql = "SELECT id FROM snuffel ".
+                   "WHERE title = '$filter'";
+            list($id) = GetItemsFromDatabase($sql);
+            
             $sql = "WHERE MATCH(t.title) AGAINST ('$filter' IN BOOLEAN MODE) ORDER BY t.stamp DESC";
         } 
     }
     
-    return $sql;
+    return array($sql, $id);
 }
 ?>

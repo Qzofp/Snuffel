@@ -107,7 +107,7 @@ function ProcessInput($aInput)
  * Function:	ShowPanel
  *
  * Created on Apr 16, 2011
- * Updated on Jul 03, 2011
+ * Updated on Jul 04, 2011
  *
  * Description: Shows the navigation panel.
  *
@@ -163,6 +163,23 @@ function ShowPanel($button, $aFilters = false)
             }
         }
 
+        // Get search titles.
+        $sql = "SELECT title FROM snuffel ".
+               "ORDER BY title ".
+               "LIMIT 0, 15";
+        $aTitles = GetItemsFromDatabase($sql);
+        
+        // Show titles as filters.
+        foreach ($aTitles as $vTitle) 
+        {
+            if ($vTitle == $aFilters["FILTER"]) {
+                echo "    <li><input type=\"button\" name=\"btnFILTER\" value=\"$vTitle\"/></li>\n";
+            }
+            else {
+                echo "    <li><input type=\"submit\" name=\"btnFILTER\" value=\"$vTitle\"/></li>\n";                
+            }            
+        }
+        
         echo "   </ul>\n";
     }
     

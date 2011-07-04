@@ -7,7 +7,7 @@
  * File:    tables.php
  *
  * Created on Jun 16, 2011
- * Updated on Jul 02, 2011
+ * Updated on Jul 04, 2011
  *
  * Description: This page containts the create and update tables functions. 
  * 
@@ -75,10 +75,11 @@ function CreateSnufCnf()
            "('Header', 'Cat.|Titel|#|Genre|Afzender|Datum|NZB|Platform'), ".
            "('Items', '30'), ".
            "('LastMessage', '0'), ".
-           "('MenuText', 'Filters|Onderhoud|Laatste update:'), ".     
+           "('MenuText', 'Filters|Onderhoud|Laatste update:'), ".
+           "('NoResults', 'Niets gevonden!'), ".  
            "('TimeValues', 'seconde|seconden|minuut|minuten|uur|uur|dag|dagen|week|weken|maand|maanden|jaar|jaar'), ".
            "('Title', 'Snuffel'), ".    
-           "('Version', '0.36'), ".
+           "('Version', '0.37'), ".
            "('Warning', 'Titel is verplicht!');";
     
     ExecuteQuery($sql);    

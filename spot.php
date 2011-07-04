@@ -7,7 +7,7 @@
  * File:    index.php
  *
  * Created on Jun 26, 2011
- * Updated on Jun 27, 2011
+ * Updated on Jul 04, 2011
  *
  * Description: This is the main page that shows (or processes) the spot information. 
  * 
@@ -42,7 +42,24 @@ if (!$pagenr)
     header("Location: $nzb");
 }
 else 
-{    
+{   
+    $aButtons = explode("|", cButtons);
+
+    // Get filterid and determine filter.
+    $filterid = GetLinkValue('f');
+    if ($filterid == -1) {
+        $filter = $aButtons[4]; // "Reset" filter;
+    }
+    else if ($filterid == 0){
+        $filter = $aButtons[5]; // "Nieuw" filter;        
+    }
+    else 
+    {
+        $sql = "SELECT title FROM snuffel ".
+               "WHERE id = '$filterid'";
+        list($filter) = GetItemsFromDatabase($sql);
+    }
+    
     $spot = cSPOTWEBFOLDER."/?page=getspot&amp;messageid=$msg";
 
     PageHeader(cTitle, "css/spot.css");
@@ -57,6 +74,7 @@ else
     // Hidden check and page fields.
     echo "   <input type=\"hidden\" name=\"hidPAGE\" value=\"0\" />\n"; 
     echo "   <input type=\"hidden\" name=\"hidPAGENR\" value=\"$pagenr\" />\n";
+    echo "   <input type=\"hidden\" name=\"hidFILTER\" value=\"$filter\" />\n";
     echo "   <input type=\"hidden\" name=\"hidCHECK\" value=\"2\" />\n";
 
     echo "  </form>\n";
