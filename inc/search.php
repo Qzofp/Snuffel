@@ -73,7 +73,7 @@ function GetSearchInput()
     
     $aInput["OK"]     = GetOk();
     $aInput["CAT"]    = GetButtonValue("lstCATEGORIES");
-    $aInput["GENRE"]  = GetButtonValue("lstGENRE"); 
+    $aInput["GENRE"]  = GetButtonValue("lstGENRE");
     
     $aInput["TITLE"]  = GetButtonValue("txtTITLE"); 
     if (!$aInput["TITLE"]) {
@@ -330,7 +330,7 @@ function ShowSearchAddRow($aInput)
  * Description: Show the edit row.
  *
  * In:  $aInput, $catnr, $title, $genre, $poster
- * Out:	Wijzigrij
+ * Out:	Edit row
  *
  */
 function ShowSearchEditRow($aInput, $catnr, $title, $genre, $poster)
@@ -342,7 +342,7 @@ function ShowSearchEditRow($aInput, $catnr, $title, $genre, $poster)
     if (!$aInput["CHECK"]) 
     {
         $catnr   = array_search($aInput["CAT"], $aCategories);
-        $inGenre = $aInput["GENRE"];
+        $genre = $aInput["GENRE"];
     }    
        
     // Controleer of category bestaat.

@@ -7,7 +7,7 @@
  * File:    panel.php
  *
  * Created on Apr 16, 2011
- * Updated on Jul 03, 2011
+ * Updated on Jul 04, 2011
  *
  * Description: This page contains the panel functions.
  *
@@ -79,7 +79,7 @@ function GetInput()
 function ProcessInput($aInput)
 { 
     LoadConstants();
-    
+       
     $aButtons = explode("|", cButtons);
     
     if (strlen($aInput["PAGE"]) > 1) {
@@ -89,12 +89,12 @@ function ProcessInput($aInput)
     switch($aInput["PROCESS"])
     {
         case $aButtons[6]: UpdateSnuffel();
-             $aInput["FILTER"] = $aButtons[5];
-             $aInput["PAGE"] = 0;
-             break;
+                           $aInput["FILTER"] = $aButtons[5];
+                           $aInput["PAGE"] = 0;
+                           break;
             
         case $aButtons[8]: DeleteSearchAll();
-             break;
+                           break;
     }
   
     return $aInput;
