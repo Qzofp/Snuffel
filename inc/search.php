@@ -7,7 +7,7 @@
  * File:    search.php
  *
  * Created on May 07, 2011
- * Updated on Jun 29, 2011
+ * Updated on Jul 04, 2011
  *
  * Description: This page contains the search functions.
  * 
@@ -249,7 +249,7 @@ function ShowSearch($aInput)
  * Function:	ShowSearchAddRow
  *
  * Created on May 07, 2011
- * Updated on Jun 29, 2011
+ * Updated on Jun 04, 2011
  *
  * Description: Show the add input field. 
  *
@@ -274,13 +274,13 @@ function ShowSearchAddRow($aInput)
     else 
     {
         $ok = "<img src=\"img/empty.png\"/>";
-        $disabled = " disabled";
-        $aItems   = array("empty");
-        $active   = true;
-        $inTitle  = null;
-        $inPoster = null;
-        $message  = null;
-        $action = "hov";
+        $disabled         = " disabled";
+        $aItems           = array("empty");
+        $active           = true;
+        $aInput["TITLE"]  = null;
+        $aInput["POSTER"] = null;
+        $message          = null;
+        $action           = "hov";
     }
     
     // Category dropbox
@@ -596,7 +596,7 @@ function AddSearch($aInput)
                "VALUES ($catnr, $title, $poster, $subcata, $subcatd)";
         
         if ($check) 
-        {
+        {   
             ExecuteQuery($sql);
         
             $sql      = "SELECT MAX(id) FROM snuffel";
@@ -722,7 +722,7 @@ function DelSearch($aInput)
  * Function:	CheckAndFixInput
  *
  * Created on May 28, 2011
- * Updated on Jun 29, 2011
+ * Updated on Jul 04, 2011
  *
  * Description: Controleer en repareer input.
  *
@@ -739,8 +739,8 @@ function CheckAndFixInput($aInput)
    
     $aCategories = explode("|", cCategories);
     $catnr = array_search($aInput["CAT"], $aCategories);
-    if ($aInput["CAT"] === false) {
-        $aInput["CAT"] = "NULL";
+    if ($catnr === false) {
+        $catnr = "NULL";
     }
     else 
     {    

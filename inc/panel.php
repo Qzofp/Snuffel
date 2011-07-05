@@ -106,6 +106,7 @@ function ProcessInput($aInput)
         case $aButtons[6]: UpdateSnuffel();
                            $aInput["FILTER"] = $aButtons[5];
                            $aInput["PAGE"] = 0;
+                           $aInput["FILTERNR"] = 1;
                            break;
             
         case $aButtons[8]: DeleteSearchAll();
@@ -237,6 +238,7 @@ function ShowFilterButtons($aButtons, $aTitles, $aFilters)
     {    
         foreach ($aTitles as $vTitle) 
         {
+            list($vTitle) = str_split($vTitle, 39);
             if ($vTitle == $aFilters["FILTER"]) {
                 echo "    <li><input type=\"button\" name=\"btnFILTER\" value=\"$vTitle\"/></li>\n";
             }
