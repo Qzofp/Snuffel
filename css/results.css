@@ -415,7 +415,8 @@ color:#C11B17;
 }
 
 table.results tr.active td.title{
-padding: 0 0 0 5px;
+line-height:16px;
+padding:0 0 0 5px;
 vertical-align:middle;
 }
 
@@ -425,7 +426,7 @@ display:block;
 float:left;
 font-weight:bold;
 line-height:14px;
-margin:-1px 4px -2px -3px;
+margin:0 4px 0 -3px;
 padding:0 4px 0 4px;
 -moz-border-radius:4px;
 -webkit-border-radius:4px;
