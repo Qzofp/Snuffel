@@ -7,7 +7,7 @@
  * File:    tables.php
  *
  * Created on Jun 16, 2011
- * Updated on Jul 04, 2011
+ * Updated on Jul 06, 2011
  *
  * Description: This page containts the create and update tables functions. 
  * 
@@ -44,7 +44,7 @@ function CreateSnuffelTables()
  * Function:	CreateSnufCnf
  *
  * Created on Jun 13, 2011
- * Updated on Jun 29, 2011
+ * Updated on Jul 06, 2011
  *
  * Description: Create or update the Snuffel Configuration table.
  *
@@ -69,17 +69,17 @@ function CreateSnufCnf()
     
     // Fill table.
     $sql = "INSERT INTO `snufcnf` (`name`, `value`) VALUES ".
-           "('Buttons', 'Gevonden|Historie|Zoek Op|Instellingen|Reset|Nieuw|Update Snuffel|Verwijder Historie|Verwijder Zoek'), ".
+           "('Buttons', 'Gevonden|Historie|Zoek Op|Instellingen|Reset|Nieuw|Update Snuffel|Verwijder Historie|Verwijder Zoek|Omhoog|Omlaag'), ".
            "('Categories', 'Beeld|Muziek|Spellen|Applicaties'), ".
            "('Days', '14'), ".
            "('Header', 'Cat.|Titel|#|Genre|Afzender|Datum|NZB|Platform'), ".
            "('Items', '30'), ".  
            "('LastMessage', '0'), ".
-           "('MenuText', 'Filters|Onderhoud|Laatste update:'), ".
+           "('MenuText', 'Filters|Custom Filters|Onderhoud|Laatste update:'), ".
            "('NoResults', 'Niets gevonden!'), ".  
            "('TimeValues', 'seconde|seconden|minuut|minuten|uur|uur|dag|dagen|week|weken|maand|maanden|jaar|jaar'), ".
            "('Title', 'Snuffel'), ".    
-           "('Version', '0.38'), ".
+           "('Version', '0.39'), ".
            "('Warning', 'Titel is verplicht!');";
     
     ExecuteQuery($sql);    

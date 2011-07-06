@@ -7,7 +7,7 @@
  * File:    settings.php
  *
  * Created on Jun 26, 2011
- * Updated on Jul 04, 2011
+ * Updated on Jul 06, 2011
  *
  * Description: Snuffel's settings page.
  * 
@@ -16,7 +16,7 @@
  */
 
 // Snuffel's current version.
-define("cCurrentVersion", 0.38);
+define("cCurrentVersion", 0.39);
 
 // Put here the Spotweb location.
 define("cSPOTWEBFOLDER", "../spotweb");

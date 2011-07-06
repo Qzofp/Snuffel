@@ -64,7 +64,7 @@ padding:30px 0 0 0;
 clear:left;
 float:left;
 width:235px;
-height:450px;
+height:500px;
 }
 
 #panel_bottom{
@@ -158,6 +158,18 @@ background:#c8c8c8;
 .panel .btn_top button[type=submit]:hover{
 background:white;
 cursor:pointer;
+}
+
+.panel .btn_top li.up input{
+text-align:center;
+color:#00de00;
+background-color:#cbffcb;
+}
+
+.panel .btn_top li.down input{
+text-align:center;    
+color:#de2500;    
+background-color:#fedede;
 }
 
 .panel .txt_center{
@@ -526,62 +538,4 @@ text-indent:-1000em;
 table.bar tr td.page{
 width:25px;
 color:#908F91;
-}
-
-/* Filter navigation bar parts */
-.panel table.filter{
-margin:5px 0 0 5px;
-width:225px;
-border-collapse:collapse;
-}
-
-.panel table.filter tbody td:first-child{
--moz-border-radius:4px 0 0 4px;
--webkit-border-radius:4px 0 0 4px;
-border-radius:4px 0 0 4px;
-}
-
-.panel table.filter tbody td:last-child{
--moz-border-radius:0 4px 4px 0;
--webkit-border-radius:0 4px 4px 0;
-border-radius:0 4px 4px 0;
-}
-
-.panel table.filter tr{
-padding:5px;
-}
-
-.panel table.filter tr td{
-padding:0px;
-height:20px;
-background:url(sprite_x.png) repeat-x 0 -60px;
-}
-
-.panel table.filter tr td input{
-margin:0px;
-padding:0px;
-color:black;
-background-color:#ececec;
-font-size:1.1em;
-font-weight:bold;
-border:0;
-height:20px;
-width:30px;
-cursor:pointer;
-}
-
-.panel table.filter tr td.up input{ 
--moz-border-radius:4px 0 0 4px;
--webkit-border-radius:4px 0 0 4px;
-border-radius:4px 0 0 4px;
-}
-
-.panel table.filter tr td.down{
-width:30px;
-}
-
-.panel table.filter tr td.down input{
--moz-border-radius:0 4px 4px 0;
--webkit-border-radius:0 4px 4px 0;
-border-radius:0 4px 4px 0;
 }

@@ -32,7 +32,7 @@
 function GetInput()
 {  
     $aInput = array("CHECK"=>false, "PAGE"=>-1, "PROCESS"=>-1, "FILTER"=>null, "RESET"=>false, 
-                    "UP"=>null, "DOWN"=>null, "FILTERNR"=>1);
+                    "UP"=>null, "DOWN"=>null, "FILTERNR"=>1, "FILTERMAX"=>0);
     
     // Get the hidden check spotweb or upgrade snuffel value.
     $aInput["CHECK"] = GetButtonValue("btnCHECK");
@@ -72,7 +72,7 @@ function GetInput()
  * Function:    ProcessInput
  *
  * Created on Jun 17, 2011
- * Updated on Jul 04, 2011
+ * Updated on Jul 06, 2011
  *
  * Description: Process the user input.
  *
@@ -89,13 +89,26 @@ function ProcessInput($aInput)
     if (strlen($aInput["PAGE"]) > 1) {
          $aInput["PAGE"] = array_search($aInput["PAGE"], $aButtons);
     }
+    
+    // Determine maximum number of filers.
+    $items = cItems/2;
+    $sql   = "SELECT title FROM snuffel";
+    $rows  = CountRows($sql);
+    $aInput["FILTERMAX"] = ceil($rows/$items);
        
-    if ($aInput["UP"]) {
+    if ($aInput["UP"]) 
+    {   
         $aInput["FILTERNR"] -= 1;
+        if ($aInput["FILTERNR"] == 0) {
+            $aInput["FILTERNR"] = $aInput["FILTERMAX"];
+        }
     }
     else if ($aInput["DOWN"]) 
     {
         $aInput["FILTERNR"] += 1;
+        if ($aInput["FILTERNR"] == $aInput["FILTERMAX"]+1) {
+            $aInput["FILTERNR"] = 1;
+        }        
     } 
     else if ($aInput["FILTER"] == $aButtons[4] || !$aInput["FILTERNR"]) {
         $aInput["FILTERNR"] = 1;
@@ -169,8 +182,7 @@ function ShowPanel($button, $aFilters = false)
     if ($button == 0) 
     {    
         $aTitles = GetFilterTitles($aFilters);
-        ShowFilterButtons($aButtons, $aTitles, $aFilters);
-        ShowFilterFooter($aFilters);
+        ShowFilterButtons($aButtons, $aMenuText, $aTitles, $aFilters);
     }
     
     echo "   </div>\n";    
@@ -183,11 +195,11 @@ function ShowPanel($button, $aFilters = false)
     
     // Maintenance menu.
     $time = strtotime(UpdateTime());
-    echo "   <h4>$aMenuText[1]</h4>\n";
+    echo "   <h4>$aMenuText[2]</h4>\n";
     
     // Last update time or loading...
     echo "   <div class=\"txt_center\">\n";
-    echo "    <div id=\"update\">$aMenuText[2] ".time_ago($time, 1)."</div>\n";
+    echo "    <div id=\"update\">$aMenuText[3] ".time_ago($time, 1)."</div>\n";
     echo "    <div id=\"loading\" style=\"display:none\"><img src=\"img/loading.gif\" /></div>\n";
     echo "   </div>\n";
 
@@ -216,11 +228,11 @@ function ShowPanel($button, $aFilters = false)
  *
  * Description: Shows the filter buttons.
  *
- * In:  $aButtons, $aTitles, $aFilters
+ * In:  $aButtons, $aMenuText, $aTitles, $aFilters
  * Out:	filter buttons
  *
  */
-function ShowFilterButtons($aButtons, $aTitles, $aFilters)
+function ShowFilterButtons($aButtons, $aMenuText, $aTitles, $aFilters)
 {
     echo "   <ul class=\"btn_top\">\n";
     for ($i = 4; $i < 6; $i++) 
@@ -232,7 +244,14 @@ function ShowFilterButtons($aButtons, $aTitles, $aFilters)
             echo "    <li><input type=\"submit\" name=\"btnFILTER\" value=\"$aButtons[$i]\"/></li>\n";                
         }
     }
-       
+    
+    echo "   <h4>$aMenuText[1]</h4>\n";
+    
+    // Show "Omhoog" button.
+    if ($aFilters["FILTERMAX"] > 1) {
+        echo "    <li class=\"up\"><input type=\"submit\" name=\"btnUP\" value=\"&lt;&lt;  $aButtons[9]  &gt;&gt;\"/></li>\n";
+    }    
+    
     // Show titles as filters.
     if (!empty($aTitles))
     {    
@@ -253,57 +272,14 @@ function ShowFilterButtons($aButtons, $aTitles, $aFilters)
                 echo "    <li><button type=\"submit\" name=\"btnFILTER\" value=\"$vTitle\">$title</button></li>\n";
             }
         }
-    }   
+    }
+    
+    // Show "Omlaag" button.
+    if ($aFilters["FILTERMAX"] > 1) {
+        echo "    <li class=\"down\"><input type=\"submit\" name=\"btnDOWN\" value=\"&lt;&lt;  $aButtons[10]  &gt;&gt;\"/></li>\n";
+    }        
+    
     echo "   </ul>\n";    
-}
-
-/*
- * Function:	ShowFilterFooter
- *
- * Created on Jul 04, 2011
- * Updated on Jul 04, 2011
- *
- * Description: Shows the filter footer with the up and down buttons.
- *
- * In:  $aInput
- * Out:	filter footer
- *
- */
-function ShowFilterFooter($aInput)
-{
-    $items = cItems/2;
-    $sql   = "SELECT title FROM snuffel";
-    $rows  = CountRows($sql);
-    $max   = ceil($rows/$items);
-
-    // The up and down buttons. The filter number is put in the hidden field: "hidFILTERNR".
-    if ($max > 1)
-    {
-       $n = $aInput["FILTERNR"];
-        switch($n)
-        {
-            case 1     : $up   = "<input type=\"button\" name=\"\" value=\"\"/>";
-                         $down = "<input type=\"submit\" name=\"btnDOWN\" value=\"&gt;&gt;\"/>";
-                         break;
-        
-            case $max:   $up   = "<input type=\"submit\" name=\"btnUP\" value=\"&lt;&lt;\"/>";
-                         $down = "<input type=\"button\" name=\"\" value=\"\"/>";
-                         break;
-                                            
-            default:     $up   = "<input type=\"submit\" name=\"btnUP\" value=\"&lt;&lt;\"/>";
-                         $down = "<input type=\"submit\" name=\"btnDOWN\" value=\"&gt;&gt;\"/>";
-        }
-               
-        // Show footer / navigation bar.
-        echo "   <table class=\"filter\">\n";
-        echo "    <tbody>\n";
-        echo "     <tr>\n";
-        echo "      <td class=\"up\">$up</td>\n";
-        echo "      <td class=\"down\">$down</td>\n";        
-        echo "     </tr>\n";
-        echo "    </tbody>\n";        
-        echo "   </table>\n";
-    }    
 }
 
 
@@ -396,7 +372,7 @@ function DeleteSearchAll()
  * Function:	GetFilterTitles
  *
  * Created on Jul 04, 2011
- * Updated on Jul 04, 2011
+ * Updated on Jul 06, 2011
  *
  * Description: Get search titles for the filters.
  *
@@ -405,10 +381,12 @@ function DeleteSearchAll()
  *
  */
 function GetFilterTitles($aInput)
-{
+{   
+    $items = cItems/2;
+    
     $sql = "SELECT title FROM snuffel ".
-           "ORDER BY title ";
-    $sql  = AddLimit($sql, $aInput["FILTERNR"], cItems/2);
+           "ORDER BY title ";  
+    $sql  = AddLimit($sql, $aInput["FILTERNR"], $items);
     
     $aTitles = GetItemsFromDatabase($sql);
     
