@@ -7,7 +7,7 @@
  * File:    results.css
  *
  * Created on Apr 16, 2011
- * Updated on Jul 04, 2011
+ * Updated on Jul 06, 2011
  *
  * Description: The results css page.
  *
@@ -41,12 +41,14 @@ min-height:100%;
 margin:-30px 0 0 0;
 }
 
-#main input{
+#main input,
+#main button{
 font-family:Arial, Helvetica, Sans-Serif;  
 }
 
 /* Remove button padding in FireFox */
-#main input::-moz-focus-inner{
+#main input::-moz-focus-inner,
+#main button::-moz-focus-inner{
 border:0;
 padding:0;
 }
@@ -126,7 +128,9 @@ text-align:center;
 }
 
 .panel input[type=button],
-.panel input[type=submit]{
+.panel button[type=button],
+.panel input[type=submit],
+.panel button[type=submit]{
 margin:0 5px 2px 5px;
 padding:0 0 0 5px;
 -moz-border-radius:4px;
@@ -138,17 +142,20 @@ font-weight:bold;
 border:none;
 }
 
-.panel .btn_top input{
+.panel .btn_top input,
+.panel .btn_top button{
 width:225px;
 text-align:left;
 background:#ececec;
 }
 
-.panel .btn_top input[type=button]{
+.panel .btn_top input[type=button],
+.panel .btn_top button[type=button]{
 background:#c8c8c8;
 }
 
-.panel .btn_top input[type=submit]:hover{
+.panel .btn_top input[type=submit]:hover,
+.panel .btn_top button[type=submit]:hover{
 background:white;
 cursor:pointer;
 }
@@ -535,4 +542,3 @@ width:30px;
 -webkit-border-radius:0 4px 4px 0;
 border-radius:0 4px 4px 0;
 }
-

@@ -7,7 +7,7 @@
  * File:    panel.php
  *
  * Created on Apr 16, 2011
- * Updated on Jul 04, 2011
+ * Updated on Jul 06, 2011
  *
  * Description: This page contains the panel functions.
  *
@@ -123,7 +123,7 @@ function ProcessInput($aInput)
  * Function:	ShowPanel
  *
  * Created on Apr 16, 2011
- * Updated on Jul 04, 2011
+ * Updated on Jul 06, 2011
  *
  * Description: Shows the navigation panel.
  *
@@ -212,7 +212,7 @@ function ShowPanel($button, $aFilters = false)
  * Function:	ShowFilterButtons
  *
  * Created on Jul 04, 2011
- * Updated on Jul 04, 2011
+ * Updated on Jul 06, 2011
  *
  * Description: Shows the filter buttons.
  *
@@ -238,13 +238,20 @@ function ShowFilterButtons($aButtons, $aTitles, $aFilters)
     {    
         foreach ($aTitles as $vTitle) 
         {
-            list($vTitle) = str_split($vTitle, 39);
-            if ($vTitle == $aFilters["FILTER"]) {
-                echo "    <li><input type=\"button\" name=\"btnFILTER\" value=\"$vTitle\"/></li>\n";
+            $title = $vTitle;
+            if (strlen($vTitle) > 34) 
+            {
+               list($title) = str_split($vTitle, 34);
+               $title  = rtrim($title);
+               $title .= "...";
             }
-            else {
-                echo "    <li><input type=\"submit\" name=\"btnFILTER\" value=\"$vTitle\"/></li>\n";                
-            }            
+
+            if ($vTitle == $aFilters["FILTER"]) {
+                echo "    <li><button type=\"button\" name=\"btnFILTER\" value=\"$vTitle\">$title</button></li>\n";
+            }
+            else { 
+                echo "    <li><button type=\"submit\" name=\"btnFILTER\" value=\"$vTitle\">$title</button></li>\n";
+            }
         }
     }   
     echo "   </ul>\n";    
