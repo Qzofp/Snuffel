@@ -7,7 +7,7 @@
  * File:    index.php
  *
  * Created on Jun 26, 2011
- * Updated on Jul 04, 2011
+ * Updated on Jul 06, 2011
  *
  * Description: This is the main page that shows (or processes) the spot information. 
  * 
@@ -79,6 +79,7 @@ else
     echo "   <input type=\"hidden\" name=\"hidPAGENR\" value=\"$pagenr\" />\n";
     echo "   <input type=\"hidden\" name=\"hidFILTER\" value=\"$filter\" />\n";
     echo "   <input type=\"hidden\" name=\"hidFILTERNR\" value=\"$filternr\" />\n";
+    echo "   <input type=\"hidden\" name=\"hidMSGID\" value=\"$id\" />\n";
     echo "   <input type=\"hidden\" name=\"hidCHECK\" value=\"2\" />\n";
 
     echo "  </form>\n";

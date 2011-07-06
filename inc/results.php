@@ -59,7 +59,7 @@ function CreateResultsPage($aFilters)
  * Function:    GetResultsInput
  *
  * Created on Jun 22, 2011
- * Updated on Jul 04, 2011
+ * Updated on Jul 06, 2011
  *
  * Description: Get user results input.
  *
@@ -70,13 +70,14 @@ function CreateResultsPage($aFilters)
 function GetResultsInput()
 {
     $aInput = array("PREV"=>null, "HOME"=>null, "NEXT"=>null, "PAGENR"=>1, "PAGE"=>null, "SQLFILTER"=>null, 
-                    "FILTERID"=>-1, "FILTERNR"=>1);
+                    "FILTERID"=>-1, "FILTERNR"=>1, "MSGID"=>0);
         
     $aInput["PREV"]   = GetButtonValue("btnPREV");
     $aInput["HOME"]   = GetButtonValue("btnHOME");
     $aInput["NEXT"]   = GetButtonValue("btnNEXT");
     $aInput["PAGE"]   = GetButtonValue("hidPAGE");
     $aInput["PAGENR"] = GetButtonValue("hidPAGENR");
+    $aInput["MSGID"]  = GetButtonValue("hidMSGID");
     
     return $aInput;
 }
@@ -175,7 +176,7 @@ function ShowResults($aInput)
  * Function:	ShowResultsRow
  *
  * Created on Jun 11, 2011
- * Updated on Jul 04, 2011
+ * Updated on Jul 06, 2011
  *
  * Description: Show the results in a table row.
  *
@@ -184,8 +185,11 @@ function ShowResults($aInput)
  *
  */
 function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $aInput)
-{
-    $class = null;     
+{     
+    $active = null;
+    if ($id == $aInput["MSGID"]) {
+        $active = "active ";
+    }
     
     $new = null;
     if ($id > cLastMessage) {
@@ -194,30 +198,25 @@ function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date,
    
     switch ($catkey)
     {
-        case 0: if ($catkey !== null) {
-                    $class =  " class=\"blue$new\"";
-                }
-                else {
-                    $class =  " class=\"gray$new\"";
-                }
+        case 0: $color = "blue$new";
                 break;
             
-        case 1: $class =  " class=\"orange$new\"";
+        case 1: $color = "orange$new";
                 break;
             
-        case 2: $class =  " class=\"green$new\"";
+        case 2: $color = "green$new";
                 break;
             
-        case 3: $class =  " class=\"red$new\"";
+        case 3: $color = "red$new";
                 break;
     }
     
     // Convert special HTML characters.
     $title = htmlentities($title);
        
-    echo "    <tr$class>\n";
+    echo "    <tr class=\"$active$color\">\n";
     echo "     <td class=\"cat\">$category</td>\n";
-    echo "     <td><a href=\"spot.php?id=$id&s=".$aInput["PAGENR"].",&f=".$aInput["FILTERID"].",&p=".$aInput["FILTERNR"]."\">$title</a></td>\n";
+    echo "     <td class=\"title\"><a href=\"spot.php?id=$id&s=".$aInput["PAGENR"].",&f=".$aInput["FILTERID"].",&p=".$aInput["FILTERNR"]."\">$title</a></td>\n";
     echo "     <td class=\"com\">$comment</td>\n";
     echo "     <td class=\"gen\">$genre</td>\n";
     echo "     <td>$poster</td>\n";
@@ -289,7 +288,7 @@ function ShowResultsRows($aInput)
             {              
                 $stmt->bind_result($id, $catkey, $category, $title, $genre, $poster, $date, $comment);
                 while($stmt->fetch())
-                {                   
+                {                
                     ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $aInput);
                 }
             }

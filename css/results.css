@@ -414,6 +414,48 @@ font-weight:bold;
 color:#C11B17;
 }
 
+table.results tr.active td.title{
+padding: 0 0 0 5px;
+vertical-align:middle;
+}
+
+table.results tr.active td.title a:before{
+content:"> ";
+display:block;
+float:left;
+font-weight:bold;
+line-height:14px;
+margin:-1px 4px -2px -3px;
+padding:0 4px 0 4px;
+-moz-border-radius:4px;
+-webkit-border-radius:4px;
+border-radius:4px;
+}
+
+table.results tr.blue.active td.title a:before{
+background:#62aefd;
+border:1px solid #006cab;
+color:#006cab;
+}
+
+table.results tr.orange.active td.title a:before{
+background:#f2d87c; 
+border:1px solid #cd9f00; 
+color:#cd9f00;
+}
+
+table.results tr.green.active td.title a:before{
+background:#84f484; 
+border:1px solid #00ab00; 
+color:#00ab00;
+}
+
+table.results tr.red.active td.title a:before{
+background:#f99797;
+border:1px solid #ab1c00;
+color:#ab1c00;
+}
+
 /* Navigation bar parts */
 table.bar{
 margin:5px 0 0 0;
