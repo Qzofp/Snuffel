@@ -7,7 +7,7 @@
  * File:    results.php
  *
  * Created on Apr 10, 2011
- * Updated on Jul 04, 2011
+ * Updated on Jul 07, 2011
  *
  * Description: This page contains the results functions.
  * 
@@ -176,7 +176,7 @@ function ShowResults($aInput)
  * Function:	ShowResultsRow
  *
  * Created on Jun 11, 2011
- * Updated on Jul 06, 2011
+ * Updated on Jul 07, 2011
  *
  * Description: Show the results in a table row.
  *
@@ -216,7 +216,7 @@ function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date,
        
     echo "    <tr class=\"$active$color\">\n";
     echo "     <td class=\"cat\">$category</td>\n";
-    echo "     <td class=\"title\"><a href=\"spot.php?id=$id&s=".$aInput["PAGENR"].",&f=".$aInput["FILTERID"].",&p=".$aInput["FILTERNR"]."\">$title</a></td>\n";
+    echo "     <td class=\"title\"><a href=\"spot.php?id=$id&s=".$aInput["PAGENR"]."&f=".$aInput["FILTERID"]."&p=".$aInput["FILTERNR"]."\">$title</a></td>\n";
     echo "     <td class=\"com\">$comment</td>\n";
     echo "     <td class=\"gen\">$genre</td>\n";
     echo "     <td>$poster</td>\n";
