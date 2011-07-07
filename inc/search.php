@@ -7,7 +7,7 @@
  * File:    search.php
  *
  * Created on May 07, 2011
- * Updated on Jul 04, 2011
+ * Updated on Jul 07, 2011
  *
  * Description: This page contains the search functions.
  * 
@@ -197,7 +197,7 @@ function ProcessSearchInput($aInput)
  * Function:	ShowSearch
  *
  * Created on May 07, 2011
- * Updated on Jul 02, 2011
+ * Updated on Jul 07, 2011
  *
  * Description: Show the search page.
  *
@@ -240,7 +240,7 @@ function ShowSearch($aInput)
     echo "  </table>\n";
     
     $sql = "SELECT * FROM snuffel";
-    ShowResultsFooter($sql, $aInput, cItems - 4);
+    ShowResultsFooter($sql, $aInput, cItems);
     
     echo "  </div>\n";
 }
@@ -319,6 +319,7 @@ function ShowSearchAddRow($aInput)
     $poster = "<input type=\"text\" size=\"40\" maxlength=\"100\" name=\"txtPOSTER\" value=\"".$aInput["POSTER"]."\"$disabled />";
 
     ShowSearchRow($action, $message, $ok, $key, $category, $title, $genre, $poster);
+    //ShowSearchRow($action, $message, $ok, $key, null, null, null, null);
 }
 
 /*
@@ -495,7 +496,7 @@ function ShowSearchDeleteRow($catkey, $category, $title, $genre, $poster)
  * Function:	ShowSearchRows
  *
  * Created on May 16, 2011
- * Updated on Jul 02, 2011
+ * Updated on Jul 07, 2011
  *
  * Description: Show the search rows.
  *
@@ -512,7 +513,7 @@ function ShowSearchRows($aInput)
            "LEFT JOIN snuftag t ".
            "ON f.cat = t.cat AND (f.subcata = t.tag OR f.subcatd = t.tag) ".
            "ORDER BY f.title";
-    $sql = AddLimit($sql, $aInput['PAGENR'], cItems - 4);
+    $sql = AddLimit($sql, $aInput['PAGENR'], cItems);
 
     $db = OpenDatabase();
     $stmt = $db->prepare($sql);

@@ -41,7 +41,8 @@ min-height:100%;
 margin:-30px 0 0 0;
 }
 
-#main input{
+#main select,
+#main input{   
 font-family:Arial, Helvetica, Sans-Serif;  
 }
 
@@ -259,23 +260,21 @@ vertical-align:top;
 }
 
 table.search tr td.btn{
-padding:3px 2px 3px 0;
+padding:2px 2px 2px 0;
 }
 
 table.search tr.add td{
-font-size:1.2em;    
 font-weight:bold;
 }
 
 table.search tr.del td{
-font-size:1.2em;    
 font-weight:bold;
 color:#C11B17;
 }
 
 table.search tr td.msg input[type=submit]{
-padding:0px 3px 0 0;
-height:20px;
+padding:0 2px 0 0;
+height:18px;
 width:50px;
 border:0;
 font-size:1em;
@@ -287,11 +286,7 @@ cursor:pointer
 
 table.search tr.gray td.msg input[type=submit]{
 color:#606060;
-}   
-
-table.search tr.del td.msg input[type=submit]{
-font-size:0.8em;
-} 
+}
 
 table.search tr.blue td{
 background-color:#daecff;
@@ -323,7 +318,7 @@ background-color:#fff;
 }
 
 table.search tr.blue td.msg{
-background:url(search_blue.png) no-repeat 0 0px;
+background:url(blue.png) no-repeat 0 0px;
 }
 
 table.search tr.hov:hover.blue td.msg{
@@ -331,7 +326,7 @@ background-position:-52px 0;
 }
 
 table.search tr.orange td.msg{
-background:url(search_orange.png) no-repeat 0 0px;
+background:url(orange.png) no-repeat 0 0px;
 }
 
 table.search tr.hov:hover.orange td.msg{
@@ -339,7 +334,7 @@ background-position:-52px 0px;
 }
 
 table.search tr.green td.msg{
-background:url(search_green.png) no-repeat 0 0px;
+background:url(green.png) no-repeat 0 0px;
 }
 
 table.search tr.hov:hover.green td.msg{
@@ -347,7 +342,7 @@ background-position:-52px 0px;
 }
 
 table.search tr.red td.msg{
-background:url(search_red.png) no-repeat 0 0px;
+background:url(red.png) no-repeat 0 0px;
 }
 
 table.search tr.hov:hover.red td.msg{
@@ -355,7 +350,7 @@ background-position:-52px 0px;
 }
 
 table.search tr.gray td.msg{
-background:url(search_gray.png) no-repeat 0 0px; 
+background:url(gray.png) no-repeat 0 0px; 
 }
 
 table.search tr.hov:hover.gray td.msg{
@@ -369,11 +364,14 @@ width:95px;
 background-color:#fff;
 }
 
-table.search select, input[type="text"]{
-margin:0px;
-font-family:Arial, Helvetica, Sans-Serif; 
-font-size:1.2em;
-border: 1px solid #606060;
+table.search select, 
+table.search input[type="text"]{
+margin:0;
+padding:0;
+/*font-family:Arial, Helvetica, Sans-Serif;*/
+/*font-weight:bold;*/
+font-size:1em;
+border:1px solid #606060;
 }
 
 table.search td.gen select{
@@ -381,6 +379,8 @@ width:140px;
 }
 
 table.search input[type="text"]{
+padding:0 0 0 2px;
+height:16px;
 width:300px;
 position:relative;
 left:-3px;
@@ -395,6 +395,7 @@ table.search input[type="text"].warning{
 font-style:italic;
 }
 
+/* Navigation bar parts */
 table.bar{
 margin:5px 0 0 0;
 width:100%;
