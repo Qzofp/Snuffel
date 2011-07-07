@@ -249,7 +249,7 @@ function ShowSearch($aInput)
  * Function:	ShowSearchAddRow
  *
  * Created on May 07, 2011
- * Updated on Jun 04, 2011
+ * Updated on Jul 07, 2011
  *
  * Description: Show the add input field. 
  *
@@ -286,17 +286,16 @@ function ShowSearchAddRow($aInput)
     // Category dropbox
     $category = DropDownBox("lstCATEGORIES", cTitle, $aItems, true, $aInput["CAT"], $active);
 
-    // Title field. Show messsage if Ok button if pushed and the title field is empty. This filed is mandatory.
+    // Title field. Show messsage if Ok button if pushed and the title field is empty. This field is mandatory.
     if ($aInput["OK"] == 1 && !$aInput["TITLE"]) {
-        $title = "<input class=\"warning\" type=\"text\" maxlength=\"100\" name=\"txtTITLE\" value=\"".cWarning."\" ".
-                        "onfocus=\"if(!this._haschanged){this.value=''};this._haschanged=true;\" />";
+        $title = "<input class=\"warning\" type=\"text\" maxlength=\"100\" name=\"txtTITLE\" value=\"".cWarning."\" onfocus=\"checkclear(this);\" />";
     }
     else {
         $title = "<input type=\"text\" maxlength=\"100\" name=\"txtTITLE\" value=\"".$aInput["TITLE"]."\"$disabled />";
     }    
 
     // Genre field
-    if ($aInput["CAT"] && $aInput["MODE"] == "ADD")     // Controleer of category bestaat.
+    if ($aInput["CAT"] && $aInput["MODE"] == "ADD")     // Check if category exists.
     {
         $key = array_search($aInput["CAT"], $aItems);
         
@@ -319,7 +318,6 @@ function ShowSearchAddRow($aInput)
     $poster = "<input type=\"text\" size=\"40\" maxlength=\"100\" name=\"txtPOSTER\" value=\"".$aInput["POSTER"]."\"$disabled />";
 
     ShowSearchRow($action, $message, $ok, $key, $category, $title, $genre, $poster);
-    //ShowSearchRow($action, $message, $ok, $key, null, null, null, null);
 }
 
 /*
@@ -472,7 +470,7 @@ function ShowSearchRow($action, $message, $buttons, $catkey, $category, $title, 
  * Created on May 23, 2011
  * Updated on Jun 23, 2011
  *
- * Description: Laat een rij van de zoekwaardes tabel zien, die verwijderd gaat worden..
+ * Description: Show a row which is going to be removed.
  *
  * In:  $catkey, $category, $title, $genre, $poster
  * Out:	rij

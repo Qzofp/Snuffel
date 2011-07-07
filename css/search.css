@@ -390,6 +390,7 @@ background-color:#D4D0C8;
 }
 
 table.search input[type="text"].warning{
+color:#C11B17;    
 font-style:italic;
 }
 

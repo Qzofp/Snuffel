@@ -6,7 +6,7 @@
  * File:    misc.js
  *
  * Created on Jul 01, 2011
- * Updated on Jul 01, 2011
+ * Updated on Jul 07, 2011
  *
  * Description: Miscellaneous java scripts.
  *
@@ -32,4 +32,14 @@ function toggle() {
 	for ( var i=0; i < arguments.length; i++ ) {
 		$(arguments[i]).style.display = ($(arguments[i]).style.display != 'none' ? 'none' : '' );
 	}
+}
+
+function checkclear(what){
+    if(!what._haschanged)
+    {
+        what.value=''
+        what.style.color ='#000'
+        what.style.fontStyle = 'normal'
+    };
+    what._haschanged=true;
 }
