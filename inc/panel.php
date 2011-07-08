@@ -90,7 +90,7 @@ function ProcessInput($aInput)
          $aInput["PAGE"] = array_search($aInput["PAGE"], $aButtons);
     }
     
-    // Determine maximum number of filers.
+    // Determine maximum number of filters.
     $items = cItems/2;
     $sql   = "SELECT title FROM snuffel";
     $rows  = CountRows($sql);

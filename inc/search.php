@@ -7,7 +7,7 @@
  * File:    search.php
  *
  * Created on May 07, 2011
- * Updated on Jul 07, 2011
+ * Updated on Jul 08, 2011
  *
  * Description: This page contains the search functions.
  * 
@@ -575,7 +575,7 @@ function ShowSearchRows($aInput)
  * Function:	AddSearch
  *
  * Created on May 21, 2011
- * Updated on Jun 29, 2011
+ * Updated on Jul 08, 2011
  *
  * Description: Voeg zoekwaarde toe.
  *
@@ -598,8 +598,17 @@ function AddSearch($aInput)
         {   
             ExecuteQuery($sql);
         
+            // Get id of the newly added record.
             $sql      = "SELECT MAX(id) FROM snuffel";
             list($id) = GetItemsFromDatabase($sql);
+                        
+            // Determine page number.
+            $sql = "SELECT row ".
+                   "FROM (SELECT @row := @row + 1 AS row, title, id FROM (SELECT @row := 0) r, snuffel ORDER BY title) AS dummy ".
+                   "WHERE id = $id";        
+            list($row) = GetItemsFromDatabase($sql);
+            
+            $aInput["PAGENR"] = ceil($row/cItems);        
             
             // Reset values.
             $aInput["CAT"]    = null;
