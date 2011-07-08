@@ -640,7 +640,7 @@ function AddSearch($aInput)
  * Function:	EditSearch
  *
  * Created on May 28, 2011
- * Updated on Jun 29, 2011
+ * Updated on Jul 08, 2011
  *
  * Description: Edit search values.
  *
@@ -661,6 +661,14 @@ function EditSearch($aInput)
         
         if ($check) {
             ExecuteQuery($sql);
+            
+            // Determine page number.
+            $sql = "SELECT row ".
+                   "FROM (SELECT @row := @row + 1 AS row, title, id FROM (SELECT @row := 0) r, snuffel ORDER BY title) AS dummy ".
+                   "WHERE id = ".$aInput["ID"];       
+            list($row) = GetItemsFromDatabase($sql);
+            
+            $aInput["PAGENR"] = ceil($row/cItems);   
         }
         
         // Reset values.
