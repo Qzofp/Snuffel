@@ -2,12 +2,12 @@
 /*
  * Title:   Snuffel
  * Author:  Qzofp Productions
- * Version: 0.3
+ * Version: 0.4
  *
  * File:    results.php
  *
  * Created on Apr 10, 2011
- * Updated on Jul 07, 2011
+ * Updated on Jul 09, 2011
  *
  * Description: This page contains the results functions.
  * 
@@ -127,7 +127,7 @@ function ProcessResultsInput($aInput, $aFilters)
  * Function:	ShowResults
  *
  * Created on Apr 10, 2011
- * Updated on Jul 03, 2011
+ * Updated on Jul 09, 2011
  *
  * Description: Show the search results.
  *
@@ -152,6 +152,7 @@ function ShowResults($aInput)
     echo "     <th class=\"gen\">$aHeaders[3]</th>\n";
     echo "     <th class=\"pos\">$aHeaders[4]</th>\n";
     echo "     <th class=\"dat\">$aHeaders[5]</th>\n";
+    echo "     <th class=\"hst\"></th>\n";    
     echo "     <th class=\"nzb\">$aHeaders[6]</th>\n";
     echo "    </tr>\n";
     echo "   </thead>\n";
@@ -176,15 +177,15 @@ function ShowResults($aInput)
  * Function:	ShowResultsRow
  *
  * Created on Jun 11, 2011
- * Updated on Jul 07, 2011
+ * Updated on Jul 09, 2011
  *
  * Description: Show the results in a table row.
  *
- * In:  $id, $catkey, $category, $title, $genre, $poster, $date, $comment, $aInput
+ * In:  $id, $catkey, $category, $title, $genre, $poster, $date, $comment, $history, $aInput
  * Out:	row
  *
  */
-function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $aInput)
+function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $history, $aInput)
 {     
     $active = null;
     if ($id == $aInput["MSGID"]) {
@@ -213,6 +214,11 @@ function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date,
     
     // Convert special HTML characters.
     $title = htmlentities($title);
+    
+    // Checks NZB download history.
+    if ($history) {
+        $history = "<img src=\"img/tick.png\" />";
+    }
        
     echo "    <tr class=\"$active$color\">\n";
     echo "     <td class=\"cat\">$category</td>\n";
@@ -220,7 +226,8 @@ function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date,
     echo "     <td class=\"com\">$comment</td>\n";
     echo "     <td class=\"gen\">$genre</td>\n";
     echo "     <td>$poster</td>\n";
-    echo "     <td>".time_ago($date, 1)."</td>\n";  
+    echo "     <td>".time_ago($date, 1)."</td>\n";
+    echo "     <td>$history</td>\n";
     echo "     <td class=\"nzb\"><a href=\"spot.php?id=$id&n=".$aInput["PAGENR"]."\">NZB</a></td>\n";
     echo "    </tr>\n";
 }
@@ -251,7 +258,7 @@ function NoResults()
  * Function:	ShowResultsRows
  *
  * Created on Jun 11, 2011
- * Updated on Jul 04, 2011
+ * Updated on Jul 09, 2011
  *
  * Description: Show the results table rows.
  *
@@ -262,9 +269,10 @@ function NoResults()
 function ShowResultsRows($aInput)
 {        
     //The results query.
-    $sql  = "SELECT t.id, t.category, c.name, t.title, g.name, t.poster, t.stamp, t.commentcount FROM (snuftmp t ".
+    $sql  = "SELECT t.id, t.category, c.name, t.title, g.name, t.poster, t.stamp, t.commentcount, h.id FROM (snuftmp t ".
             "LEFT JOIN snuftag g ON t.category = g.cat AND (t.subcata = CONCAT(g.tag,'|') OR t.subcatd LIKE CONCAT('%',g.tag,'|'))) ".
-            "LEFT JOIN snufcat c ON t.category = c.cat AND CONCAT(c.tag,'|') = t.subcata ";
+            "LEFT JOIN snufcat c ON t.category = c.cat AND CONCAT(c.tag,'|') = t.subcata ".
+            "LEFT JOIN snufhst h ON t.id = h.id ";
     $sql .= $aInput["SQLFILTER"];
     
     $query = $sql;
@@ -286,10 +294,10 @@ function ShowResultsRows($aInput)
 
             if ($rows != 0)
             {              
-                $stmt->bind_result($id, $catkey, $category, $title, $genre, $poster, $date, $comment);
+                $stmt->bind_result($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $history);
                 while($stmt->fetch())
                 {                
-                    ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $aInput);
+                    ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $history, $aInput);
                 }
             }
             else {

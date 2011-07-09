@@ -2,7 +2,7 @@
 /*
  * Title:   Snuffel
  * Author:  Qzofp Productions
- * Version: 0.3
+ * Version: 0.4
  *
  * File:    settings.php
  *
@@ -16,7 +16,7 @@
  */
 
 // Snuffel's current version.
-define("cCurrentVersion", 0.39);
+define("cCurrentVersion", 0.4);
 
 // Put here the Spotweb location.
 define("cSPOTWEBFOLDER", "../spotweb");

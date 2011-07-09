@@ -2,12 +2,12 @@
 /*
  * Title:   Snuffel
  * Author:  Qzofp Productions
- * Version: 0.3
+ * Version: 0.4
  *
  * File:    tables.php
  *
  * Created on Jun 16, 2011
- * Updated on Jul 06, 2011
+ * Updated on Jul 09, 2011
  *
  * Description: This page containts the create and update tables functions. 
  * 
@@ -21,7 +21,7 @@
  * Function:	CreateSnuffelTables
  *
  * Created on Jun 13, 2011
- * Updated on Jun 27, 2011
+ * Updated on Jul 09, 2011
  *
  * Description: Create or update the Snuffel tables.
  *
@@ -33,6 +33,7 @@ function CreateSnuffelTables()
 {
     CreateSnufCnf();
     CreateSnuffel();
+    CreateSnufHst();
     CreateSnufTmp(); 
     CreateSnufCat();
     CreateSnufTag();
@@ -44,7 +45,7 @@ function CreateSnuffelTables()
  * Function:	CreateSnufCnf
  *
  * Created on Jun 13, 2011
- * Updated on Jul 06, 2011
+ * Updated on Jul 09, 2011
  *
  * Description: Create or update the Snuffel Configuration table.
  *
@@ -79,7 +80,7 @@ function CreateSnufCnf()
            "('NoResults', 'Niets gevonden!'), ".  
            "('TimeValues', 'seconde|seconden|minuut|minuten|uur|uur|dag|dagen|week|weken|maand|maanden|jaar|jaar'), ".
            "('Title', 'Snuffel'), ".    
-           "('Version', '0.39'), ".
+           "('Version', '0.4'), ".
            "('Warning', 'Titel is verplicht!');";
     
     ExecuteQuery($sql);    
@@ -114,6 +115,32 @@ function CreateSnuffel()
              "PRIMARY KEY (`id`) ".
            ") ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";    
     ExecuteQuery($sql);
+}
+
+/*
+ * Function:	CreateSnufHist
+ *
+ * Created on Jul 09, 2011
+ * Updated on Jul 09, 2011
+ *
+ * Description: Create or update the Snuffel History table.
+ *
+ * In:	-
+ * Out:	snufcnf table
+ *
+ */
+function CreateSnufHst()
+{
+    // If exists drop table.
+    #$sql = "DROP TABLE IF EXISTS `snufhst`";   
+    #ExecuteQuery($sql);
+    
+    // Create table.
+    $sql = "CREATE TABLE IF NOT EXISTS `snufhst` ( ".
+             "`id` int(11) NOT NULL, ".
+             "PRIMARY KEY (`id`) ".
+           ") ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";    
+    ExecuteQuery($sql);  
 }
 
 /*

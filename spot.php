@@ -2,12 +2,12 @@
 /*
  * Title:   Snuffel
  * Author:  Qzofp Productions
- * Version: 0.3
+ * Version: 0.4
  *
  * File:    index.php
  *
  * Created on Jun 26, 2011
- * Updated on Jul 06, 2011
+ * Updated on Jul 09, 2011
  *
  * Description: This is the main page that shows (or processes) the spot information. 
  * 
@@ -24,7 +24,7 @@ require_once 'inc/common.php';
 LoadConstants();
 
 // GetSpotInput
-$id     = GetLinkValue('id');
+$id = GetLinkValue('id');
 
 // Get the spot message id.
 $sql = "SELECT messageid FROM snuftmp ".
@@ -38,6 +38,10 @@ if (!$pagenr)
     $pagenr = GetLinkValue('n');
     $nzb = cSPOTWEBFOLDER."/?page=getnzb&messageid=$msg";
     
+    // Add message id to the history table.
+    $sql = "REPLACE INTO snufhst (id) VALUES ($id)";
+    ExecuteQuery($sql);
+    
     // Download nzb file.
     header("Location: $nzb");
 }
@@ -45,7 +49,7 @@ else
 {   
     $aButtons = explode("|", cButtons);
 
-    // Get filterid and determine filter.
+    // Get filter id and determine filter.
     $filterid = GetLinkValue('f');
     if ($filterid == -1) {
         $filter = $aButtons[4]; // "Reset" filter;
