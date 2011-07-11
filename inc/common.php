@@ -141,7 +141,7 @@ function PageHeader($title, $css)
  * Function:	Footer
  *
  * Created on Aug 14, 2010
- * Updated on Jun 27, 2010
+ * Updated on Jul 11, 2010
  *
  * Description: Returns a page footer.
  *
@@ -158,7 +158,7 @@ function PageFooter($footer=true)
         echo "  <div id=\"footer\"><a href =\"https://github.com/Qzofp/Snuffel\">Qzofp / Snuffel</a></div>\n";  
     }
     
-    //echo " </body>\n";
+    echo " </body>\n";
     echo "</html>";
 }
 
