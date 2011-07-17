@@ -7,7 +7,7 @@
  * File:    results.php
  *
  * Created on Apr 10, 2011
- * Updated on Jul 11, 2011
+ * Updated on Jul 14, 2011
  *
  * Description: This page contains the results functions.
  * 
@@ -177,7 +177,7 @@ function ShowResults($aInput)
  * Function:	ShowResultsRow
  *
  * Created on Jun 11, 2011
- * Updated on Jul 11, 2011
+ * Updated on Jul 14, 2011
  *
  * Description: Show the results in a table row.
  *
@@ -227,8 +227,8 @@ function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date,
     echo "     <td class=\"gen\">$genre</td>\n";
     echo "     <td>$poster</td>\n";
     echo "     <td>".time_ago($date, 1)."</td>\n";
-    echo "     <td>$history</td>\n";
-    echo "     <td class=\"nzb\"><a href=\"spot.php?id=$id&n=".$aInput["PAGENR"]."&f=".$aInput["FILTERID"]."&fp=".$aInput["FILTERNR"]."\">NZB</a></td>\n";
+    echo "     <td id=\"h$id\">$history</td>\n";
+    echo "     <td class=\"nzb\"><a onclick=\"nzb('$id')\" href=\"#$id\">NZB</a></td>\n";
     echo "    </tr>\n";
 }
 
