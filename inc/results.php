@@ -222,7 +222,7 @@ function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date,
        
     echo "    <tr class=\"$active$color\">\n";
     echo "     <td class=\"cat\">$category</td>\n";
-    echo "     <td class=\"title\"><a href=\"spot.php?id=$id&s=".$aInput["PAGENR"]."&f=".$aInput["FILTERID"]."&fp=".$aInput["FILTERNR"]."\">$title</a></td>\n";
+    echo "     <td class=\"title\"><a href=\"spot.php?id=$id&p=".$aInput["PAGENR"]."&f=".$aInput["FILTERID"]."&fp=".$aInput["FILTERNR"]."\">$title</a></td>\n";
     echo "     <td class=\"com\">$comment</td>\n";
     echo "     <td class=\"gen\">$genre</td>\n";
     echo "     <td>$poster</td>\n";

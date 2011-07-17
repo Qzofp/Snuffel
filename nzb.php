@@ -7,7 +7,7 @@
  * File:    index.php
  *
  * Created on Jul 15, 2011
- * Updated on Jul 16, 2011
+ * Updated on Jul 17, 2011
  *
  * Description: This is the main page that processes the nzb information.
  * 
@@ -31,7 +31,10 @@ $sql = "SELECT messageid FROM snuftmp ".
        "WHERE id = $id";
 list($msg) = GetItemsFromDatabase($sql);
 
-//$nzb = "http://".$_SERVER['SERVER_NAME']."/spotweb/?page=getnzb&messageid=$msg";
+// Add message id to the history table.
+$sql = "REPLACE INTO snufhst (id) VALUES ($id)";
+ExecuteQuery($sql);
+
 $nzb = cSPOTWEBFOLDER."/?page=getnzb&messageid=$msg";
 
 header("Location: $nzb");
