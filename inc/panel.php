@@ -7,7 +7,7 @@
  * File:    panel.php
  *
  * Created on Apr 16, 2011
- * Updated on Jul 18, 2011
+ * Updated on Jul 23, 2011
  *
  * Description: This page contains the panel functions.
  *
@@ -72,7 +72,7 @@ function GetInput()
  * Function:    ProcessInput
  *
  * Created on Jun 17, 2011
- * Updated on Jul 06, 2011
+ * Updated on Jul 23, 2011
  *
  * Description: Process the user input.
  *
@@ -116,12 +116,18 @@ function ProcessInput($aInput)
     
     switch($aInput["PROCESS"])
     {
+        // "Update Snuffel".
         case $aButtons[6]: UpdateSnuffel();
-                           $aInput["FILTER"] = $aButtons[5];
+                           $aInput["FILTER"] = $aButtons[5]; // "Nieuw" button.
                            $aInput["PAGE"] = 0;
                            $aInput["FILTERNR"] = 1;
                            break;
-            
+        
+        // "Verwijder History".
+        case $aButtons[7]: DeleteHistory($aInput["FILTER"]);
+                           break;             
+        
+        // Verwijder Zoek".
         case $aButtons[8]: DeleteSearchAll();
                            break;
     }
@@ -206,8 +212,13 @@ function ShowPanel($button, $aFilters = false)
     
     // Update button.
     echo "    <li onclick=\"toggle('update','loading')\"><input type=\"submit\" name=\"btnPROCESS\" value=\"$aButtons[6]\"/></li>\n";
+
+    // Show "Verwijder Historie" button.
+    if ($button == 1) {
+        echo "    <li><input type=\"submit\" name=\"btnPROCESS\" value=\"$aButtons[7]\"/></li>\n";
+    }    
     
-    // Show "Zoek Op" button.
+    // Show "Verwijder Zoek" button.
     if ($button == 2) {
         echo "    <li><input type=\"submit\" name=\"btnPROCESS\" value=\"$aButtons[8]\"/></li>\n";
     }
@@ -346,6 +357,47 @@ function UpdateSnuffel()
 }
 
 /*
+ * Function:	DeleteHistory
+ *
+ * Created on Jul 23, 2011
+ * Updated on Jul 23, 2011
+ *
+ * Description: Deletes the history.
+ *
+ * In:  $filter
+ * Out:	-
+ *
+ */
+function DeleteHistory($filter)
+{
+    $aButtons = explode("|", cButtons);
+    
+    $sql = "DELETE h.* FROM snufhst h ".
+           "LEFT JOIN snuftmp t ON h.id = t.id ";
+    
+    // "Reset"
+    if ($filter == $aButtons[4]) {
+        $sql = "TRUNCATE snufhst";
+    }
+    else if ($filter == $aButtons[5]) // "Nieuw"
+    {
+        // Get last message id.
+        $query  = "SELECT value FROM snufcnf WHERE name = 'LastMessage'";
+        list($last) = GetItemsFromDatabase($query);
+            
+        $sql .= "WHERE t.id > $last";        
+    }
+    else {
+        $sql .= "WHERE MATCH(t.title) AGAINST ('$filter' IN BOOLEAN MODE)";
+    }
+        
+    //echo $sql;
+    
+    ExecuteQuery($sql);
+}
+
+
+/*
  * Function:	DeleteSearchAll
  *
  * Created on Jun 06, 2011
@@ -353,8 +405,8 @@ function UpdateSnuffel()
  *
  * Description: Deletes all the search records from the snuftemp and snuffel table.
  *
- * In:  
- * Out:	
+ * In:  -
+ * Out:	-
  *
  */
 function DeleteSearchAll()
