@@ -7,7 +7,7 @@
  * File:    search.php
  *
  * Created on May 07, 2011
- * Updated on Jul 08, 2011
+ * Updated on Jul 23, 2011
  *
  * Description: This page contains the search functions.
  * 
@@ -494,7 +494,7 @@ function ShowSearchDeleteRow($catkey, $category, $title, $genre, $poster)
  * Function:	ShowSearchRows
  *
  * Created on May 16, 2011
- * Updated on Jul 07, 2011
+ * Updated on Jul 23, 2011
  *
  * Description: Show the search rows.
  *
@@ -510,7 +510,7 @@ function ShowSearchRows($aInput)
     $sql = "SELECT f.id, f.cat, f.title, t.name, f.subcata, f.subcatd, f.poster FROM snuffel f ".
            "LEFT JOIN snuftag t ".
            "ON f.cat = t.cat AND (f.subcata = t.tag OR f.subcatd = t.tag) ".
-           "ORDER BY f.title";
+           "ORDER BY f.cat, f.title";
     $sql = AddLimit($sql, $aInput['PAGENR'], cItems);
 
     $db = OpenDatabase();
@@ -575,7 +575,7 @@ function ShowSearchRows($aInput)
  * Function:	AddSearch
  *
  * Created on May 21, 2011
- * Updated on Jul 08, 2011
+ * Updated on Jul 23, 2011
  *
  * Description: Voeg zoekwaarde toe.
  *
@@ -604,7 +604,7 @@ function AddSearch($aInput)
                         
             // Determine page number.
             $sql = "SELECT row ".
-                   "FROM (SELECT @row := @row + 1 AS row, title, id FROM (SELECT @row := 0) r, snuffel ORDER BY title) AS dummy ".
+                   "FROM (SELECT @row := @row + 1 AS row, title, id FROM (SELECT @row := 0) r, snuffel ORDER BY cat, title) AS dummy ".
                    "WHERE id = $id";        
             list($row) = GetItemsFromDatabase($sql);
             
@@ -640,7 +640,7 @@ function AddSearch($aInput)
  * Function:	EditSearch
  *
  * Created on May 28, 2011
- * Updated on Jul 08, 2011
+ * Updated on Jul 23, 2011
  *
  * Description: Edit search values.
  *
@@ -664,7 +664,7 @@ function EditSearch($aInput)
             
             // Determine page number.
             $sql = "SELECT row ".
-                   "FROM (SELECT @row := @row + 1 AS row, title, id FROM (SELECT @row := 0) r, snuffel ORDER BY title) AS dummy ".
+                   "FROM (SELECT @row := @row + 1 AS row, title, id FROM (SELECT @row := 0) r, snuffel ORDER BY cat, title) AS dummy ".
                    "WHERE id = ".$aInput["ID"];       
             list($row) = GetItemsFromDatabase($sql);
             
