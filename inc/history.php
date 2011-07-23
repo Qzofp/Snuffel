@@ -4,12 +4,12 @@
  * Author:  Qzofp Productions
  * Version: 0.4
  *
- * File:    results.php
+ * File:    history.php
  *
- * Created on Apr 10, 2011
+ * Created on Jul 18, 2011
  * Updated on Jul 23, 2011
  *
- * Description: This page contains the results functions.
+ * Description: This page contains the history functions.
  * 
  * Credits: Spotweb team 
  *
@@ -19,55 +19,55 @@
 /////////////////////////////////////////     Results Main     ////////////////////////////////////////////
 
 /*
- * Function:    CreateResultsPage
+ * Function:    CreateHistoryPage
  *
- * Created on Jun 18, 2011
- * Updated on Jul 03, 2011
+ * Created on Jul 18, 2011
+ * Updated on Jul 23, 2011
  *
- * Description: Create the results page.
+ * Description: Create the history page.
  *
  * In:  $aFilters
- * Out: Results page.
+ * Out: History page.
  *
  */
-function CreateResultsPage($aFilters)
+function CreateHistoryPage($aFilters)
 {
     PageHeader(cTitle, "css/results.css");
     echo "  <form name=\"".cTitle."\" action=\"".$_SERVER['PHP_SELF']."\" method=\"post\">\n";
      
-    ShowPanel(0, $aFilters);
+    ShowPanel(1, $aFilters);
     
-    $aInput = GetResultsInput();
-    $aInput = ProcessResultsInput($aInput, $aFilters);
-    ShowResults($aInput);
+    $aInput = GetHistoryInput();
+    $aInput = ProcessHistoryInput($aInput, $aFilters);
+    ShowHistory($aInput);
  
     // Hidden check and page fields.
-    echo "   <input type=\"hidden\" name=\"hidPAGE\" value=\"0\" />\n"; 
+    echo "   <input type=\"hidden\" name=\"hidPAGE\" value=\"1\" />\n"; 
     echo "   <input type=\"hidden\" name=\"hidPAGENR\" value=\"".$aInput["PAGENR"]."\" />\n";
     echo "   <input type=\"hidden\" name=\"hidFILTER\" value=\"".$aFilters["FILTER"]."\" />\n";
     echo "   <input type=\"hidden\" name=\"hidFILTERNR\" value=\"".$aFilters["FILTERNR"]."\" />\n";   
     echo "   <input type=\"hidden\" name=\"hidCHECK\" value=\"2\" />\n";
     
     echo "  </form>\n";
-    PageFooter(); 
+    PageFooter();     
 }
 
 
 /////////////////////////////////////////   Get Input Functions   ////////////////////////////////////////
 
 /*
- * Function:    GetResultsInput
+ * Function:    GetHistoryInput
  *
- * Created on Jun 22, 2011
- * Updated on Jul 06, 2011
+ * Created on Jul 18, 2011
+ * Updated on Jul 18, 2011
  *
- * Description: Get user results input.
+ * Description: Get user history input.
  *
  * In:  -
  * Out: $aInput
  *
  */
-function GetResultsInput()
+function GetHistoryInput()
 {
     $aInput = array("PREV"=>null, "HOME"=>null, "NEXT"=>null, "PAGENR"=>1, "PAGE"=>null, "SQLFILTER"=>null, 
                     "FILTERID"=>-1, "FILTERNR"=>1, "MSGID"=>0);
@@ -86,24 +86,24 @@ function GetResultsInput()
 /////////////////////////////////////////   Process Functions    /////////////////////////////////////////
 
 /*
- * Function:	ProcesResultsInput
+ * Function:	ProcesHistoryInput
  *
- * Created on Jun 22, 2011
- * Updated on Jul 04 , 2011
+ * Created on Jul 18, 2011
+ * Updated on Jul 23, 2011
  *
- * Description: Process the results input.
+ * Description: Process the history input.
  *
  * In:  $aInput, $aFilters
  * Out:	$aInput
  *
  */
-function ProcessResultsInput($aInput, $aFilters)
+function ProcessHistoryInput($aInput, $aFilters)
 {
     // Create filter query condition and determine filter id.
     list($aInput["SQLFILTER"], $aInput["FILTERID"]) = CreateFilter($aFilters["FILTER"]);
     $aInput["FILTERNR"] = $aFilters["FILTERNR"];
     
-    if (!$aInput["PAGENR"] || $aInput["PAGE"] != 0) {
+    if (!$aInput["PAGENR"] || $aInput["PAGE"] != 1) {
         $aInput["PAGENR"] = 1;
     }
     
@@ -124,18 +124,18 @@ function ProcessResultsInput($aInput, $aFilters)
 /////////////////////////////////////////   Display Functions    /////////////////////////////////////////
 
 /*
- * Function:	ShowResults
+ * Function:	ShowHistory
  *
- * Created on Apr 10, 2011
- * Updated on Jul 09, 2011
+ * Created on Jul 18, 2011
+ * Updated on Jul 23, 2011
  *
- * Description: Show the search results.
+ * Description: Show table with history.
  *
  * In:	$aInput
- * Out:	Table with the search results.
+ * Out:	History table.
  *
  */
-function ShowResults($aInput)
+function ShowHistory($aInput)
 {
     // Tabel header
     $aHeaders = explode("|", cHeader);
@@ -163,7 +163,7 @@ function ShowResults($aInput)
     echo "   <tbody>\n";
     
     // Show the database results in table rows.
-    $sql = ShowResultsRows($aInput);
+    $sql = ShowHistoryRows($aInput);
 
     echo "   </tbody>\n";    
     echo "  </table>\n";
@@ -174,18 +174,18 @@ function ShowResults($aInput)
 }
 
 /*
- * Function:	ShowResultsRow
+ * Function:	ShowHistoryRow
  *
- * Created on Jun 11, 2011
- * Updated on Jul 18, 2011
+ * Created on Jul 18, 2011
+ * Updated on Jul 23, 2011
  *
- * Description: Show the results in a table row.
+ * Description: Show history in a table row.
  *
  * In:  $id, $catkey, $category, $title, $genre, $poster, $date, $comment, $history, $aInput
  * Out:	row
  *
  */
-function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $history, $aInput)
+function ShowHistoryRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $history, $aInput)
 {     
     $active = null;
     if ($id == $aInput["MSGID"]) {
@@ -222,7 +222,7 @@ function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date,
        
     echo "    <tr class=\"$active$color\">\n";
     echo "     <td class=\"cat\">$category</td>\n";
-    echo "     <td class=\"title\"><a href=\"spot.php?id=$id&p=0&pn=".$aInput["PAGENR"]."&f=".$aInput["FILTERID"]."&fn=".$aInput["FILTERNR"]."\">$title</a></td>\n";
+    echo "     <td class=\"title\"><a href=\"spot.php?id=$id&p=1&pn=".$aInput["PAGENR"]."&f=".$aInput["FILTERID"]."&fn=".$aInput["FILTERNR"]."\">$title</a></td>\n";
     echo "     <td class=\"com\">$comment</td>\n";
     echo "     <td class=\"gen\">$genre</td>\n";
     echo "     <td>$poster</td>\n";
@@ -236,24 +236,24 @@ function ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date,
 /////////////////////////////////////////   Query Functions   ////////////////////////////////////////////
 
 /*
- * Function:	ShowResultsRows
+ * Function:	ShowHistoryRows
  *
- * Created on Jun 11, 2011
- * Updated on Jul 09, 2011
+ * Created on Jul 18, 2011
+ * Updated on Jul 23, 2011
  *
- * Description: Show the results table rows.
+ * Description: Show the history table rows.
  *
  * In:  $aInput
  * Out:	$query
  *
  */
-function ShowResultsRows($aInput)
+function ShowHistoryRows($aInput)
 {        
     //The results query.
     $sql  = "SELECT t.id, t.category, c.name, t.title, g.name, t.poster, t.stamp, t.commentcount, h.id FROM (snuftmp t ".
             "LEFT JOIN snuftag g ON t.category = g.cat AND (t.subcata = CONCAT(g.tag,'|') OR t.subcatd LIKE CONCAT('%',g.tag,'|'))) ".
             "LEFT JOIN snufcat c ON t.category = c.cat AND CONCAT(c.tag,'|') = t.subcata ".
-            "LEFT JOIN snufhst h ON t.id = h.id ";
+            "RIGHT JOIN snufhst h ON t.id = h.id ";
     $sql .= $aInput["SQLFILTER"];
     
     $query = $sql;
@@ -278,7 +278,7 @@ function ShowResultsRows($aInput)
                 $stmt->bind_result($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $history);
                 while($stmt->fetch())
                 {                
-                    ShowResultsRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $history, $aInput);
+                    ShowHistoryRow($id, $catkey, $category, $title, $genre, $poster, $date, $comment, $history, $aInput);
                 }
             }
             else {

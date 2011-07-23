@@ -7,7 +7,7 @@
  * File:    index.php
  *
  * Created on Jun 26, 2011
- * Updated on Jul 17, 2011
+ * Updated on Jul 18, 2011
  *
  * Description: This is the main page that shows (or processes) the spot information. 
  * 
@@ -24,18 +24,19 @@ require_once 'inc/common.php';
 LoadConstants();
 $aButtons = explode("|", cButtons);
 
-// Get id and page number.
-$id   = GetLinkValue('id');
-$page = GetLinkValue('p');
-
+// Get id, page, page number, filter id and filter nr.
+$id       = GetLinkValue('id');
+$page     = GetLinkValue('p');
+$pagenr   = GetLinkValue('pn');
+$filterid = GetLinkValue('f');
+$filternr = GetLinkValue('fn');
 
 // Get the spot message id.
 $sql = "SELECT messageid FROM snuftmp ".
        "WHERE id = $id";
 list($msg) = GetItemsFromDatabase($sql);
 
-// Get filterid and determine filter.
-$filterid = GetLinkValue('f');
+// Determine filter.
 if ($filterid == -1) {
     $filter = $aButtons[4]; // "Reset" filter;
 }
@@ -48,9 +49,7 @@ else
            "WHERE id = '$filterid'";
     list($filter) = GetItemsFromDatabase($sql);
 }
-    
-// Get the filter page number.
-$filternr = GetLinkValue('p');
+
 $spot = cSPOTWEBFOLDER."/?page=getspot&amp;messageid=$msg";
 
 PageHeader(cTitle, "css/spot.css");
@@ -63,8 +62,8 @@ echo " <form name=\"Spot\" action=\"index.php\" method=\"post\">\n";
 echo " <input type=\"submit\" name=\"btnDUMMY\" value=\"".cTitle."\"/>\n";
     
 // Hidden check and page fields.
-echo " <input type=\"hidden\" name=\"hidPAGE\" value=\"0\" />\n";
-echo " <input type=\"hidden\" name=\"hidPAGENR\" value=\"$page\" />\n";
+echo " <input type=\"hidden\" name=\"hidPAGE\" value=\"$page\" />\n";
+echo " <input type=\"hidden\" name=\"hidPAGENR\" value=\"$pagenr\" />\n";
 echo " <input type=\"hidden\" name=\"hidFILTER\" value=\"$filter\" />\n";
 echo " <input type=\"hidden\" name=\"hidFILTERNR\" value=\"$filternr\" />\n";
 echo " <input type=\"hidden\" name=\"hidMSGID\" value=\"$id\" />\n";

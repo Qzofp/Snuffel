@@ -7,7 +7,7 @@
  * File:    panel.php
  *
  * Created on Apr 16, 2011
- * Updated on Jul 06, 2011
+ * Updated on Jul 18, 2011
  *
  * Description: This page contains the panel functions.
  *
@@ -136,7 +136,7 @@ function ProcessInput($aInput)
  * Function:	ShowPanel
  *
  * Created on Apr 16, 2011
- * Updated on Jul 06, 2011
+ * Updated on Jul 23, 2011
  *
  * Description: Shows the navigation panel.
  *
@@ -157,16 +157,14 @@ function ShowPanel($button, $aFilters = false)
     
     // Show buttons: "Gevonden", "Historie", "Zoek Op" and "Instellingen".
     echo "   <ul class=\"btn_top\">\n";
-    for ($i = 0; $i < 3; $i++) {
-      if ($i != 1) // Skip "Historie". This is for future implementation. 
-      {       
+    for ($i = 0; $i < 3; $i++) 
+    {    
         if ($button == $i) {
             echo "    <li><input type=\"button\" name=\"btnPAGE\" value=\"$aButtons[$i]\"/></li>\n";
         }
         else {
             echo "    <li><input type=\"submit\" name=\"btnPAGE\" value=\"$aButtons[$i]\"/></li>\n";
         }
-      }  
     }  
     echo "   </ul>\n";
     echo "   </div>\n";
@@ -178,8 +176,8 @@ function ShowPanel($button, $aFilters = false)
     echo "   <div class=\"panel\">\n";
     echo "   <h4>$aMenuText[0]</h4>\n";
     
-    // Show filter buttons.
-    if ($button == 0) 
+    // Show filter buttons for "Gevonden and "Historie".
+    if ($button == 0 || $button == 1)
     {    
         $aTitles = GetFilterTitles($aFilters);
         ShowFilterButtons($aButtons, $aMenuText, $aTitles, $aFilters);

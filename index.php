@@ -7,7 +7,7 @@
  * File:    index.php
  *
  * Created on Apr 09, 2011
- * Updated on Jul 04, 2011
+ * Updated on Jul 18, 2011
  *
  * Description: Snuffel's main page.
  * 
@@ -38,8 +38,9 @@ switch ($aInput["PAGE"])
             break;
 
     // History
-    //case 1: CreateHistoryPage(); 
-    //        break;                    
+    case 1: require_once "inc/history.php";
+            echo CreateHistoryPage($aInput);
+            break;                    
 
     // Search
     case 2: require_once "inc/search.php";

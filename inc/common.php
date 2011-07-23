@@ -7,7 +7,7 @@
  * File:    common.php
  *
  * Created on Apr 09, 2011
- * Updated on Jul 01, 2011
+ * Updated on Jul 23, 2011
  *
  * Description: Deze pagina bevat de algemene functies.
  * 
@@ -292,6 +292,25 @@ function ShowResultsFooter($sql, $aInput, $items)
     }
 }
 
+/*
+ * Function:	NoResults
+ *
+ * Created on Jul 04, 2011
+ * Updated on Jul 18, 2011
+ *
+ * Description: Laat een resultaat rij van de tabel zien.
+ *
+ * In:  $columns
+ * Out:	no results message
+ *
+ */
+function NoResults($columns)
+{
+    echo "    <tr class=\"no_results\">\n";
+    echo "     <td colspan=\"$columns\">".cNoResults."</td>\n";
+    echo "    </tr>\n";
+}
+
 /////////////////////////////////////////   Query Functions   ////////////////////////////////////////////
 
 /*
@@ -524,5 +543,58 @@ function CountRows($sql)
     CloseDatabase($db);
     
     return $rows;
+}
+
+/*
+ * Function:	CreateFilter
+ *
+ * Created on Jul 02, 2011
+ * Updated on Jul 04, 2011
+ *
+ * Description: Create filter condition which is added to the final query.
+ *
+ * In:	$filter
+ * Out:	$sql, id
+ *
+ */
+function CreateFilter($filter)
+{
+    // Reset id.
+    $id  = -1;
+    
+    $sql = "ORDER BY t.title, t.stamp DESC";
+    $check = false;
+    
+    $aButtons = explode("|", cButtons);
+      
+     // No "Reset"
+    if ($filter != $aButtons[4])
+    {   
+        $check = true;
+        
+        // "Nieuw"
+        if ($filter == $aButtons[5]) 
+        {  
+            // "Nieuw" id.
+            $id = 0;
+            
+            // Get last message id.
+            $sql  = "SELECT value FROM snufcnf WHERE name = 'LastMessage'";
+            list($last) = GetItemsFromDatabase($sql);
+            
+            $sql = "WHERE t.id > $last ORDER BY t.stamp DESC";
+        }
+        else if ($filter)
+        {
+            // Determine filter id.
+            $sql = "SELECT id FROM snuffel ".
+                   "WHERE title = '$filter'";
+            list($id) = GetItemsFromDatabase($sql);
+            
+            $sql = "WHERE MATCH(t.title) AGAINST ('$filter' IN BOOLEAN MODE) ORDER BY t.stamp DESC";
+        } 
+    }
+    
+    return array($sql, $id);
 }
 ?>
