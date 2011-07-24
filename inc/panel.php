@@ -390,8 +390,6 @@ function DeleteHistory($filter)
     else {
         $sql .= "WHERE MATCH(t.title) AGAINST ('$filter' IN BOOLEAN MODE)";
     }
-        
-    //echo $sql;
     
     ExecuteQuery($sql);
 }

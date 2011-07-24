@@ -7,7 +7,7 @@
  * File:    search.css
  *
  * Created on Jun 24, 2011
- * Updated on Jul 07, 2011
+ * Updated on Jul 24, 2011
  *
  * Description: The search css page.
  *
@@ -70,7 +70,7 @@ height:500px;
 clear:left;
 float:left;
 width:235px;
-height:200px;
+height:125px;
 }
 
 #search_top{
@@ -429,6 +429,10 @@ border:0;
 height:20px;
 width:30px;
 cursor:pointer;
+}
+
+table.bar tr td input[type=button]{
+cursor:default;
 }
 
 table.bar tr td.prev{
